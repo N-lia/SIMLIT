@@ -1,13 +1,13 @@
 /* =========================================
-   Simulation Page (dark lab theme)
+   Simulation Page (casebook theme)
    ========================================= */
 .sim-page {
   padding: 0;
-  background: #0f1117;
-  color: #fff;
-  overflow: hidden;
+  background: var(--paper-texture);
+  color: var(--ink);
+  overflow: hidden auto;
   min-height: 100svh;
-  height: 100svh;
+  height: auto;
   display: flex;
   flex-direction: column;
 }
@@ -17,12 +17,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px;
-  background: rgba(255,255,255,0.03);
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255, 244, 223, 0.7);
+  border-bottom: 1.5px dashed var(--line-soft);
   flex-shrink: 0;
 }
-.sim-header .icon-btn { color: #e8e8e8; }
-.sim-header .icon-btn:hover { background: rgba(255,255,255,0.08); }
+.sim-header .icon-btn { color: var(--ink); }
+.sim-header .icon-btn:hover { background: rgba(216, 180, 92, 0.2); }
 
 .sim-header-center {
   display: flex;
@@ -31,12 +31,14 @@
 }
 .sim-emoji      { font-size: 18px; }
 .sim-topic-name { font-size: 15px; font-weight: 700; color: #fff; }
+.sim-topic-name { color: var(--ink); }
 
 .sim-field-chip {
   font-size: 11px;
   font-weight: 700;
-  background: rgba(232,93,42,0.18);
-  color: #ff8c5a;
+  background: rgba(216, 180, 92, 0.28);
+  color: var(--accent-red);
+  border: 1px solid rgba(37, 35, 31, 0.18);
   padding: 4px 10px;
   border-radius: 20px;
   white-space: nowrap;
@@ -47,5 +49,82 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--paper-texture);
+}
+
+.sim-loading {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  min-height: 18rem;
+  padding: 2rem;
+  color: var(--ink-soft);
+  font-family: var(--hand-font);
+  font-size: 1rem;
+}
+
+.sim-body :is(
+  .beam-wrapper,
+  .hydrostatic-wrapper,
+  .newton-wrapper,
+  .pipe-wrapper,
+  .bernoulli-wrapper,
+  .stress-wrapper,
+  .mohr-wrapper,
+  .fbd-wrapper,
+  .truss-wrapper,
+  .eq-wrapper,
+  .dc-motor-container,
+  .collision-sim-container,
+  .double-pendulum-container,
+  .proj-container
+) {
+  background: var(--paper-texture) !important;
+  color: var(--ink) !important;
+  font-family: 'Outfit', sans-serif;
+}
+
+.sim-body :is(.sim-card, .proj-sim-card, .panel, .controls, .proj-controls, .info-panel, .chart-card, .visualization, .proj-visualization, .canvas-container, .sim-container) {
+  background: rgba(255, 244, 223, 0.68) !important;
+  border: 1.5px solid var(--line-ink) !important;
+  border-radius: 6px 10px 7px 9px / 10px 6px 9px 7px !important;
+  box-shadow: 4px 5px 0 rgba(37, 35, 31, 0.1) !important;
+}
+
+.sim-body :is(.header, .proj-header) {
+  background: rgba(255, 244, 223, 0.7) !important;
+  border-bottom: 1.5px dashed var(--line-soft) !important;
+}
+
+.sim-body :is(h1, h2, h3, .logo, .chart-title, .sec, .panel-tag, .proj-header h1) {
+  color: var(--ink) !important;
+  font-family: var(--hand-font);
+}
+
+.sim-body :is(.sub, .subtitle, .tagline, .param-label, .metric-label, .status, .insight, .proj-header small) {
+  color: var(--ink-soft) !important;
+}
+
+.sim-body :is(button, .comp-btn) {
+  background: rgba(255, 244, 223, 0.58) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--line-soft) !important;
+  border-radius: 5px 8px 6px 7px / 8px 5px 7px 6px !important;
+}
+
+.sim-body :is(button:hover, .comp-btn:hover, button.on, button.on-c, button.on-g, button.on-a, button.on-r, button.on-v) {
+  background: rgba(216, 180, 92, 0.24) !important;
+  color: var(--accent-red) !important;
+  border-color: var(--line-ink) !important;
+}
+
+.sim-body input[type="range"] {
+  background: rgba(37, 35, 31, 0.16) !important;
+}
+
+.sim-body input[type="range"]::-webkit-slider-thumb {
+  background: var(--accent-red) !important;
+  border-color: var(--paper-light) !important;
 }
