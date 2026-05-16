@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Heat Engine Simulator | Thermodynamics | Piston‑Crank · Carnot Efficiency</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            background: radial-gradient(circle at 18% 16%, rgba(105, 76, 42, 0.06) 0 1px, transparent 1.5px), radial-gradient(circle at 76% 42%, rgba(105, 76, 42, 0.05) 0 1px, transparent 1.5px), linear-gradient(135deg, #f8ebd2 0%, #efd9aa 100%);
+            font-family: 'Segoe UI', 'Inter', system-ui, 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 24px;
+        }
+        .sim-card {
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(255, 244, 223, 0.72);
+            border-radius: 6px 10px 7px 9px / 10px 6px 9px 7px;
+            box-shadow: 4px 6px 0 rgba(37, 35, 31, 0.12);
+            border: 1.5px solid rgba(37, 35, 31, 0.42);
+            overflow: hidden;
+            padding: 1.2rem 1.8rem 1.8rem;
+        }
+        h1 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin: 0 0 0.2rem;
+            color: #25231f;
+            letter-spacing: -0.01em;
+        }
+        .sub {
+            color: #5f564b;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #a9402f;
+            padding-left: 12px;
+        }
+        .flex-main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .engine-canvas {
+            flex: 2;
+            min-width: 480px;
+            background: rgba(255, 244, 223, 0.55);
+            border-radius: 6px;
+            padding: 0.5rem;
+            border: 1.5px solid rgba(37, 35, 31, 0.28);
+            position: relative;
+        }
+        canvas {
+            width: 100%;
+            background: #fff4df;
+            border-radius: 6px;
+            display: block;
+            margin-bottom: 0.5rem;
+            cursor: default;
+        }
+        .tooltip {
+            position: absolute;
+            background: #25231f;
+            color: #d8b45c;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 10;
+            border-left: 3px solid #a9402f;
+            transition: opacity 0.1s;
+            opacity: 0;
+        }
+        .controls-panel {
+            flex: 1.2;
+            min-width: 280px;
+            background: rgba(255, 244, 223, 0.55);
+            border-radius: 6px 10px 7px 9px / 10px 6px 9px 7px;
+            padding: 1.2rem;
+            border: 1.5px solid rgba(37, 35, 31, 0.28);
+        }
+        .ctrl-group {
+            margin-bottom: 1.2rem;
+            border-bottom: 1px dashed rgba(37, 35, 31, 0.18);
+            padding-bottom: 1rem;
+        }
+        .ctrl-group label {
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #5f564b;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .slider-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.7rem;
+            font-family: monospace;
+            margin-top: 4px;
+            color: #5f564b;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(37, 35, 31, 0.16);
+            border-radius: 4px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #a9402f;
+            border: 2px solid #fff4df;
+            cursor: pointer;
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            margin: 1rem 0;
+        }
+        .metric {
+            background: rgba(255, 244, 223, 0.7);
+            border: 1px solid rgba(37, 35, 31, 0.18);
+            border-radius: 6px;
+            padding: 0.6rem;
+            text-align: center;
+        }
+        .metric-label {
+            font-size: 0.6rem;
+            color: #5f564b;
+            text-transform: uppercase;
+        }
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: monospace;
+            color: #a9402f;
+        }
+        .energy-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0;
+            gap: 0.5rem;
+        }
+        .flow-card {
+            background: rgba(255, 244, 223, 0.7);
+            border: 1px solid rgba(37, 35, 31, 0.18);
+            border-radius: 6px;
+            padding: 0.6rem;
+            text-align: center;
+            flex: 1;
+        }
+        .failure-msg {
+            background: rgba(216, 180, 92, 0.18);
+            border-left: 4px solid #a9402f;
+            border-radius: 6px;
+            padding: 0.6rem;
+            font-size: 0.7rem;
+            margin-top: 1rem;
+            color: #6f5934;
+        }
+        button {
+            background: rgba(255, 244, 223, 0.58);
+            border: 1px solid rgba(37, 35, 31, 0.28);
+            padding: 0.5rem 1rem;
+            border-radius: 5px 8px 6px 7px / 8px 5px 7px 6px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #25231f;
+            cursor: pointer;
+            transition: 0.1s;
+            width: 100%;
+        }
+        button:hover {
+            background: rgba(216, 180, 92, 0.28);
+        }
+        .footnote {
+            font-size: 0.65rem;
+            color: #5f564b;
+            text-align: center;
+            margin-top: 1rem;
+            border-top: 1px dashed rgba(37, 35, 31, 0.18);
+            padding-top: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+<div class="sim-card">
+    <h1>🔥 Heat Engine Simulator</h1>
+    <div class="sub">Energy conversion: Q<sub>H</sub> → Work (W) → Q<sub>C</sub> · Carnot efficiency · Real‑time piston motion</div>
+
+    <div class="flex-main">
+        <div class="engine-canvas">
+            <canvas id="engineCanvas" width="680" height="420" style="aspect-ratio:680/420"></canvas>
+            <div id="hoverTooltip" class="tooltip"></div>
+            <div class="metric-grid" style="margin-top: 0.5rem;">
+                <div class="metric"><div class="metric-label">Efficiency (η)</div><div class="metric-value" id="efficiencyDisp">0.0%</div></div>
+                <div class="metric"><div class="metric-label">RPM</div><div class="metric-value" id="rpmDisp">0</div></div>
+                <div class="metric"><div class="metric-label">Power output</div><div class="metric-value" id="powerDisp">0 W</div></div>
+                <div class="metric"><div class="metric-label">Work / cycle</div><div class="metric-value" id="workCycleDisp">0 J</div></div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="ctrl-group">
+                <label>🔥 Hot reservoir (T<sub>H</sub>)</label>
+                <input type="range" id="hotTemp" min="300" max="1200" step="10" value="900">
+                <div class="slider-row"><span>300 K</span><span id="hotVal">900 K</span><span>1200 K</span></div>
+            </div>
+            <div class="ctrl-group">
+                <label>❄️ Cold reservoir (T<sub>C</sub>)</label>
+                <input type="range" id="coldTemp" min="250" max="500" step="5" value="300">
+                <div class="slider-row"><span>250 K</span><span id="coldVal">300 K</span><span>500 K</span></div>
+            </div>
+            <div class="ctrl-group">
+                <label>🔥 Heat input Q<sub>H</sub> (kW)</label>
+                <input type="range" id="heatInput" min="0" max="12" step="0.1" value="4.5">
+                <div class="slider-row"><span>0 kW</span><span id="heatVal">4.5 kW</span><span>12 kW</span></div>
+            </div>
+            <div class="ctrl-group">
+                <label>⚙️ Load torque (Nm)</label>
+                <input type="range" id="loadTorque" min="0" max="60" step="1" value="18">
+                <div class="slider-row"><span>0 (no load)</span><span id="loadVal">18 Nm</span><span>60 Nm</span></div>
+            </div>
+            <div class="ctrl-group">
+                <label>🧱 Insulation quality (0‑1)</label>
+                <input type="range" id="insulation" min="0" max="1" step="0.02" value="0.95">
+                <div class="slider-row"><span>poor</span><span id="insulVal">0.95</span><span>perfect</span></div>
+            </div>
+
+            <div class="energy-flow">
+                <div class="flow-card"><span style="color:#f97316">🔥 Q<sub>H</sub> in</span><br><span id="qHDisplay" class="metric-value" style="font-size:1rem">0 W</span></div>
+                <div class="flow-card"><span style="color:#2dd4bf">⚙️ Work out</span><br><span id="workDisplay" class="metric-value" style="font-size:1rem">0 W</span></div>
+                <div class="flow-card"><span style="color:#3b82f6">❄️ Q<sub>C</sub> waste</span><br><span id="qCDisplay" class="metric-value" style="font-size:1rem">0 W</span></div>
+            </div>
+
+            <div id="failureMessage" class="failure-msg">✅ Engine running · Carnot limit active</div>
+            <button id="resetBtn">⟳ Reset to default conditions</button>
+            <div class="footnote">
+                💡 <strong>Hover over engine parts</strong> for explanations.<br>
+                <strong>Failure modes:</strong> T<sub>C</sub> ≥ T<sub>H</sub> → no work; excessive load → stall.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+        // ---------- DOM elements ----------
+        const canvas = document.getElementById('engineCanvas');
+        const ctx = canvas.getContext('2d');
+        const tooltip = document.getElementById('hoverTooltip');
+        
+        // sliders & displays
+        const hotSlider = document.getElementById('hotTemp');
+        const coldSlider = document.getElementById('coldTemp');
+        const heatSlider = document.getElementById('heatInput');
+        const loadSlider = document.getElementById('loadTorque');
+        const insulSlider = document.getElementById('insulation');
+        const hotVal = document.getElementById('hotVal');
+        const coldVal = document.getElementById('coldVal');
+        const heatVal = document.getElementById('heatVal');
+        const loadVal = document.getElementById('loadVal');
+        const insulVal = document.getElementById('insulVal');
+        const efficiencyDisp = document.getElementById('efficiencyDisp');
+        const rpmDisp = document.getElementById('rpmDisp');
+        const powerDisp = document.getElementById('powerDisp');
+        const workCycleDisp = document.getElementById('workCycleDisp');
+        const qHDisplay = document.getElementById('qHDisplay');
+        const workDisplay = document.getElementById('workDisplay');
+        const qCDisplay = document.getElementById('qCDisplay');
+        const failureMsgDiv = document.getElementById('failureMessage');
+        
+        // ---------- Engine state ----------
+        let T_hot = 900;          // K
+        let T_cold = 300;
+        let Q_dot_H = 4500;       // Watts
+        let load_torque = 18;     // Nm
+        let insulation = 0.95;    // 0..1
+        
+        // mechanical dynamics
+        let omega = 0;            // rad/s
+        let theta = 0;            // crank angle
+        const J = 0.12;           // kg·m²
+        let lastTimestamp = 0;
+        let cycleWork = 0;
+        let lastTheta = 0;
+        
+        // ---------- Thermodynamics ----------
+        function getCarnotEfficiency() {
+            if (T_hot <= T_cold) return 0;
+            return 1 - (T_cold / T_hot);
+        }
+        function getActualEfficiency() {
+            return getCarnotEfficiency() * insulation;
+        }
+        function getMechanicalPower() {
+            return getActualEfficiency() * Q_dot_H;
+        }
+        function getEngineTorque() {
+            const power = getMechanicalPower();
+            if (omega < 0.5) return power / 0.5;
+            return power / omega;
+        }
+        
+        // ---------- Physics update (Euler) ----------
+        function updatePhysics(dt) {
+            if (dt > 0.03) dt = 0.03;
+            const engineTorque = getEngineTorque();
+            const netTorque = engineTorque - load_torque;
+            
+            if (netTorque <= 0 && omega < 0.5) {
+                omega = 0;
+                if (load_torque > engineTorque + 0.1) {
+                    failureMsgDiv.innerHTML = "⚠️ ENGINE STALLED · Reduce load torque!";
+                    failureMsgDiv.style.borderLeftColor = "#f97316";
+                }
+            } else {
+                omega += (netTorque / J) * dt;
+                if (omega < 0) omega = 0;
+                failureMsgDiv.innerHTML = "✅ Engine running · Work extracted from heat";
+                failureMsgDiv.style.borderLeftColor = "#4ade80";
+            }
+            if (omega > 180) omega = 180;
+            
+            theta += omega * dt;
+            if (theta > Math.PI * 2) {
+                theta -= Math.PI * 2;
+                const power = getMechanicalPower();
+                const workPerRev = power * (2 * Math.PI / (omega + 0.001));
+                cycleWork = workPerRev;
+            }
+            
+            if (T_hot <= T_cold) {
+                omega = 0;
+                failureMsgDiv.innerHTML = "❌ NO TEMPERATURE DIFFERENCE · Engine cannot run (Carnot η=0)";
+                failureMsgDiv.style.borderLeftColor = "#dc2626";
+            }
+            updateTelemetry();
+        }
+        
+        function updateTelemetry() {
+            const actualEff = getActualEfficiency();
+            const powerOut = getMechanicalPower();
+            const wasteHeat = Q_dot_H - powerOut;
+            efficiencyDisp.innerText = (actualEff * 100).toFixed(1) + "%";
+            rpmDisp.innerText = (omega * 9.5493).toFixed(0);
+            powerDisp.innerText = powerOut.toFixed(0) + " W";
+            workCycleDisp.innerText = cycleWork.toFixed(1) + " J";
+            qHDisplay.innerText = (Q_dot_H / 1000).toFixed(2) + " kW";
+            workDisplay.innerText = (powerOut / 1000).toFixed(2) + " kW";
+            qCDisplay.innerText = (wasteHeat / 1000).toFixed(2) + " kW";
+            hotVal.innerText = T_hot + " K";
+            coldVal.innerText = T_cold + " K";
+            heatVal.innerText = (Q_dot_H / 1000).toFixed(1) + " kW";
+            loadVal.innerText = load_torque + " Nm";
+            insulVal.innerText = insulation.toFixed(2);
+        }
+        
+        // ---------- Enhanced drawing with hover regions ----------
+        let hoverZones = []; // { x, y, radius, label }
+        
+        function drawEngine() {
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+            hoverZones = [];
+            
+            // ---- Cylinder (metallic gradient) ----
+            const cylX = w * 0.35;
+            const cylY = h * 0.25;
+            const cylW = w * 0.25;
+            const cylH = h * 0.45;
+            const gradCyl = ctx.createLinearGradient(cylX, cylY, cylX+cylW, cylY+cylH);
+            gradCyl.addColorStop(0, "#3a4a6a");
+            gradCyl.addColorStop(1, "#1e2a44");
+            ctx.fillStyle = gradCyl;
+            ctx.fillRect(cylX, cylY, cylW, cylH);
+            ctx.strokeStyle = "#facc15";
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(cylX, cylY, cylW, cylH);
+            // cylinder head
+            ctx.fillStyle = "#a0a8c0";
+            ctx.fillRect(cylX-5, cylY-8, cylW+10, 10);
+            hoverZones.push({ x: cylX+cylW/2, y: cylY+cylH/2, radius: 35, label: "🔹 Cylinder: contains working gas. Heat Q_H is added here, causing expansion that pushes the piston." });
+            
+            // ---- Piston (with rings) ----
+            const pistonOffset = (Math.sin(theta) * 0.45 + 0.55) * (cylH - 32);
+            const pistonY = cylY + 16 + pistonOffset;
+            ctx.fillStyle = "#bdbbaf";
+            ctx.fillRect(cylX + 8, pistonY, cylW - 16, 18);
+            ctx.fillStyle = "#facc15";
+            ctx.fillRect(cylX + 8, pistonY, cylW - 16, 4);
+            // piston rings
+            ctx.fillStyle = "#80889e";
+            ctx.fillRect(cylX + 8, pistonY+6, cylW-16, 2);
+            ctx.fillRect(cylX + 8, pistonY+12, cylW-16, 2);
+            hoverZones.push({ x: cylX+cylW/2, y: pistonY+9, radius: 20, label: "🔹 Piston: forced down by expanding gas. Converts thermal expansion into linear motion." });
+            
+            // ---- Connecting rod & crankshaft ----
+            const crankCenterX = cylX + cylW / 2 + 28;
+            const crankCenterY = cylY + cylH - 10;
+            const rodEndX = cylX + cylW / 2;
+            const rodEndY = pistonY + 9;
+            ctx.beginPath();
+            ctx.moveTo(rodEndX, rodEndY);
+            ctx.lineTo(crankCenterX, crankCenterY);
+            ctx.strokeStyle = "#b0b8c5";
+            ctx.lineWidth = 6;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(crankCenterX, crankCenterY, 14, 0, Math.PI * 2);
+            ctx.fillStyle = "#404c66";
+            ctx.fill();
+            ctx.fillStyle = "#facc15";
+            ctx.beginPath();
+            ctx.arc(crankCenterX, crankCenterY, 6, 0, Math.PI * 2);
+            ctx.fill();
+            hoverZones.push({ x: crankCenterX, y: crankCenterY, radius: 18, label: "🔹 Crankshaft: converts piston's linear motion into rotational motion to drive the flywheel." });
+            
+            // ---- Flywheel (improved with spokes) ----
+            const flyX = crankCenterX + 62;
+            const flyY = crankCenterY;
+            ctx.beginPath();
+            ctx.arc(flyX, flyY, 34, 0, Math.PI * 2);
+            ctx.fillStyle = "#2c3548";
+            ctx.fill();
+            ctx.strokeStyle = "#8e9dc2";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            // spokes
+            for (let i = 0; i < 4; i++) {
+                const ang = theta + i * Math.PI / 2;
+                const rx = flyX + 22 * Math.cos(ang);
+                const ry = flyY + 22 * Math.sin(ang);
+                ctx.beginPath();
+                ctx.moveTo(flyX, flyY);
+                ctx.lineTo(rx, ry);
+                ctx.strokeStyle = "#6c7d9e";
+                ctx.stroke();
+            }
+            for (let i = 0; i < 12; i++) {
+                const ang = theta + i * Math.PI / 6;
+                const rx = flyX + 28 * Math.cos(ang);
+                const ry = flyY + 28 * Math.sin(ang);
+                ctx.beginPath();
+                ctx.arc(rx, ry, 2, 0, Math.PI * 2);
+                ctx.fillStyle = "#f97316";
+                ctx.fill();
+            }
+            hoverZones.push({ x: flyX, y: flyY, radius: 36, label: "🔹 Flywheel: stores rotational energy, smooths output torque. Work is extracted from the shaft." });
+            
+            // ---- Hot reservoir (heat arrows) ----
+            ctx.fillStyle = "#f97316cc";
+            ctx.font = "bold 10px monospace";
+            ctx.fillText("🔥 HOT RESERVOIR", 20, 70);
+            const heatFlowRate = Q_dot_H / 10000;
+            const numParticles = Math.min(24, Math.floor(heatFlowRate * 12 + 6));
+            for (let i = 0; i < numParticles; i++) {
+                const px = 35 + (Date.now() * 0.003 + i) % 80;
+                const py = 80 + i * 7;
+                ctx.beginPath();
+                ctx.arc(px, py, 3, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(249, 115, 22, ${0.4 + Math.sin(Date.now() * 0.01 + i) * 0.2})`;
+                ctx.fill();
+            }
+            ctx.beginPath();
+            ctx.moveTo(100, 120);
+            ctx.lineTo(cylX - 10, cylY + cylH/2);
+            ctx.strokeStyle = "#f97316";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 6]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = "#f97316";
+            ctx.fillText("Q_H", 110, 110);
+            hoverZones.push({ x: 45, y: 90, radius: 35, label: "🔥 Hot reservoir: supplies heat Q_H to the gas. Higher T_H increases Carnot efficiency." });
+            
+            // ---- Cold sink ----
+            ctx.fillStyle = "#3b82f6cc";
+            ctx.fillText("❄️ COLD SINK", w - 120, 70);
+            for (let i = 0; i < numParticles; i++) {
+                const px = w - 45 - (Date.now() * 0.002 + i) % 70;
+                const py = 80 + i * 7;
+                ctx.beginPath();
+                ctx.arc(px, py, 3, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(59, 130, 246, ${0.3 + Math.sin(Date.now() * 0.008) * 0.2})`;
+                ctx.fill();
+            }
+            ctx.beginPath();
+            ctx.moveTo(cylX + cylW + 15, cylY + cylH/2);
+            ctx.lineTo(w - 110, 120);
+            ctx.strokeStyle = "#3b82f6";
+            ctx.stroke();
+            ctx.fillText("Q_C", cylX + cylW + 35, cylY + cylH/2 - 10);
+            hoverZones.push({ x: w-80, y: 90, radius: 35, label: "❄️ Cold sink: rejects waste heat Q_C. Without a cold sink (T_C ≥ T_H), no work can be produced." });
+            
+            // ---- Work output shaft label ----
+            ctx.beginPath();
+            ctx.moveTo(flyX + 34, flyY);
+            ctx.lineTo(flyX + 65, flyY);
+            ctx.strokeStyle = "#2dd4bf";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            ctx.fillStyle = "#2dd4bf";
+            ctx.fillText("W_out", flyX + 45, flyY - 5);
+            hoverZones.push({ x: flyX+50, y: flyY, radius: 20, label: "⚙️ Work output: mechanical power extracted from the shaft. W = Q_H - Q_C." });
+            
+            // ---- Efficiency display inside engine ----
+            const eff = getActualEfficiency();
+            ctx.fillStyle = "#ffffffcc";
+            ctx.font = "bold 10px monospace";
+            ctx.fillText(`η = ${(eff*100).toFixed(1)}%`, cylX + cylW/2 - 20, cylY - 12);
+        }
+        
+        // ---------- Hover detection ----------
+        function handleHover(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const mouseX = (e.clientX - rect.left) * scaleX;
+            const mouseY = (e.clientY - rect.top) * scaleY;
+            let found = false;
+            for (let zone of hoverZones) {
+                const dx = mouseX - zone.x;
+                const dy = mouseY - zone.y;
+                if (Math.hypot(dx, dy) < zone.radius) {
+                    tooltip.style.left = (e.clientX - rect.left + 15) + "px";
+                    tooltip.style.top = (e.clientY - rect.top - 30) + "px";
+                    tooltip.textContent = zone.label;
+                    tooltip.style.opacity = 1;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) tooltip.style.opacity = 0;
+        }
+        
+        // ---------- Animation & resize ----------
+        let animFrame;
+        function animate(now) {
+            if (!lastTimestamp) lastTimestamp = now;
+            let dt = Math.min(0.033, (now - lastTimestamp) / 1000);
+            if (dt > 0.005) {
+                updatePhysics(dt);
+                drawEngine();
+                lastTimestamp = now;
+            }
+            animFrame = requestAnimationFrame(animate);
+        }
+        
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const w = container.clientWidth;
+            canvas.width = Math.min(720, w);
+            canvas.height = Math.min(440, canvas.width * 0.62);
+            drawEngine();
+        }
+        
+        // ---------- UI update from sliders ----------
+        function updateFromSliders() {
+            T_hot = parseFloat(hotSlider.value);
+            T_cold = parseFloat(coldSlider.value);
+            Q_dot_H = parseFloat(heatSlider.value) * 1000;
+            load_torque = parseFloat(loadSlider.value);
+            insulation = parseFloat(insulSlider.value);
+            if (T_hot < T_cold + 1 && T_hot > T_cold) {
+                T_hot = T_cold + 1;
+                hotSlider.value = T_hot;
+            }
+            updateTelemetry();
+        }
+        
+        function resetSim() {
+            hotSlider.value = 900;
+            coldSlider.value = 300;
+            heatSlider.value = 4.5;
+            loadSlider.value = 18;
+            insulSlider.value = 0.95;
+            updateFromSliders();
+            omega = 0;
+            theta = 0;
+            cycleWork = 0;
+            updateTelemetry();
+        }
+        
+        // Event binding
+        hotSlider.addEventListener('input', updateFromSliders);
+        coldSlider.addEventListener('input', updateFromSliders);
+        heatSlider.addEventListener('input', updateFromSliders);
+        loadSlider.addEventListener('input', updateFromSliders);
+        insulSlider.addEventListener('input', updateFromSliders);
+        document.getElementById('resetBtn').addEventListener('click', resetSim);
+        canvas.addEventListener('mousemove', handleHover);
+        canvas.addEventListener('mouseleave', () => { tooltip.style.opacity = 0; });
+        window.addEventListener('resize', () => { setTimeout(resizeCanvas, 50); });
+        
+        // Start
+        updateFromSliders();
+        resizeCanvas();
+        animate(0);
+    })();
+</script>
+</body>
+</html>
