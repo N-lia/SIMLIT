@@ -1,0 +1,125 @@
+/* =========================================
+   Phone Frame + App Container
+   ========================================= */
+
+.phone-frame {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100svh;
+  background-color: var(--bg);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   Page Base & Transitions
+   ========================================= */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  width: 100%;
+  padding: 24px 24px 32px;
+  animation: slideIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+  background-color: var(--bg);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideBack {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.page.back {
+  animation-name: slideBack;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   Shared UI Components
+   (used across multiple pages)
+   ========================================= */
+
+/* Back / Icon Button */
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  transition: background-color 0.2s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.icon-btn:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.icon-btn:active {
+  transform: scale(0.9);
+}
+
+/* Header spacer (mirrors icon-btn width for centering) */
+.header-spacer {
+  width: 42px;
+  flex-shrink: 0;
+}
+
+/* =========================================
+   Progress Dots (step indicator)
+   ========================================= */
+
+.progress-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.progress-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--input-border);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.progress-dots .dot.active {
+  background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-light) 100%);
+  width: 24px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(232, 93, 42, 0.3);
+}
