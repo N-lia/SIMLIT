@@ -1,18 +1,18 @@
 import './Simulation.css'
 
-function ComingSoon({ topic }) {
-  return (
-    <div className="sim-inner coming-soon-wrap">
-      <div className="coming-soon-body">
-        <div className="coming-soon-emoji">{topic?.emoji || '🔬'}</div>
-        <h3 className="coming-soon-title">{topic?.label}</h3>
-        <p className="coming-soon-sub">
-          This simulation is being built.<br />Check back soon!
-        </p>
-        <div className="coming-soon-badge">🚧 In Development</div>
-      </div>
+export function mountComingSoon(container, topic = {}) {
+  const root = document.createElement('div')
+  root.className = 'sim-inner coming-soon-wrap'
+  root.innerHTML = `
+    <div class="coming-soon-body">
+      <div class="coming-soon-emoji">${topic?.emoji || '🔬'}</div>
+      <h3 class="coming-soon-title">${topic?.label || 'Coming Soon'}</h3>
+      <p class="coming-soon-sub">This simulation is being built.<br />Check back soon!</p>
+      <div class="coming-soon-badge">🚧 In Development</div>
     </div>
-  )
+  `
+  container.appendChild(root)
+  return () => {
+    container.removeChild(root)
+  }
 }
-
-export default ComingSoon
