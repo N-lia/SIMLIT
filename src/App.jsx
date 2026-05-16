@@ -1,11 +1,10 @@
-import { useState, useCallback } from 'react'
-import WelcomePage from './pages/WelcomePage'
-import FieldOfStudyPage from './pages/FieldOfStudyPage'
-import EngineeringFieldPage from './pages/EngineeringFieldPage'
-import BioDataPage from './pages/BioDataPage'
-import SimulationSelectPage from './pages/SimulationSelectPage'
-import SimulationPage from './pages/SimulationPage'
 import './App.css'
+import { mountWelcomePage } from './pages/WelcomePage.jsx'
+import { mountFieldOfStudyPage } from './pages/FieldOfStudyPage.jsx'
+import { mountEngineeringFieldPage } from './pages/EngineeringFieldPage.jsx'
+import { mountBioDataPage } from './pages/BioDataPage.jsx'
+import { mountSimulationSelectPage } from './pages/SimulationSelectPage.jsx'
+import { mountSimulationPage } from './pages/SimulationPage.jsx'
 
 const PAGES = {
   welcome:          'welcome',
@@ -25,90 +24,137 @@ const FLOW_ORDER = [
   PAGES.simulation,
 ]
 
-function App() {
-  const [history, setHistory]               = useState([PAGES.welcome])
-  const [selectedField, setSelectedField]   = useState(null)
-  const [selectedSubfield, setSelectedSubfield] = useState(null)
-  const [selectedTopic, setSelectedTopic]   = useState(null)
+const appState = {
+  history: [PAGES.welcome],
+  selectedField: null,
+  selectedSubfield: null,
+  selectedTopic: null,
+}
 
-  const currentPage = history[history.length - 1]
-  const prevPage    = history[history.length - 2]
+let rootElement = null
+let cleanupCurrentPage = null
 
-  const navigateTo = useCallback((page) => {
-    setHistory(prev => [...prev, page])
-  }, [])
+function getCurrentPage() {
+  return appState.history[appState.history.length - 1]
+}
 
-  const navigateBack = useCallback(() => {
-    setHistory(prev => prev.length > 1 ? prev.slice(0, -1) : prev)
-  }, [])
+function getPreviousPage() {
+  return appState.history[appState.history.length - 2]
+}
 
-  // Determine animation direction
+function navigateTo(page) {
+  appState.history.push(page)
+  renderCurrentPage()
+}
+
+function navigateBack() {
+  if (appState.history.length > 1) {
+    appState.history.pop()
+    renderCurrentPage()
+  }
+}
+
+function handleFieldSelect(fieldId) {
+  appState.selectedField = fieldId
+  if (fieldId !== 'eng') {
+    appState.selectedSubfield = fieldId
+  }
+  navigateTo(PAGES.bioData)
+}
+
+function handleBioDataComplete() {
+  if (appState.selectedField === 'eng') {
+    navigateTo(PAGES.engineeringField)
+  } else {
+    navigateTo(PAGES.simulationSelect)
+  }
+}
+
+function handleEngineeringSelect(subfieldId) {
+  appState.selectedSubfield = subfieldId
+  navigateTo(PAGES.simulationSelect)
+}
+
+function handleTopicSelect(topicId) {
+  appState.selectedTopic = topicId
+  navigateTo(PAGES.simulation)
+}
+
+function clearRoot() {
+  if (!rootElement) return
+  rootElement.innerHTML = ''
+}
+
+function renderCurrentPage() {
+  if (!rootElement) return
+
+  if (cleanupCurrentPage) {
+    cleanupCurrentPage()
+    cleanupCurrentPage = null
+  }
+
+  clearRoot()
+
+  const currentPage = getCurrentPage()
+  const prevPage = getPreviousPage()
   const isGoingBack = prevPage
     ? FLOW_ORDER.indexOf(currentPage) < FLOW_ORDER.indexOf(prevPage)
     : false
   const pageClass = isGoingBack ? 'back' : ''
 
-  // Handlers
-  const handleFieldSelect = useCallback((fieldId) => {
-    setSelectedField(fieldId)
-    if (fieldId !== 'eng') {
-      setSelectedSubfield(fieldId) // non-eng: subfield key = field key
-    }
-    // Everyone goes to BioData first
-    navigateTo(PAGES.bioData)
-  }, [navigateTo])
+  let pageRender = null
 
-  const handleBioDataComplete = useCallback(() => {
-    // Engineering needs specialization choice before topic select
-    if (selectedField === 'eng') {
-      navigateTo(PAGES.engineeringField)
-    } else {
-      navigateTo(PAGES.simulationSelect)
-    }
-  }, [navigateTo, selectedField])
+  if (currentPage === PAGES.welcome) {
+    pageRender = mountWelcomePage({
+      onGetStarted: () => navigateTo(PAGES.fieldOfStudy),
+      pageClass,
+    })
+  } else if (currentPage === PAGES.fieldOfStudy) {
+    pageRender = mountFieldOfStudyPage({
+      onBack: navigateBack,
+      onSelect: handleFieldSelect,
+      pageClass,
+    })
+  } else if (currentPage === PAGES.engineeringField) {
+    pageRender = mountEngineeringFieldPage({
+      onBack: navigateBack,
+      onSelect: handleEngineeringSelect,
+      pageClass,
+    })
+  } else if (currentPage === PAGES.bioData) {
+    pageRender = mountBioDataPage({
+      onBack: navigateBack,
+      onComplete: handleBioDataComplete,
+      pageClass,
+    })
+  } else if (currentPage === PAGES.simulationSelect) {
+    pageRender = mountSimulationSelectPage({
+      subfieldId: appState.selectedSubfield,
+      onBack: navigateBack,
+      onSelect: handleTopicSelect,
+      pageClass,
+    })
+  } else if (currentPage === PAGES.simulation) {
+    pageRender = mountSimulationPage({
+      subfieldId: appState.selectedSubfield,
+      topicId: appState.selectedTopic,
+      onBack: navigateBack,
+      pageClass,
+    })
+  }
 
-  const handleEngineeringSelect = useCallback((subfieldId) => {
-    setSelectedSubfield(subfieldId)
-    navigateTo(PAGES.simulationSelect)
-  }, [navigateTo])
+  if (!pageRender) {
+    rootElement.textContent = 'Page not found.'
+    return
+  }
 
-  const handleTopicSelect = useCallback((topicId) => {
-    setSelectedTopic(topicId)
-    navigateTo(PAGES.simulation)
-  }, [navigateTo])
-
-  return (
-    <div className="phone-frame">
-      {currentPage === PAGES.welcome && (
-        <WelcomePage onGetStarted={() => navigateTo(PAGES.fieldOfStudy)} />
-      )}
-      {currentPage === PAGES.fieldOfStudy && (
-        <FieldOfStudyPage onBack={navigateBack} onSelect={handleFieldSelect} pageClass={pageClass} />
-      )}
-      {currentPage === PAGES.engineeringField && (
-        <EngineeringFieldPage onBack={navigateBack} onSelect={handleEngineeringSelect} pageClass={pageClass} />
-      )}
-      {currentPage === PAGES.bioData && (
-        <BioDataPage onBack={navigateBack} onComplete={handleBioDataComplete} pageClass={pageClass} />
-      )}
-      {currentPage === PAGES.simulationSelect && (
-        <SimulationSelectPage
-          subfieldId={selectedSubfield}
-          onBack={navigateBack}
-          onSelect={handleTopicSelect}
-          pageClass={pageClass}
-        />
-      )}
-      {currentPage === PAGES.simulation && (
-        <SimulationPage
-          subfieldId={selectedSubfield}
-          topicId={selectedTopic}
-          onBack={navigateBack}
-          pageClass={pageClass}
-        />
-      )}
-    </div>
-  )
+  rootElement.appendChild(pageRender.root)
+  if (pageRender.cleanup) {
+    cleanupCurrentPage = pageRender.cleanup
+  }
 }
 
-export default App
+export function startApp(root) {
+  rootElement = root
+  renderCurrentPage()
+}
