@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wave Lab — Interference & Diffraction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:     #e8f0f8;
+  --ink2:    #6a7f95;
+  --ink3:    #2e3d4d;
+  --bg:      #080c10;
+  --bg2:     #0c1118;
+  --bg3:     #111820;
+  --panel:   #0a0e15;
+  --border:  rgba(100,160,255,0.1);
+  --border2: rgba(100,160,255,0.2);
+  --blue:    #4fc3f7;
+  --teal:    #26d0a8;
+  --amber:   #ffc857;
+  --red:     #ff6b6b;
+  --violet:  #b39ddb;
+  --mono:    'Syne Mono', monospace;
+  --sans:    'Space Grotesk', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 16px 28px;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.hdr {
+  width: 100%; max-width: 1300px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 0.5px solid var(--border);
+  margin-bottom: 14px; gap: 12px; flex-wrap: wrap;
+}
+.logo-block { display: flex; align-items: baseline; gap: 12px; }
+.logo {
+  font-family: var(--mono); font-size: 14px;
+  color: var(--blue); letter-spacing: .12em; text-transform: uppercase;
+}
+.tagline { font-size: 11px; color: var(--ink3); font-family: var(--mono); }
+.concept-pill {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--teal);
+  background: rgba(38,208,168,.07);
+  border: 0.5px solid rgba(38,208,168,.25);
+  border-radius: 4px; padding: 3px 11px;
+}
+
+/* ── Shell ── */
+.app { width: 100%; max-width: 1300px; display: flex; flex-direction: column; gap: 12px; }
+
+/* ── Main grid: left controls | canvas | right info ── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr 252px;
+  gap: 12px; align-items: start;
+}
+
+/* ── Panels ── */
+.panel {
+  background: var(--panel);
+  border: 0.5px solid var(--border);
+  border-radius: 10px; padding: 14px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.sec {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  color: var(--ink3); letter-spacing: .12em; text-transform: uppercase;
+  padding-bottom: 9px; border-bottom: 0.5px solid var(--border); margin-bottom: 0;
+}
+.param-row { display: flex; flex-direction: column; gap: 5px; }
+.ph { display: flex; justify-content: space-between; align-items: baseline; }
+.pl { font-family: var(--mono); font-size: 11px; color: var(--ink2); }
+.pv { font-family: var(--mono); font-size: 11px; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 3px;
+  background: var(--bg3); border-radius: 2px; outline: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--blue); border: 2px solid var(--bg); cursor: grab;
+  transition: box-shadow .15s;
+}
+input[type=range]::-webkit-slider-thumb:active {
+  cursor: grabbing; box-shadow: 0 0 0 4px rgba(79,195,247,.22);
+}
+input[type=range].teal::-webkit-slider-thumb   { background: var(--teal); }
+input[type=range].amber::-webkit-slider-thumb  { background: var(--amber); }
+input[type=range].violet::-webkit-slider-thumb { background: var(--violet); }
+
+/* ── Canvas ── */
+.canvas-wrap {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px; overflow: hidden; position: relative;
+}
+#waveC { display: block; width: 100%; cursor: crosshair; image-rendering: pixelated; }
+.c-tag {
+  position: absolute; top: 9px; left: 11px;
+  font-family: var(--mono); font-size: 10px; color: var(--ink3);
+  letter-spacing: .08em; text-transform: uppercase; pointer-events: none;
+}
+.c-tag span { color: var(--blue); }
+.scanlines {
+  position: absolute; inset: 0; border-radius: 10px; pointer-events: none;
+  background: repeating-linear-gradient(to bottom,
+    transparent 0px, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px);
+}
+.source-label {
+  position: absolute; font-family: var(--mono); font-size: 9px;
+  color: var(--amber); pointer-events: none;
+}
+
+/* ── Source buttons ── */
+.src-row { display: flex; gap: 6px; flex-wrap: wrap; }
+button {
+  background: var(--bg3); border: 0.5px solid var(--border2);
+  border-radius: 6px; padding: 6px 10px;
+  font-family: var(--mono); font-size: 11px; color: var(--ink2);
+  cursor: pointer; transition: all .13s; white-space: nowrap;
+}
+button:hover { background: rgba(255,255,255,.04); color: var(--ink); }
+button.on   { background: rgba(79,195,247,.09);  color: var(--blue);   border-color: rgba(79,195,247,.3); }
+button.on-t { background: rgba(38,208,168,.09);  color: var(--teal);   border-color: rgba(38,208,168,.3); }
+button.on-a { background: rgba(255,200,87,.09);  color: var(--amber);  border-color: rgba(255,200,87,.3); }
+button.on-v { background: rgba(179,157,219,.09); color: var(--violet); border-color: rgba(179,157,219,.3); }
+button.on-r { background: rgba(255,107,107,.09); color: var(--red);    border-color: rgba(255,107,107,.3); }
+button.full { width: 100%; text-align: center; }
+.btn-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+/* ── Readouts ── */
+.rg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.rd {
+  background: var(--bg3); border: 0.5px solid var(--border);
+  border-radius: 6px; padding: 7px 9px;
+}
+.rl { font-family: var(--mono); font-size: 9px; color: var(--ink3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 3px; }
+.rv { font-family: var(--mono); font-size: 14px; line-height: 1; font-variant-numeric: tabular-nums; }
+.rv.b { color: var(--blue); } .rv.t { color: var(--teal); }
+.rv.a { color: var(--amber); } .rv.r { color: var(--red); }
+
+/* ── Insight card ── */
+.insight {
+  background: var(--bg3);
+  border: 0.5px solid rgba(38,208,168,.2);
+  border-radius: 6px; padding: 10px 11px;
+  font-size: 12px; color: var(--ink2);
+  line-height: 1.55; font-style: italic;
+}
+.insight strong { color: var(--teal); font-style: normal; font-weight: 500; }
+
+/* ── Status ── */
+.status {
+  border-radius: 6px; padding: 7px 11px;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--ink2); background: var(--bg3);
+  border: 0.5px solid var(--border); line-height: 1.4;
+}
+.status.ok   { color: var(--teal);  border-color: rgba(38,208,168,.25);  background: rgba(38,208,168,.04); }
+.status.info { color: var(--blue);  border-color: rgba(79,195,247,.25);  background: rgba(79,195,247,.04); }
+.status.warn { color: var(--amber); border-color: rgba(255,200,87,.25);  background: rgba(255,200,87,.04); }
+
+/* ── Bottom charts ── */
+.bottom-row { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+.chart-card {
+  background: var(--bg2); border: 0.5px solid var(--border);
+  border-radius: 10px; padding: 11px 14px; overflow: hidden;
+}
+.chart-title {
+  font-family: var(--mono); font-size: 10px; color: var(--ink3);
+  letter-spacing: .08em; text-transform: uppercase; margin-bottom: 7px;
+}
+.chart-title em { color: var(--amber); font-style: normal; }
+canvas.chart { display: block; width: 100%; }
+
+/* ── Source color dots ── */
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+/* ── Checkbox style ── */
+label.toggle {
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 11px; color: var(--ink2);
+  cursor: pointer; user-select: none;
+}
+label.toggle input { display: none; }
+label.toggle .ck {
+  width: 14px; height: 14px; border-radius: 3px;
+  border: 0.5px solid var(--border2); background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all .13s;
+}
+label.toggle input:checked + .ck { background: var(--blue); border-color: var(--blue); }
+label.toggle .ck::after { content:''; display:none; width:6px; height:6px; background:#fff; border-radius:1px; }
+label.toggle input:checked + .ck::after { display:block; }
+
+@media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px)  { .bottom-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo-block">
+    <span class="logo">Wave Lab</span>
+    <span class="tagline">FDTD solver · interference · diffraction · superposition</span>
+  </div>
+  <span class="concept-pill" id="conceptPill">Huygens' Principle active</span>
+</div>
+
+<div class="app">
+<div class="main-grid">
+
+<!-- ══════════════ LEFT CONTROLS ══════════════ -->
+<div style="display:flex;flex-direction:column;gap:10px">
+
+  <div class="panel">
+    <div class="sec">Wave Sources</div>
+
+    <div class="src-row" id="srcBtns">
+      <button class="on" id="s1btn" onclick="setActiveSource(0)">⬤ S1</button>
+      <button id="s2btn" onclick="setActiveSource(1)">⬤ S2</button>
+      <button id="s3btn" onclick="setActiveSource(2)">⬤ S3</button>
+      <button onclick="addSource()" id="addSrcBtn">+ Add</button>
+    </div>
+
+    <div class="param-row">
+      <div class="ph"><span class="pl">Frequency</span><span class="pv" id="freqOut">0.12</span></div>
+      <input type="range" id="freqSlider" min="0.04" max="0.28" step="0.004" value="0.12"
+        oninput="setSourceParam('freq',+this.value); document.getElementById('freqOut').textContent=this.value">
+    </div>
+
+    <div class="param-row">
+      <div class="ph"><span class="pl">Amplitude</span><span class="pv" id="ampOut">1.0</span></div>
+      <input type="range" class="teal" id="ampSlider" min="0.1" max="2" step="0.05" value="1.0"
+        oninput="setSourceParam('amp',+this.value); document.getElementById('ampOut').textContent=(+this.value).toFixed(1)">
+    </div>
+
+    <div class="param-row">
+      <div class="ph"><span class="pl">Phase offset</span><span class="pv" id="phaseOut">0°</span></div>
+      <input type="range" class="violet" id="phaseSlider" min="0" max="360" step="5" value="0"
+        oninput="setSourceParam('phase',+this.value*Math.PI/180); document.getElementById('phaseOut').textContent=this.value+'°'">
+    </div>
+
+    <label class="toggle">
+      <input type="checkbox" id="srcOn" checked onchange="setSourceParam('active',this.checked)">
+      <span class="ck"></span> Source active
+    </label>
+  </div>
+
+  <div class="panel">
+    <div class="sec">Medium & Barrier</div>
+
+    <div class="param-row">
+      <div class="ph"><span class="pl">Wave speed c</span><span class="pv" id="speedOut">1.0</span></div>
+      <input type="range" class="amber" id="speedSlider" min="0.2" max="1.4" step="0.05" value="1.0"
+        oninput="waveSpeed=+this.value; document.getElementById('speedOut').textContent=(+this.value).toFixed(2)">
+    </div>
+
+    <div class="param-row">
+      <div class="ph"><span class="pl">Damping</span><span class="pv" id="dampOut">0.002</span></div>
+      <input type="range" id="dampSlider" min="0" max="0.02" step="0.001" value="0.002"
+        oninput="damping=+this.value; document.getElementById('dampOut').textContent=this.value">
+    </div>
+
+    <label class="toggle">
+      <input type="checkbox" id="barrierOn" checked onchange="barrierActive=this.checked; rebuildBarrier()">
+      <span class="ck"></span> Barrier
+    </label>
+
+    <div class="param-row">
+      <div class="ph"><span class="pl">Slit width</span><span class="pv" id="slitWOut">3</span></div>
+      <input type="range" class="teal" id="slitWSlider" min="1" max="12" step="1" value="3"
+        oninput="slitWidth=+this.value; document.getElementById('slitWOut').textContent=this.value; rebuildBarrier()">
+    </div>
+
+    <div class="param-row">
+      <div class="ph"><span class="pl">Slit count</span><span class="pv" id="slitNOut">2</span></div>
+      <input type="range" id="slitNSlider" min="1" max="5" step="1" value="2"
+        oninput="slitCount=+this.value; document.getElementById('slitNOut').textContent=this.value; rebuildBarrier()">
+    </div>
+
+    <div class="param-row">
+      <div class="ph"><span class="pl">Slit spacing</span><span class="pv" id="slitSOut">8</span></div>
+      <input type="range" class="violet" id="slitSSlider" min="3" max="20" step="1" value="8"
+        oninput="slitSpacing=+this.value; document.getElementById('slitSOut').textContent=this.value; rebuildBarrier()">
+    </div>
+
+    <label class="toggle">
+      <input type="checkbox" id="reflWalls" onchange="reflectingWalls=this.checked">
+      <span class="ck"></span> Reflecting walls
+    </label>
+  </div>
+
+  <div class="panel">
+    <div class="sec">Presets</div>
+    <div class="btn-grid">
+      <button class="full on-t" onclick="loadPreset('double')">Double slit</button>
+      <button class="full" onclick="loadPreset('single')">Single slit</button>
+      <button class="full" onclick="loadPreset('twosrc')">2-source</button>
+      <button class="full" onclick="loadPreset('ripple')">Ripple tank</button>
+      <button class="full" onclick="loadPreset('standing')">Standing wave</button>
+      <button class="full" onclick="loadPreset('beats')">Beats</button>
+      <button class="full on-r" onclick="resetSim()">↺ Reset</button>
+      <button class="full" onclick="togglePause()" id="pauseBtn">⏸ Pause</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ CANVAS ══════════════ -->
+<div class="canvas-wrap">
+  <canvas id="waveC" width="480" height="420"></canvas>
+  <div class="c-tag">WAVE FIELD — <span>FDTD</span></div>
+  <div class="scanlines"></div>
+</div>
+
+<!-- ══════════════ RIGHT PANEL ══════════════ -->
+<div style="display:flex;flex-direction:column;gap:10px">
+
+  <div class="panel">
+    <div class="sec">Live Measurements</div>
+    <div class="rg">
+      <div class="rd"><div class="rl">Wavelength λ</div><div class="rv b" id="rdLambda">—</div></div>
+      <div class="rd"><div class="rl">Wave speed c</div><div class="rv t" id="rdSpeed">—</div></div>
+      <div class="rd"><div class="rl">Period T</div><div class="rv a" id="rdPeriod">—</div></div>
+      <div class="rd"><div class="rl">Sources</div><div class="rv" id="rdSrcs">—</div></div>
+    </div>
+
+    <div class="sec">Fringe Prediction</div>
+    <div class="rg">
+      <div class="rd"><div class="rl">Fringe order n</div><div class="rv b" id="rdFringe">—</div></div>
+      <div class="rd"><div class="rl">Δpath = nλ</div><div class="rv t" id="rdPath">—</div></div>
+      <div class="rd"><div class="rl">Slit sep. d</div><div class="rv a" id="rdSlitD">—</div></div>
+      <div class="rd"><div class="rl">sin θ = λ/d</div><div class="rv" id="rdSinTheta">—</div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="sec">Visualisation</div>
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <label class="toggle">
+        <input type="checkbox" checked onchange="showIntensity=this.checked">
+        <span class="ck"></span> Intensity overlay
+      </label>
+      <label class="toggle">
+        <input type="checkbox" checked onchange="showSources=this.checked">
+        <span class="ck"></span> Source markers
+      </label>
+      <label class="toggle">
+        <input type="checkbox" checked onchange="showBarrier=this.checked">
+        <span class="ck"></span> Barrier visible
+      </label>
+      <label class="toggle">
+        <input type="checkbox" onchange="showGrid=this.checked">
+        <span class="ck"></span> Grid overlay
+      </label>
+      <div class="param-row" style="margin-top:4px">
+        <div class="ph"><span class="pl">Colour scale</span><span class="pv" id="scaleOut">1.0</span></div>
+        <input type="range" class="amber" id="scaleSlider" min="0.2" max="3" step="0.1" value="1.0"
+          oninput="colourScale=+this.value; document.getElementById('scaleOut').textContent=(+this.value).toFixed(1)">
+      </div>
+    </div>
+  </div>
+
+  <div class="insight" id="insightCard">
+    <strong>Double slit:</strong> each slit acts as an independent source (Huygens). Where path difference = nλ, crests meet → bright fringe. Where Δpath = (n+½)λ, crest meets trough → dark nodal line.
+  </div>
+
+  <div class="status ok" id="statusBar">FDTD running — drag sources on canvas</div>
+</div>
+</div>
+
+<!-- ══════════════ BOTTOM CHARTS ══════════════ -->
+<div class="bottom-row">
+  <div class="chart-card">
+    <div class="chart-title">Intensity cross-section — <em>screen at right edge</em></div>
+    <canvas id="intensityChart" class="chart" width="500" height="120"></canvas>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Phase space — <em>source waveforms</em></div>
+    <canvas id="phaseChart" class="chart" width="220" height="120"></canvas>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ═══════════════════════════════════════════
+   FDTD GRID
+   Wave equation: ∂²u/∂t² = c²∇²u − γ·∂u/∂t
+   Explicit leapfrog finite difference
+═══════════════════════════════════════════ */
+
+const canvas  = document.getElementById('waveC');
+const ctx     = canvas.getContext('2d');
+const iChart  = document.getElementById('intensityChart');
+const ctxI    = iChart.getContext('2d');
+const pChart  = document.getElementById('phaseChart');
+const ctxP    = pChart.getContext('2d');
+
+// Grid dimensions (kept small for performance — upscaled to canvas)
+let GW = 160, GH = 140;
+
+// Field arrays (current, previous)
+let u    = new Float32Array(GW * GH);
+let u_p  = new Float32Array(GW * GH);
+let u_pp = new Float32Array(GW * GH);
+let wall = new Uint8Array(GW * GH);   // 1 = solid wall
+let absB = new Float32Array(GW * GH); // absorbing boundary strength
+
+// Pixel buffer for fast rendering
+let imgData, pixels;
+
+function idx(x, y){ return y * GW + x; }
+
+/* ═══════════════════════════════════════════
+   SIMULATION PARAMETERS
+═══════════════════════════════════════════ */
+let waveSpeed      = 1.0;
+let damping        = 0.002;
+let barrierActive  = true;
+let reflectingWalls= false;
+let slitWidth      = 3;
+let slitCount      = 2;
+let slitSpacing    = 8;
+let colourScale    = 1.0;
+let showIntensity  = true;
+let showSources    = true;
+let showBarrier    = true;
+let showGrid       = false;
+let paused         = false;
+
+// Sources
+const SRC_COLORS = ['#ffc857','#4fc3f7','#26d0a8','#b39ddb'];
+let sources = [
+  { x:GW*0.22, y:GH*0.5, freq:0.12, amp:1.0, phase:0, active:true, t:0, drag:false },
+];
+let activeSource = 0;
+let simTick = 0;
+
+/* Intensity accumulator for time-averaged display */
+let intensityAcc = new Float32Array(GW * GH);
+const INT_TAU = 0.04; // exponential smoothing
+
+/* ═══════════════════════════════════════════
+   ABSORBING BOUNDARY (PML-like cosine taper)
+═══════════════════════════════════════════ */
+function buildAbsorbingBoundary(){
+  const BW = 12; // boundary width in cells
+  for(let y=0;y<GH;y++) for(let x=0;x<GW;x++){
+    const bx = Math.min(x, GW-1-x, BW-1);
+    const by = Math.min(y, GH-1-y, BW-1);
+    const b  = Math.min(bx,by);
+    absB[idx(x,y)] = b < BW ? 0.06*(1-b/BW)**2 : 0;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   BARRIER
+═══════════════════════════════════════════ */
+function rebuildBarrier(){
+  wall.fill(0);
+  if(!barrierActive) return;
+
+  const bx = Math.floor(GW * 0.55);
+  const cy = GH >> 1;
+
+  // Total slit region height
+  const totalSlits  = slitCount * slitWidth + (slitCount-1) * slitSpacing;
+  const regionStart = cy - totalSlits >> 1;
+
+  for(let y=0;y<GH;y++){
+    let inSlit = false;
+    for(let s=0;s<slitCount;s++){
+      const slitTop = regionStart + s*(slitWidth+slitSpacing);
+      if(y >= slitTop && y < slitTop+slitWidth){ inSlit=true; break; }
+    }
+    if(!inSlit) wall[idx(bx,y)] = 1;
+  }
+}
+window.rebuildBarrier = rebuildBarrier;
+
+/* ═══════════════════════════════════════════
+   FDTD STEP
+   Leapfrog: u_new = 2u - u_prev + c²dt²∇²u − γ(u-u_prev)
+   With c·dt/dx = CFL ≤ 1/√2
+═══════════════════════════════════════════ */
+const DT   = 0.45;  // ensures CFL stability: c*dt/dx < 1/sqrt(2)
+const STEPS = 3;    // substeps per animation frame
+
+function fdtdStep(){
+  const c2dt2 = (waveSpeed * DT) ** 2;
+  const gam   = damping;
+
+  // Copy u → u_pp (will become u_prev)
+  u_pp.set(u_p);
+  u_p.set(u);
+
+  for(let y=1;y<GH-1;y++){
+    for(let x=1;x<GW-1;x++){
+      const i = idx(x,y);
+      if(wall[i]){ u[i]=0; continue; }
+
+      // 5-point Laplacian
+      const lap = u_p[idx(x+1,y)] + u_p[idx(x-1,y)]
+                + u_p[idx(x,y+1)] + u_p[idx(x,y-1)]
+                - 4*u_p[i];
+
+      // Leapfrog update
+      let un = 2*u_p[i] - u_pp[i] + c2dt2*lap;
+      // Damping term
+      un -= gam*(u_p[i]-u_pp[i]);
+      // Absorbing boundary
+      un *= (1 - absB[i]);
+
+      u[i] = un;
+    }
+  }
+
+  // Reflecting or absorbing edges
+  if(reflectingWalls){
+    for(let x=0;x<GW;x++){ u[idx(x,0)]=u[idx(x,1)]; u[idx(x,GH-1)]=u[idx(x,GH-2)]; }
+    for(let y=0;y<GH;y++){ u[idx(0,y)]=u[idx(1,y)]; u[idx(GW-1,y)]=u[idx(GW-2,y)]; }
+  } else {
+    for(let x=0;x<GW;x++){ u[idx(x,0)]=0; u[idx(x,GH-1)]=0; }
+    for(let y=0;y<GH;y++){ u[idx(0,y)]=0; u[idx(GW-1,y)]=0; }
+  }
+
+  // Inject sources
+  for(const s of sources){
+    if(!s.active) continue;
+    s.t += DT;
+    const sx = Math.round(s.x), sy = Math.round(s.y);
+    if(sx<1||sx>=GW-1||sy<1||sy>=GH-1) continue;
+    if(wall[idx(sx,sy)]) continue;
+    const val = s.amp * Math.sin(2*Math.PI*s.freq*s.t + s.phase);
+    u[idx(sx,sy)] = val;
+  }
+
+  // Update intensity accumulator
+  for(let i=0;i<GW*GH;i++){
+    intensityAcc[i] = intensityAcc[i]*(1-INT_TAU) + u[i]*u[i]*INT_TAU;
+  }
+
+  simTick++;
+}
+
+/* ═══════════════════════════════════════════
+   COLOUR MAP
+   u < 0 → blue, u ≈ 0 → black, u > 0 → red
+   Inspired by oscilloscope false-colour
+═══════════════════════════════════════════ */
+function waveToRGB(v, intensity){
+  // v in [-1, 1], intensity ≥ 0
+  const bright = showIntensity ? Math.sqrt(intensity)*2 : 1;
+  const sv = Math.max(-1,Math.min(1, v * colourScale));
+
+  if(sv > 0){
+    const t = sv;
+    return [
+      Math.round(255*t*bright),
+      Math.round(60*t*bright),
+      Math.round(30*t*bright)
+    ];
+  } else {
+    const t = -sv;
+    return [
+      Math.round(10*t*bright),
+      Math.round(80*t*bright),
+      Math.round(255*t*bright)
+    ];
+  }
+}
+
+/* ═══════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════ */
+function render(){
+  if(!pixels) return;
+
+  const cw = canvas.width, ch = canvas.height;
+  const scx = cw/GW, scy = ch/GH;
+
+  // Fill pixel buffer
+  // Use nearest-neighbor upscale by iterating canvas pixels
+  for(let cy2=0;cy2<ch;cy2++){
+    const gy = Math.floor(cy2/scy);
+    for(let cx2=0;cx2<cw;cx2++){
+      const gx = Math.floor(cx2/scx);
+      const i  = idx(gx,gy);
+      let r,g,b;
+
+      if(wall[i]&&showBarrier){
+        r=22;g=38;b=55;
+      } else {
+        const v   = u[i];
+        const inten = intensityAcc[i];
+        [r,g,b] = waveToRGB(v, inten);
+        // Grid
+        if(showGrid&&(cx2%Math.round(scx)<1||cy2%Math.round(scy)<1)){
+          r=Math.min(255,r+12);g=Math.min(255,g+12);b=Math.min(255,b+12);
+        }
+      }
+
+      const pi = (cy2*cw+cx2)*4;
+      pixels[pi]   = r;
+      pixels[pi+1] = g;
+      pixels[pi+2] = b;
+      pixels[pi+3] = 255;
+    }
+  }
+
+  ctx.putImageData(imgData, 0, 0);
+
+  // Source markers
+  if(showSources){
+    for(let si=0;si<sources.length;si++){
+      const s = sources[si];
+      if(!s.active) continue;
+      const px = s.x/GW*cw, py = s.y/GH*ch;
+      const col = SRC_COLORS[si%SRC_COLORS.length];
+      // Pulsing ring
+      const phase = (s.t * s.freq * Math.PI * 2) % (Math.PI*2);
+      const ring  = (Math.sin(phase)+1)*0.5;
+      ctx.beginPath(); ctx.arc(px,py, 6+ring*8, 0, Math.PI*2);
+      ctx.strokeStyle = col+'55'; ctx.lineWidth=1; ctx.stroke();
+      // Centre dot
+      ctx.beginPath(); ctx.arc(px,py,4,0,Math.PI*2);
+      ctx.fillStyle=col; ctx.fill();
+      ctx.strokeStyle='rgba(0,0,0,.5)'; ctx.lineWidth=1; ctx.stroke();
+      // Label
+      ctx.font='9px Syne Mono,monospace'; ctx.fillStyle=col;
+      ctx.textAlign='left';
+      ctx.fillText(`S${si+1}`,px+7,py-4);
+      // Highlight active
+      if(si===activeSource){
+        ctx.beginPath(); ctx.arc(px,py,7,0,Math.PI*2);
+        ctx.strokeStyle=col+'88'; ctx.lineWidth=1.5; ctx.stroke();
+      }
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════
+   INTENSITY CROSS-SECTION CHART
+═══════════════════════════════════════════ */
+function drawIntensityChart(){
+  const W = iChart.width, H = iChart.height;
+  ctxI.clearRect(0,0,W,H);
+  const pad = {l:32,r:10,t:8,b:22};
+  const pw=W-pad.l-pad.r, ph=H-pad.t-pad.b;
+  const screenX = GW-2; // rightmost column
+
+  // Sample intensity at right edge
+  const profile = new Float32Array(GH);
+  for(let y=0;y<GH;y++) profile[y]=intensityAcc[idx(screenX,y)];
+  const maxI = Math.max(...profile, 0.001);
+
+  // Grid
+  ctxI.strokeStyle='rgba(255,255,255,0.04)'; ctxI.lineWidth=0.5;
+  for(let i=0;i<=4;i++){
+    const y=pad.t+(i/4)*ph;
+    ctxI.beginPath(); ctxI.moveTo(pad.l,y); ctxI.lineTo(pad.l+pw,y); ctxI.stroke();
+  }
+
+  // Intensity line
+  ctxI.beginPath();
+  for(let y=0;y<GH;y++){
+    const xp = pad.l + (profile[y]/maxI)*pw;
+    const yp = pad.t + (y/GH)*ph;
+    y===0 ? ctxI.moveTo(xp,yp) : ctxI.lineTo(xp,yp);
+  }
+  ctxI.strokeStyle='rgba(255,200,87,0.85)'; ctxI.lineWidth=1.5; ctxI.stroke();
+
+  // Fill
+  ctxI.beginPath();
+  ctxI.moveTo(pad.l,pad.t);
+  for(let y=0;y<GH;y++){
+    const xp = pad.l + (profile[y]/maxI)*pw;
+    const yp = pad.t + (y/GH)*ph;
+    ctxI.lineTo(xp,yp);
+  }
+  ctxI.lineTo(pad.l,pad.t+ph); ctxI.closePath();
+  const gr=ctxI.createLinearGradient(pad.l,0,pad.l+pw,0);
+  gr.addColorStop(0,'rgba(255,200,87,0)');
+  gr.addColorStop(1,'rgba(255,200,87,0.18)');
+  ctxI.fillStyle=gr; ctxI.fill();
+
+  // Axis
+  ctxI.font='9px Syne Mono,monospace'; ctxI.fillStyle='rgba(46,61,77,.9)';
+  ctxI.textAlign='center'; ctxI.fillText('Intensity →',pad.l+pw*0.5,H-4);
+  ctxI.save(); ctxI.translate(10,pad.t+ph*0.5); ctxI.rotate(-Math.PI/2);
+  ctxI.fillText('Screen (y)',0,0); ctxI.restore();
+}
+
+/* ═══════════════════════════════════════════
+   PHASE WAVEFORM CHART
+═══════════════════════════════════════════ */
+const waveHistory = [[], [], [], []];
+const WAVE_LEN = 120;
+function updateWaveHistory(){
+  for(let si=0;si<sources.length;si++){
+    const s = sources[si];
+    const val = s.active ? s.amp*Math.sin(2*Math.PI*s.freq*s.t+s.phase) : 0;
+    waveHistory[si].push(val);
+    if(waveHistory[si].length>WAVE_LEN) waveHistory[si].shift();
+  }
+}
+
+function drawPhaseChart(){
+  const W=pChart.width, H=pChart.height;
+  ctxP.clearRect(0,0,W,H);
+  const pad={l:10,r:10,t:8,b:10};
+  const pw=W-pad.l-pad.r, ph=H-pad.t-pad.b;
+  const midY=pad.t+ph*0.5;
+
+  ctxP.strokeStyle='rgba(255,255,255,0.04)'; ctxP.lineWidth=0.5;
+  ctxP.beginPath(); ctxP.moveTo(pad.l,midY); ctxP.lineTo(pad.l+pw,midY); ctxP.stroke();
+
+  for(let si=0;si<sources.length;si++){
+    const hist=waveHistory[si];
+    if(hist.length<2) continue;
+    const col=SRC_COLORS[si%SRC_COLORS.length];
+    ctxP.beginPath();
+    for(let i=0;i<hist.length;i++){
+      const x=pad.l+(i/(WAVE_LEN-1))*pw;
+      const y=midY - (hist[i]/2)*ph*0.45;
+      i===0?ctxP.moveTo(x,y):ctxP.lineTo(x,y);
+    }
+    ctxP.strokeStyle=col+'cc'; ctxP.lineWidth=1.5; ctxP.stroke();
+  }
+}
+
+/* ═══════════════════════════════════════════
+   UI READOUTS
+═══════════════════════════════════════════ */
+function updateReadouts(){
+  const s0 = sources[0];
+  const lambda = waveSpeed / (s0.freq * DT * STEPS + 0.0001);
+  // Approximate λ in grid cells: c / f
+  const lambdaGrid = waveSpeed / (s0.freq || 0.01);
+  document.getElementById('rdLambda').textContent = lambdaGrid.toFixed(1)+' cells';
+  document.getElementById('rdSpeed').textContent  = waveSpeed.toFixed(2);
+  document.getElementById('rdPeriod').textContent = (1/s0.freq).toFixed(1)+' steps';
+  document.getElementById('rdSrcs').textContent   = sources.filter(s=>s.active).length+' active';
+
+  if(barrierActive&&slitCount>=2){
+    const d = slitSpacing + slitWidth;
+    const sinT = (s0.freq>0) ? Math.min(1, lambdaGrid/(d||1)) : 0;
+    document.getElementById('rdFringe').textContent = '1st order';
+    document.getElementById('rdPath').textContent   = lambdaGrid.toFixed(1)+' c';
+    document.getElementById('rdSlitD').textContent  = d.toFixed(1)+' c';
+    document.getElementById('rdSinTheta').textContent = sinT.toFixed(3);
+  } else {
+    ['rdFringe','rdPath','rdSlitD','rdSinTheta'].forEach(id=>document.getElementById(id).textContent='—');
+  }
+}
+
+/* ═══════════════════════════════════════════
+   PRESETS
+═══════════════════════════════════════════ */
+const INSIGHTS = {
+  double: '<strong>Double slit:</strong> each slit is a Huygens source. Bright fringes where path difference = nλ. Narrow the slit → wider diffraction envelope. Increase λ (lower freq) → wider fringe spacing.',
+  single: '<strong>Single slit:</strong> the slit itself diffracts. Central maximum is twice as wide as side maxima. Width ∝ λ/a — longer wavelength or narrower slit gives wider spread.',
+  twosrc: '<strong>Two-source:</strong> classic Young\'s experiment without a barrier. Nodal lines of destructive interference radiate from the midpoint. Fringe spacing θ ≈ λ/d.',
+  ripple: '<strong>Ripple tank:</strong> circular wavefronts from a single source. Speed is constant in all directions. Wavelength = distance between successive crests.',
+  standing: '<strong>Standing wave:</strong> two waves travelling in opposite directions superpose. Nodes are permanent zeros — points of permanent destructive interference. Antinodes oscillate maximally.',
+  beats:   '<strong>Beats:</strong> two sources with slightly different frequencies. Their superposition has amplitude modulation at f_beat = |f₁ − f₂|. The slow pulsing IS the beat frequency.',
+};
+
+function resetSim(){
+  u.fill(0); u_p.fill(0); u_pp.fill(0); intensityAcc.fill(0);
+  for(const s of sources) s.t=0;
+  simTick=0;
+  waveHistory.forEach(h=>h.length=0);
+}
+window.resetSim = resetSim;
+
+function loadPreset(name){
+  resetSim();
+  sources=[];
+
+  if(name==='double'){
+    barrierActive=true; slitCount=2; slitWidth=3; slitSpacing=8;
+    document.getElementById('barrierOn').checked=true;
+    document.getElementById('slitNSlider').value=2; document.getElementById('slitNOut').textContent=2;
+    document.getElementById('slitWSlider').value=3; document.getElementById('slitWOut').textContent=3;
+    document.getElementById('slitSSlider').value=8; document.getElementById('slitSOut').textContent=8;
+    sources.push({x:GW*0.22,y:GH*0.5,freq:0.10,amp:1,phase:0,active:true,t:0});
+    document.getElementById('freqSlider').value=0.10; document.getElementById('freqOut').textContent='0.10';
+  } else if(name==='single'){
+    barrierActive=true; slitCount=1; slitWidth=4; slitSpacing=8;
+    document.getElementById('barrierOn').checked=true;
+    document.getElementById('slitNSlider').value=1; document.getElementById('slitNOut').textContent=1;
+    document.getElementById('slitWSlider').value=4; document.getElementById('slitWOut').textContent=4;
+    sources.push({x:GW*0.22,y:GH*0.5,freq:0.10,amp:1,phase:0,active:true,t:0});
+  } else if(name==='twosrc'){
+    barrierActive=false;
+    document.getElementById('barrierOn').checked=false;
+    sources.push({x:GW*0.25,y:GH*0.35,freq:0.10,amp:1,phase:0,active:true,t:0});
+    sources.push({x:GW*0.25,y:GH*0.65,freq:0.10,amp:1,phase:0,active:true,t:0});
+  } else if(name==='ripple'){
+    barrierActive=false;
+    document.getElementById('barrierOn').checked=false;
+    sources.push({x:GW*0.3,y:GH*0.5,freq:0.08,amp:1.5,phase:0,active:true,t:0});
+  } else if(name==='standing'){
+    barrierActive=false;
+    document.getElementById('barrierOn').checked=false;
+    reflectingWalls=true;
+    document.getElementById('reflWalls').checked=true;
+    sources.push({x:GW*0.12,y:GH*0.5,freq:0.10,amp:1,phase:0,active:true,t:0});
+    sources.push({x:GW*0.88,y:GH*0.5,freq:0.10,amp:1,phase:Math.PI,active:true,t:0});
+  } else if(name==='beats'){
+    barrierActive=false;
+    document.getElementById('barrierOn').checked=false;
+    sources.push({x:GW*0.25,y:GH*0.45,freq:0.10, amp:1,phase:0,active:true,t:0});
+    sources.push({x:GW*0.25,y:GH*0.55,freq:0.116,amp:1,phase:0,active:true,t:0});
+  }
+
+  while(sources.length<3) sources.push({x:GW*0.5,y:GH*0.5,freq:0.10,amp:1,phase:0,active:false,t:0});
+  activeSource=0;
+  syncSrcUI();
+  rebuildBarrier();
+  document.getElementById('insightCard').innerHTML=INSIGHTS[name]||'';
+  updateStatusBar(name);
+
+  // Highlight preset button
+  document.querySelectorAll('.btn-grid button').forEach(b=>b.className='full');
+  const pmap={double:'on-t',single:'on',twosrc:'on',ripple:'on-v',standing:'on-a',beats:'on-a'};
+  // can't easily map by text, skip highlight
+}
+window.loadPreset = loadPreset;
+
+function updateStatusBar(name){
+  const msgs={
+    double:'Double slit — observe constructive fringes. Decrease frequency → wider fringe spacing',
+    single:'Single slit — central max is widest. Narrow slit (↓ slider) to see diffraction broaden',
+    twosrc:'Two sources in phase — move them apart (drag) to change fringe spacing',
+    ripple:'Single point source — pure circular wavefronts. λ = c/f',
+    standing:'Reflecting walls — standing wave nodes are fixed. Change freq to tune the mode',
+    beats:'Beats — f₁=0.100, f₂=0.116. Beat freq = 0.016 (slow pulsing envelope)',
+  };
+  const sb=document.getElementById('statusBar');
+  sb.textContent=msgs[name]||'FDTD solver running';
+  sb.className='status '+(name==='double'||name==='single'?'ok':'info');
+}
+
+/* ═══════════════════════════════════════════
+   SOURCE CONTROLS
+═══════════════════════════════════════════ */
+function syncSrcUI(){
+  const s=sources[activeSource];
+  if(!s) return;
+  document.getElementById('freqSlider').value=s.freq;
+  document.getElementById('freqOut').textContent=s.freq.toFixed(3);
+  document.getElementById('ampSlider').value=s.amp;
+  document.getElementById('ampOut').textContent=s.amp.toFixed(1);
+  document.getElementById('phaseSlider').value=(s.phase*180/Math.PI+360)%360;
+  document.getElementById('phaseOut').textContent=Math.round((s.phase*180/Math.PI+360)%360)+'°';
+  document.getElementById('srcOn').checked=s.active;
+
+  for(let i=0;i<3;i++){
+    const btn=document.getElementById('s'+(i+1)+'btn');
+    if(btn){ btn.style.color=i<sources.length?SRC_COLORS[i]:''; btn.className=i===activeSource?'on':''; }
+  }
+}
+
+window.setActiveSource=function(i){
+  if(i>=sources.length) return;
+  activeSource=i; syncSrcUI();
+};
+
+window.setSourceParam=function(key,val){
+  const s=sources[activeSource]; if(!s) return;
+  s[key]=val;
+};
+
+window.addSource=function(){
+  if(sources.length>=4) return;
+  sources.push({x:GW*(0.2+sources.length*0.1),y:GH*0.5,freq:0.10,amp:1,phase:0,active:true,t:0});
+  activeSource=sources.length-1;
+  syncSrcUI();
+  const ids=['s1btn','s2btn','s3btn'];
+  const btn=document.getElementById(ids[activeSource]);
+  if(btn) btn.style.display='';
+};
+
+window.togglePause=function(){
+  paused=!paused;
+  document.getElementById('pauseBtn').textContent=paused?'▶ Play':'⏸ Pause';
+};
+
+/* ═══════════════════════════════════════════
+   MOUSE / DRAG SOURCES
+═══════════════════════════════════════════ */
+let dragSrc=-1;
+function canvasPos(e){
+  const r=canvas.getBoundingClientRect();
+  const src=e.touches?e.touches[0]:e;
+  return {
+    gx:(src.clientX-r.left)/r.width*GW,
+    gy:(src.clientY-r.top)/r.height*GH
+  };
+}
+function nearestSource(gx,gy){
+  let best=-1,bestD=6;
+  for(let i=0;i<sources.length;i++){
+    const d=Math.sqrt((sources[i].x-gx)**2+(sources[i].y-gy)**2);
+    if(d<bestD){bestD=d;best=i;}
+  }
+  return best;
+}
+canvas.addEventListener('mousedown',e=>{
+  const {gx,gy}=canvasPos(e);
+  const s=nearestSource(gx,gy);
+  if(s>=0){ dragSrc=s; activeSource=s; syncSrcUI(); }
+});
+canvas.addEventListener('mousemove',e=>{
+  if(dragSrc<0) return;
+  const {gx,gy}=canvasPos(e);
+  sources[dragSrc].x=Math.max(1,Math.min(GW-2,gx));
+  sources[dragSrc].y=Math.max(1,Math.min(GH-2,gy));
+});
+canvas.addEventListener('mouseup',()=>dragSrc=-1);
+canvas.addEventListener('mouseleave',()=>dragSrc=-1);
+canvas.addEventListener('touchstart',e=>{e.preventDefault();const {gx,gy}=canvasPos(e);const s=nearestSource(gx,gy);if(s>=0){dragSrc=s;activeSource=s;syncSrcUI();}},{passive:false});
+canvas.addEventListener('touchmove',e=>{e.preventDefault();if(dragSrc<0)return;const {gx,gy}=canvasPos(e);sources[dragSrc].x=Math.max(1,Math.min(GW-2,gx));sources[dragSrc].y=Math.max(1,Math.min(GH-2,gy));},{passive:false});
+canvas.addEventListener('touchend',()=>dragSrc=-1);
+
+/* ═══════════════════════════════════════════
+   RESIZE
+═══════════════════════════════════════════ */
+function resize(){
+  const cw=canvas.parentElement.clientWidth;
+  canvas.width=cw; canvas.height=Math.round(cw*0.78);
+  imgData=ctx.createImageData(canvas.width,canvas.height);
+  pixels=imgData.data;
+  const pw=iChart.parentElement.clientWidth-26;
+  iChart.width=Math.max(80,pw); iChart.height=120;
+  pChart.width=Math.max(80,document.getElementById('phaseChart').parentElement.clientWidth-26); pChart.height=120;
+}
+
+/* ═══════════════════════════════════════════
+   MAIN LOOP
+═══════════════════════════════════════════ */
+let lastNow=0, chartTimer=0;
+function loop(now){
+  const dt=(now-lastNow)/1000;
+  if(dt>0.004){
+    lastNow=now;
+    if(!paused){
+      for(let s=0;s<STEPS;s++) fdtdStep();
+      updateWaveHistory();
+    }
+    render();
+    chartTimer+=dt;
+    if(chartTimer>0.06){
+      chartTimer=0;
+      drawIntensityChart();
+      drawPhaseChart();
+      updateReadouts();
+    }
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+window.addEventListener('resize',()=>{resize();});
+resize();
+buildAbsorbingBoundary();
+loadPreset('double');
+requestAnimationFrame(loop);
+
+})();
+</script>
+</body>
+</html>
