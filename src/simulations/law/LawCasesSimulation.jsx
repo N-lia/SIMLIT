@@ -1,9 +1,9 @@
-import React from 'react'
+import { htmlToElement } from '../../utils/dom.js'
 import './LawCasesSimulation.css'
 
-function LawCasesSimulation() {
-  return (
-    <div className="law-sim-container">
+export function mountLawCasesSimulation(container) {
+  const root = htmlToElement(`
+    <div class="law-sim-container">
       {/* SIDEBAR */}
       <aside className="law-sidebar">
         <div className="law-logo">
@@ -287,7 +287,9 @@ function LawCasesSimulation() {
         </div>
       </main>
     </div>
-  )
+  `)
+  container.appendChild(root)
+  return () => {
+    if (container.contains(root)) container.removeChild(root)
+  }
 }
-
-export default LawCasesSimulation
