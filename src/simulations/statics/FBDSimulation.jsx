@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { render, useEffect, useRef } from '/src/utils/react-lite.js';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import './FBDSimulation.css';
@@ -120,7 +120,7 @@ export default function FBDSimulation() {
       if (!katex) return "<code>" + escapeHtml(tex) + "</code>";
       try {
         return katex.renderToString(tex, { throwOnError: false, displayMode: !!displayMode, strict: "ignore" });
-      } catch (_) {
+      } catch {
         return "<code>" + escapeHtml(tex) + "</code>";
       }
     }
@@ -507,7 +507,9 @@ export default function FBDSimulation() {
         selectForce(pick.force.id); syncFormFromSelection();
         canvas.classList.add("dragging");
         drag = { kind: "force", id: pick.force.id, pointerId: e.pointerId };
-        try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+        try { canvas.setPointerCapture(e.pointerId); } catch {
+          // Pointer capture can fail if the pointer is already released.
+        }
       } else {
         const pt = clientToCanvas(e.clientX, e.clientY);
         if (hitTestBody(pt.x, pt.y)) {
@@ -515,7 +517,9 @@ export default function FBDSimulation() {
           velX = 0; velY = 0; selectedId = null; syncFormFromSelection();
           canvas.classList.add("dragging-body");
           drag = { kind: "body", pointerId: e.pointerId, grabX: pt.x - bodyX, grabY: pt.y - bodyY };
-          try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+          try { canvas.setPointerCapture(e.pointerId); } catch {
+            // Pointer capture can fail if the pointer is already released.
+          }
           redraw();
         } else {
           selectedId = null; syncFormFromSelection(); redraw();
@@ -543,7 +547,9 @@ export default function FBDSimulation() {
     function pointerUp(e) {
       if (drag && drag.kind === "body") clampBodyPositionOnly();
       if (drag && e && typeof e.pointerId === "number") {
-        try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+        try { canvas.releasePointerCapture(e.pointerId); } catch {
+          // Pointer capture can fail if the pointer is already released.
+        }
       }
       drag = null;
       canvas.classList.remove("dragging"); canvas.classList.remove("dragging-body");
@@ -656,4 +662,9 @@ export default function FBDSimulation() {
       </div>
     </div>
   );
+}
+export function mountFBDSimulation(container) {
+  const app = render(FBDSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
