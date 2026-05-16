@@ -1,0 +1,186 @@
+.truss-wrapper {
+    font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+    background: linear-gradient(145deg, #e2e9f0 0%, #cddae3 100%);
+    padding: 20px;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;
+    color: #333;
+    flex: 1;
+}
+
+.truss-wrapper * {
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.truss-wrapper .sim-wrapper {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    background: #fefefeec;
+    border-radius: 2rem;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(2px);
+    overflow: hidden;
+    padding: 1.2rem 1.5rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.truss-wrapper h1 {
+    font-size: 1.7rem;
+    margin: 0 0 0.2rem;
+    color: #0a2f44;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.truss-wrapper h1 small {
+    background: #1e5f7a;
+    color: white;
+    padding: 4px 14px;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+
+.truss-wrapper .flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.truss-wrapper .canvas-panel {
+    flex: 3;
+    min-width: 560px;
+}
+
+.truss-wrapper .controls-panel {
+    flex: 1.2;
+    min-width: 280px;
+    background: #f8fafc;
+    border-radius: 1.5rem;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #cbd5e1;
+}
+
+.truss-wrapper canvas {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 1.2rem;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+    cursor: crosshair;
+}
+
+.truss-wrapper .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #cbd5e1;
+}
+
+.truss-wrapper button, .truss-wrapper .select-btn {
+    background: #eef2ff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 60px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.1s;
+    font-size: 0.8rem;
+    color: #333;
+}
+
+.truss-wrapper button.active {
+    background: #0284c7;
+    color: white;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #0284c7;
+}
+
+.truss-wrapper .param-group {
+    margin: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 12px;
+}
+
+.truss-wrapper .param-group label {
+    font-weight: 700;
+    color: #0c4e6e;
+    display: block;
+    font-size: 0.8rem;
+}
+
+.truss-wrapper input, .truss-wrapper select {
+    width: 100%;
+    padding: 5px;
+    border-radius: 40px;
+    border: 1px solid #cbd5e6;
+    background: white;
+    margin-top: 4px;
+    color: #333;
+    font-family: inherit;
+}
+
+.truss-wrapper .member-table {
+    max-height: 180px;
+    overflow-y: auto;
+    font-size: 0.7rem;
+    background: #f1f5f9;
+    border-radius: 20px;
+    padding: 6px;
+}
+
+.truss-wrapper .member-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.truss-wrapper .member-table th {
+    text-align: left;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ccc;
+}
+
+.truss-wrapper .member-table td {
+    padding: 2px 0;
+}
+
+.truss-wrapper .status {
+    background: #0f172a;
+    color: #facc15;
+    padding: 5px 12px;
+    border-radius: 26px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    margin-top: 12px;
+}
+
+.truss-wrapper .force-color {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+@media (max-width: 850px) {
+    .truss-wrapper .sim-wrapper {
+        padding: 1rem;
+    }
+    .truss-wrapper .flex-row {
+        flex-direction: column;
+    }
+    .truss-wrapper .canvas-panel {
+        min-width: 100%;
+    }
+}
