@@ -27,26 +27,26 @@
 /* Card */
 .engineering-card {
   background-color: var(--card-bg, #f5ede0);
-  border-radius: 22px;
+  border-radius: 5px 10px 6px 9px / 10px 5px 9px 6px;
   padding: 22px 14px 18px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
   cursor: pointer;
-  border: 2px solid transparent;
+  border: 1.5px solid var(--line-ink);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   color: var(--text-primary);
   position: relative;
   overflow: hidden;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--hand-font);
   min-height: 140px;
   animation: cardSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .engineering-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.14);
+  box-shadow: 4px 5px 0 rgba(37, 35, 31, 0.12);
 }
 
 .engineering-card:active {
@@ -77,7 +77,7 @@
   width: 26px;
   height: 26px;
   background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -111,7 +111,7 @@
   width: 40px;
   height: 40px;
   background: var(--text-primary);
-  border-radius: 50%;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
