@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { render, useState, useEffect, useRef } from '/src/utils/react-lite.js';
 import './BeamSimulation.css';
 
 export default function BeamSimulation() {
@@ -365,7 +365,7 @@ export default function BeamSimulation() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleBeamMouseDown = (e) => {
+  const handleBeamPointerDown = (e) => {
     const canvas = beamCanvasRef.current;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
@@ -379,12 +379,13 @@ export default function BeamSimulation() {
       let xPos = marginX + load.a * scaleX;
       if (Math.abs(mouseX - xPos) < 15) {
         setDragTarget(load.id);
+        canvas.setPointerCapture?.(e.pointerId);
         break;
       }
     }
   };
 
-  const handleWindowMouseMove = (e) => {
+  const handleWindowPointerMove = (e) => {
     if (stateRef.current.dragTarget === null) return;
     const canvas = beamCanvasRef.current;
     if (!canvas) return;
@@ -399,18 +400,21 @@ export default function BeamSimulation() {
     setLoads(prev => prev.map(l => l.id === stateRef.current.dragTarget ? { ...l, a: parseFloat(newA.toFixed(2)) } : l));
   };
 
-  const handleWindowMouseUp = () => {
+  const handleWindowPointerUp = (e) => {
     if (stateRef.current.dragTarget !== null) {
+      beamCanvasRef.current?.releasePointerCapture?.(e.pointerId);
       setDragTarget(null);
     }
   };
 
   useEffect(() => {
-    window.addEventListener('mousemove', handleWindowMouseMove);
-    window.addEventListener('mouseup', handleWindowMouseUp);
+    window.addEventListener('pointermove', handleWindowPointerMove);
+    window.addEventListener('pointerup', handleWindowPointerUp);
+    window.addEventListener('pointercancel', handleWindowPointerUp);
     return () => {
-      window.removeEventListener('mousemove', handleWindowMouseMove);
-      window.removeEventListener('mouseup', handleWindowMouseUp);
+      window.removeEventListener('pointermove', handleWindowPointerMove);
+      window.removeEventListener('pointerup', handleWindowPointerUp);
+      window.removeEventListener('pointercancel', handleWindowPointerUp);
     };
   }, []);
 
@@ -515,7 +519,7 @@ export default function BeamSimulation() {
           </div>
 
           <div className="visualization">
-            <canvas ref={beamCanvasRef} onMouseDown={handleBeamMouseDown} width="800" height="180" style={{ aspectRatio: '800/180', cursor: dragTarget !== null ? 'grabbing' : 'pointer' }}></canvas>
+            <canvas ref={beamCanvasRef} onPointerDown={handleBeamPointerDown} width="800" height="180" style={{ aspectRatio: '800/180', cursor: dragTarget !== null ? 'grabbing' : 'pointer', touchAction: 'none' }}></canvas>
             <canvas ref={shearCanvasRef} width="800" height="150" style={{ aspectRatio: '800/150' }}></canvas>
             <canvas ref={momentCanvasRef} width="800" height="150" style={{ aspectRatio: '800/150' }}></canvas>
             <canvas ref={deflCanvasRef} width="800" height="150" style={{ aspectRatio: '800/150' }}></canvas>
@@ -535,4 +539,9 @@ export default function BeamSimulation() {
       </div>
     </div>
   );
+}
+export function mountBeamSimulation(container) {
+  const app = render(BeamSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
