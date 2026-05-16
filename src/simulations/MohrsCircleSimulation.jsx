@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { render, useEffect, useRef } from '/src/utils/react-lite.js';
 import './MohrsCircleSimulation.css';
 
 export default function MohrsCircleSimulation() {
@@ -81,7 +81,7 @@ export default function MohrsCircleSimulation() {
         drawStressElement(thetaDeg, rotated);
     }
 
-    function drawMohrCircle(center, radius, sigma1, sigma2, tauMax, thetaP_deg) {
+    function drawMohrCircle(center, radius, sigma1, sigma2, tauMax) {
         if (!ctxMohr) return;
         ctxMohr.clearRect(0, 0, widthMohr, heightMohr);
         const margin = { left: 70, right: 30, top: 30, bottom: 40 };
@@ -247,7 +247,6 @@ export default function MohrsCircleSimulation() {
         drawNormalArrow(leftFace, leftNormVec, rotated.sigmax_prime);
         drawShearArrows(leftFace, leftDir, -rotated.tauxy_prime);
         
-        let topDir = [rotatedCorners[0][0]-rotatedCorners[3][0], rotatedCorners[0][1]-rotatedCorners[3][1]];
         drawNormalArrow(topFace, topNormVec, rotated.sigmay_prime);
         let topTangent = [rotatedCorners[1][0]-rotatedCorners[0][0], rotatedCorners[1][1]-rotatedCorners[0][1]];
         drawShearArrows(topFace, topTangent, -rotated.tauxy_prime);
@@ -384,4 +383,9 @@ export default function MohrsCircleSimulation() {
       </div>
     </div>
   );
+}
+export function mountMohrsCircleSimulation(container) {
+  const app = render(MohrsCircleSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
