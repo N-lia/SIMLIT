@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { htmlToElement } from '../utils/dom.js'
 import './Simulation.css'
 
 const W = 380, H = 210, G = 9.8
@@ -58,72 +58,121 @@ function drawPendulum(ctx, theta, L, trail) {
   ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.beginPath(); ctx.arc(bx-4, by-4, 3, 0, Math.PI*2); ctx.fill()
 }
 
-export default function PendulumSimulation() {
-  const canvasRef = useRef(null)
-  const rafRef    = useRef(null)
-  const physRef   = useRef({ theta: Math.PI/6, omega: 0, t: 0 })
-  const trailRef  = useRef([])
-
-  const [L,       setL]       = useState(1.5)
-  const [theta0,  setTheta0]  = useState(30)
-  const [damping, setDamping] = useState(0.015)
-  const [running, setRunning] = useState(false)
-
-  const T = (2 * Math.PI * Math.sqrt(L / G)).toFixed(2)
-
-  const reset = useCallback(() => {
-    cancelAnimationFrame(rafRef.current)
-    setRunning(false)
-    physRef.current = { theta: (theta0 * Math.PI) / 180, omega: 0 }
-    trailRef.current = []
-    const ctx = canvasRef.current?.getContext('2d')
-    if (ctx) drawPendulum(ctx, physRef.current.theta, L, [])
-  }, [L, theta0])
-
-  useEffect(() => { reset() }, [reset])
-
-  useEffect(() => {
-    if (!running) return
-    const dt = 1 / 60
-    const loop = () => {
-      const p = physRef.current
-      const alpha = -(G / L) * Math.sin(p.theta) - damping * p.omega
-      p.omega += alpha * dt
-      p.theta += p.omega * dt
-      trailRef.current.push(p.theta)
-      if (trailRef.current.length > 35) trailRef.current.shift()
-      const ctx = canvasRef.current?.getContext('2d')
-      if (ctx) drawPendulum(ctx, p.theta, L, trailRef.current)
-      rafRef.current = requestAnimationFrame(loop)
-    }
-    rafRef.current = requestAnimationFrame(loop)
-    return () => cancelAnimationFrame(rafRef.current)
-  }, [running, L, damping])
-
-  return (
-    <div className="sim-inner">
-      <div className="canvas-area">
-        <canvas ref={canvasRef} className="sim-canvas" width={W} height={H} />
-        <div className="sim-stats">
-          <div className="stat"><span className="stat-label">Period T</span><span className="stat-val">{T} s</span></div>
-          <div className="stat"><span className="stat-label">Length</span><span className="stat-val">{L} m</span></div>
-          <div className="stat"><span className="stat-label">Angle₀</span><span className="stat-val">{theta0}°</span></div>
+export function mountPendulumSimulation(container) {
+  const root = htmlToElement(`
+    <div class="sim-inner">
+      <div class="canvas-area">
+        <canvas class="sim-canvas" width="${W}" height="${H}"></canvas>
+        <div class="sim-stats">
+          <div class="stat"><span class="stat-label">Period T</span><span class="stat-val" data-period></span></div>
+          <div class="stat"><span class="stat-label">Length</span><span class="stat-val" data-length></span></div>
+          <div class="stat"><span class="stat-label">Angle₀</span><span class="stat-val" data-angle></span></div>
         </div>
       </div>
-      <div className="controls-panel">
-        <div className="control-row">
-          <label>Length <span className="ctrl-val">{L} m</span></label>
-          <input type="range" min="0.5" max="3" step="0.1" value={L} onChange={e => { setL(+e.target.value); reset() }} />
+      <div class="controls-panel">
+        <div class="control-row">
+          <label>Length <span class="ctrl-val" data-length-label></span></label>
+          <input type="range" min="0.5" max="3" step="0.1" value="1.5" data-length-range />
         </div>
-        <div className="control-row">
-          <label>Initial Angle <span className="ctrl-val">{theta0}°</span></label>
-          <input type="range" min="5" max="60" value={theta0} onChange={e => { setTheta0(+e.target.value); reset() }} />
+        <div class="control-row">
+          <label>Initial Angle <span class="ctrl-val" data-angle-label></span></label>
+          <input type="range" min="5" max="60" value="30" data-angle-range />
         </div>
-        <div className="ctrl-buttons">
-          <button className="ctrl-btn-primary" onClick={() => setRunning(true)} disabled={running}>▶ Start</button>
-          <button className="ctrl-btn-secondary" onClick={reset}>↺ Reset</button>
+        <div class="ctrl-buttons">
+          <button class="ctrl-btn-primary" type="button" data-start>▶ Start</button>
+          <button class="ctrl-btn-secondary" type="button" data-reset>↺ Reset</button>
         </div>
       </div>
     </div>
-  )
+  `)
+
+  const canvas = root.querySelector('canvas')
+  const startBtn = root.querySelector('[data-start]')
+  const resetBtn = root.querySelector('[data-reset]')
+  const lengthRange = root.querySelector('[data-length-range]')
+  const angleRange = root.querySelector('[data-angle-range]')
+  const periodLabel = root.querySelector('[data-period]')
+  const lengthLabel = root.querySelector('[data-length-label]')
+  const angleLabel = root.querySelector('[data-angle-label]')
+
+  let L = 1.5
+  let theta0 = 30
+  let damping = 0.015
+  let running = false
+  let rafId = null
+  const phys = { theta: (theta0 * Math.PI) / 180, omega: 0 }
+  const trail = []
+
+  function updateStats() {
+    const T = (2 * Math.PI * Math.sqrt(L / G)).toFixed(2)
+    if (periodLabel) periodLabel.textContent = `${T} s`
+    if (lengthLabel) lengthLabel.textContent = `${L} m`
+    if (angleLabel) angleLabel.textContent = `${theta0}°`
+  }
+
+  function drawInitial() {
+    const ctx = canvas.getContext('2d')
+    if (ctx) drawPendulum(ctx, phys.theta, L, [])
+  }
+
+  function reset() {
+    if (rafId !== null) cancelAnimationFrame(rafId)
+    running = false
+    phys.theta = (theta0 * Math.PI) / 180
+    phys.omega = 0
+    trail.length = 0
+    drawInitial()
+    updateStats()
+  }
+
+  function animate() {
+    const dt = 1 / 60
+    const alpha = -(G / L) * Math.sin(phys.theta) - damping * phys.omega
+    phys.omega += alpha * dt
+    phys.theta += phys.omega * dt
+    trail.push(phys.theta)
+    if (trail.length > 35) trail.shift()
+    const ctx = canvas.getContext('2d')
+    if (ctx) drawPendulum(ctx, phys.theta, L, trail)
+    rafId = requestAnimationFrame(animate)
+  }
+
+  function handleLengthChange(event) {
+    L = Number(event.target.value)
+    if (lengthRange) lengthRange.value = L
+    updateStats()
+    reset()
+  }
+
+  function handleAngleChange(event) {
+    theta0 = Number(event.target.value)
+    if (angleRange) angleRange.value = theta0
+    updateStats()
+    reset()
+  }
+
+  function handleStart() {
+    if (running) return
+    running = true
+    rafId = requestAnimationFrame(animate)
+  }
+
+  startBtn.addEventListener('click', handleStart)
+  resetBtn.addEventListener('click', reset)
+  lengthRange.addEventListener('input', handleLengthChange)
+  angleRange.addEventListener('input', handleAngleChange)
+
+  updateStats()
+  drawInitial()
+
+  container.appendChild(root)
+
+  return () => {
+    if (rafId !== null) cancelAnimationFrame(rafId)
+    startBtn.removeEventListener('click', handleStart)
+    resetBtn.removeEventListener('click', reset)
+    lengthRange.removeEventListener('input', handleLengthChange)
+    angleRange.removeEventListener('input', handleAngleChange)
+    if (container.contains(root)) container.removeChild(root)
+  }
 }
