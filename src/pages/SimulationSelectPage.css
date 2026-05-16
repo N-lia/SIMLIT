@@ -14,14 +14,15 @@
 .sim-field-badge {
   display: inline-flex;
   align-items: center;
-  background: var(--accent-orange);
-  color: #fff;
+  background: var(--accent-yellow);
+  color: var(--ink);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   padding: 5px 12px;
-  border-radius: 20px;
+  border: 1.5px solid var(--ink);
+  border-radius: 4px 7px 5px 8px / 7px 4px 8px 5px;
   margin-bottom: 10px;
 }
 
@@ -52,13 +53,13 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  background: #fff;
-  border: 2px solid var(--input-border);
-  border-radius: var(--radius-md);
+  background: rgba(255, 244, 223, 0.62);
+  border: 1.5px solid var(--line-ink);
+  border-radius: 5px 10px 6px 9px / 10px 5px 9px 6px;
   padding: 16px 14px 16px 16px;
   cursor: pointer;
   text-align: left;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--hand-font);
   transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   animation: cardSlideUp 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
   position: relative;
@@ -67,7 +68,7 @@
 .sim-topic-card:hover {
   border-color: var(--accent-orange);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px -8px rgba(232, 93, 42, 0.18);
+  box-shadow: 4px 5px 0 rgba(37, 35, 31, 0.12);
 }
 
 .sim-topic-card:active {
@@ -78,7 +79,8 @@
 .topic-emoji-wrap {
   width: 52px;
   height: 52px;
-  border-radius: 14px;
+  border-radius: 6px;
+  border: 1px solid var(--line-soft);
   background: var(--bg-warm);
   display: flex;
   align-items: center;
@@ -145,7 +147,7 @@
 .topic-arrow {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: 6px;
   background: var(--input-bg);
   display: flex;
   align-items: center;
@@ -157,7 +159,7 @@
 
 .sim-topic-card:hover .topic-arrow {
   background: var(--accent-orange);
-  color: #fff;
+  color: var(--paper-light);
   transform: translateX(2px);
 }
 
