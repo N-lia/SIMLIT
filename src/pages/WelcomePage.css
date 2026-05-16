@@ -24,9 +24,8 @@
 }
 
 .logo-text {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -1.2px;
+  font-size: 34px;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
@@ -58,7 +57,7 @@
 }
 
 .sparkle-purple {
-  color: var(--accent-purple);
+  color: var(--accent-blue);
   font-size: 28px;
   animation: float 3.5s ease-in-out infinite alternate;
 }
@@ -81,10 +80,10 @@
 }
 
 .hero-heading {
-  font-size: 56px;
-  font-weight: 900;
+  font-size: 58px;
+  font-weight: 700;
   line-height: 1.02;
-  letter-spacing: -2px;
+  letter-spacing: 0;
   margin-bottom: 14px;
   color: var(--text-primary);
 }
@@ -94,7 +93,7 @@
 }
 
 .hero-subtext {
-  font-size: 17px;
+  font-size: 18px;
   color: var(--text-secondary);
   line-height: 1.55;
   font-weight: 400;
@@ -115,13 +114,16 @@
   position: absolute;
   width: 280px;
   height: 280px;
-  background: linear-gradient(155deg, #ff7a45 0%, #e85d2a 60%, #d44a1a 100%);
-  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 244, 223, 0.38), transparent 34%),
+    linear-gradient(155deg, #d8b45c 0%, #a9402f 62%, #7e3027 100%);
+  border-radius: 48% 52% 45% 55% / 54% 46% 52% 48%;
+  border: 1.5px solid var(--ink);
   bottom: 0;
   z-index: 1;
   box-shadow:
-    inset -20px -20px 45px rgba(0, 0, 0, 0.1),
-    0 16px 50px -10px rgba(232, 93, 42, 0.35);
+    inset -20px -20px 45px rgba(0, 0, 0, 0.08),
+    4px 6px 0 rgba(37, 35, 31, 0.12);
 }
 
 .hero-image {
@@ -147,6 +149,9 @@
   top: 15px;
   right: 20px;
   animation: spinSlow 18s linear infinite;
+}
+.star-burst path {
+  fill: var(--accent-blue);
 }
 
 @keyframes spinSlow {
@@ -183,7 +188,7 @@
 .square-outline {
   width: 22px;
   height: 22px;
-  border: 3px solid var(--accent-purple);
+  border: 3px solid var(--accent-blue);
   border-radius: 5px;
   top: 45px;
   right: 60px;
@@ -230,20 +235,20 @@
 
 .btn-primary {
   width: 100%;
-  background-color: var(--btn-dark);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-lg);
+  background: var(--ink);
+  color: var(--paper-light);
+  border: 1.5px solid var(--ink);
+  border-radius: 7px 12px 8px 10px / 12px 8px 10px 7px;
   padding: 18px 24px;
   font-size: 16px;
-  font-weight: 600;
-  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-family: var(--hand-font);
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 10px 28px -8px rgba(26, 26, 26, 0.5);
+  box-shadow: 4px 5px 0 rgba(37, 35, 31, 0.16);
   position: relative;
   overflow: hidden;
 }
@@ -297,4 +302,3 @@
   opacity: 0.8;
   text-decoration: underline;
 }
-
