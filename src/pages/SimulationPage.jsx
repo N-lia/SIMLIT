@@ -1,77 +1,93 @@
-import { FIELD_TOPICS } from '../data/topics'
-import FBDSimulation         from '../simulations/statics/FBDSimulation'
-import EquilibriumSimulation from '../simulations/statics/EquilibriumSimulation'
-import TrussSimulation       from '../simulations/statics/TrussSimulation'
-import ProjectileSimulation  from '../simulations/ProjectileSimulation'
-import PendulumSimulation    from '../simulations/PendulumSimulation'
-import BeamSimulation        from '../simulations/BeamSimulation'
-import OhmSimulation         from '../simulations/OhmSimulation'
-import GasSimulation         from '../simulations/GasSimulation'
-import BernoulliSimulation   from '../simulations/BernoulliSimulation'
-import PipeFlowSimulation    from '../simulations/PipeFlowSimulation'
-import HydrostaticSimulation from '../simulations/HydrostaticSimulation'
-import StressStrainSimulation from '../simulations/StressStrainSimulation'
-import MohrsCircleSimulation from '../simulations/MohrsCircleSimulation'
-import NewtonsLawSimulation  from '../simulations/NewtonsLawSimulation'
-import DcMotorSimulation     from '../simulations/DcMotorSimulation'
-import CollisionSimulation   from '../simulations/CollisionSimulation'
-import DoublePendulumSimulation from '../simulations/DoublePendulumSimulation'
-import LawCasesSimulation    from '../simulations/law/LawCasesSimulation'
-import ComingSoon            from '../simulations/ComingSoon'
-import IframeSimulation      from '../simulations/IframeSimulation'
+import { FIELD_TOPICS } from '../data/topics.js'
+import { mountComingSoon } from '../simulations/ComingSoon.jsx'
 import './SimulationPage.css'
 
-const SIM_MAP = {
-  // statics
-  fbd:         FBDSimulation,
-  equilibrium: EquilibriumSimulation,
-  truss:       TrussSimulation,
-  // dynamics
-  newton:      NewtonsLawSimulation,
-  projectile:  ProjectileSimulation,
-  pendulum:    PendulumSimulation,
-  collision:   CollisionSimulation,
-  double_pendulum: DoublePendulumSimulation,
-  // others
-  beam:        BeamSimulation,
-  ohm:         OhmSimulation,
-  gas:         GasSimulation,
-  bernoulli:   BernoulliSimulation,
-  pipeflow:    PipeFlowSimulation,
-  hydrostatic: HydrostaticSimulation,
-  stress:      StressStrainSimulation,
-  mohr:        MohrsCircleSimulation,
-  motor:       DcMotorSimulation,
-  wavelab:     IframeSimulation,
-  kirchhoff:   IframeSimulation,
-  case:        LawCasesSimulation,
+const SIM_LOADERS = {
+  fbd: () => import('../simulations/statics/FBDSimulation.jsx').then(m => m.mountFBDSimulation),
+  equilibrium: () => import('../simulations/statics/EquilibriumSimulation.jsx').then(m => m.mountEquilibriumSimulation),
+  truss: () => import('../simulations/statics/TrussSimulation.jsx').then(m => m.mountTrussSimulation),
+  newton: () => import('../simulations/NewtonsLawSimulation.jsx').then(m => m.mountNewtonsLawSimulation),
+  projectile: () => import('../simulations/ProjectileSimulation.jsx').then(m => m.mountProjectileSimulation),
+  pendulum: () => import('../simulations/PendulumSimulation.jsx').then(m => m.mountPendulumSimulation),
+  collision: () => import('../simulations/CollisionSimulation.jsx').then(m => m.mountCollisionSimulation),
+  double_pendulum: () => import('../simulations/DoublePendulumSimulation.jsx').then(m => m.mountDoublePendulumSimulation),
+  beam: () => import('../simulations/BeamSimulation.jsx').then(m => m.mountBeamSimulation),
+  ohm: () => import('../simulations/OhmSimulation.jsx').then(m => m.mountOhmSimulation),
+  gas: () => import('../simulations/GasSimulation.jsx').then(m => m.mountGasSimulation),
+  bernoulli: () => import('../simulations/BernoulliSimulation.jsx').then(m => m.mountBernoulliSimulation),
+  pipeflow: () => import('../simulations/PipeFlowSimulation.jsx').then(m => m.mountPipeFlowSimulation),
+  hydrostatic: () => import('../simulations/HydrostaticSimulation.jsx').then(m => m.mountHydrostaticSimulation),
+  stress: () => import('../simulations/StressStrainSimulation.jsx').then(m => m.mountStressStrainSimulation),
+  mohr: () => import('../simulations/MohrsCircleSimulation.jsx').then(m => m.mountMohrsCircleSimulation),
+  motor: () => import('../simulations/DcMotorSimulation.jsx').then(m => m.mountDcMotorSimulation),
+  wavelab: () => import('../simulations/IframeSimulation.jsx').then(m => m.mountIframeSimulation),
+  kirchhoff: () => import('../simulations/IframeSimulation.jsx').then(m => m.mountIframeSimulation),
+  case: () => import('../simulations/law/LawCasesSimulation.jsx').then(m => m.mountLawCasesSimulation),
+  courtroom: () => import('../simulations/law/LawCourtroomSimulation.jsx').then(m => m.mountLawCourtroomSimulation),
+  heat_engine: () => import('../simulations/IframeSimulation.jsx').then(m => m.mountIframeSimulation),
 }
 
-function SimulationPage({ subfieldId, topicId, onBack, pageClass = '' }) {
-  const fieldData    = FIELD_TOPICS[subfieldId] || {}
-  const topic        = (fieldData.topics || []).find(t => t.id === topicId) || {}
-  const SimComponent = SIM_MAP[topicId] || ComingSoon
+export function mountSimulationPage({ subfieldId, topicId, onBack, pageClass = '' }) {
+  const fieldData = FIELD_TOPICS[subfieldId] || {}
+  const topic = (fieldData.topics || []).find(t => t.id === topicId) || { id: topicId, label: topicId }
+  const loadSimulation = SIM_LOADERS[topicId]
 
-  return (
-    <div className={`page sim-page ${pageClass}`}>
-      <header className="sim-header">
-        <button id="btn-back-sim" className="icon-btn" onClick={onBack} aria-label="Go back">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5"/><path d="M12 19L5 12L12 5"/>
-          </svg>
-        </button>
-        <div className="sim-header-center">
-          <span className="sim-emoji">{topic.emoji}</span>
-          <span className="sim-topic-name">{topic.label || topicId}</span>
-        </div>
-        <span className="sim-field-chip">{fieldData.label || ''}</span>
-      </header>
-
-      <div className="sim-body">
-        <SimComponent topic={topic} />
+  const root = document.createElement('div')
+  root.className = `page sim-page ${pageClass}`
+  root.innerHTML = `
+    <header class="sim-header">
+      <button id="btn-back-sim" class="icon-btn" aria-label="Go back">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5"/><path d="M12 19L5 12L12 5"/>
+        </svg>
+      </button>
+      <div class="sim-header-center">
+        <span class="sim-emoji">${topic.emoji || ''}</span>
+        <span class="sim-topic-name">${topic.label || topic.id || topicId}</span>
       </div>
-    </div>
-  )
-}
+      <span class="sim-field-chip">${fieldData.label || ''}</span>
+    </header>
+    <div class="sim-body"></div>
+  `
 
-export default SimulationPage
+  const simBody = root.querySelector('.sim-body')
+  const backButton = root.querySelector('#btn-back-sim')
+  backButton.addEventListener('click', onBack)
+
+  let result = null
+  let disposed = false
+
+  const loading = document.createElement('div')
+  loading.className = 'sim-loading'
+  loading.textContent = 'Loading simulation...'
+  simBody.appendChild(loading)
+
+  if (loadSimulation) {
+    loadSimulation()
+      .then((mountSimulation) => {
+        if (disposed) return
+        loading.remove()
+        result = mountSimulation(simBody, topic)
+      })
+      .catch((error) => {
+        console.error(error)
+        if (disposed) return
+        loading.textContent = 'Could not load this simulation.'
+      })
+  } else {
+    loading.remove()
+    result = mountComingSoon(simBody, topic)
+  }
+
+  const cleanup = () => {
+    disposed = true
+    backButton.removeEventListener('click', onBack)
+    if (typeof result === 'function') {
+      result()
+    } else if (result && typeof result.cleanup === 'function') {
+      result.cleanup()
+    }
+  }
+
+  return { root, cleanup }
+}
