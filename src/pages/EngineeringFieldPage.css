@@ -1,0 +1,178 @@
+/* =========================================
+   Engineering Field Page
+   ========================================= */
+
+.eng-page {
+  padding-top: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Reuse field-header layout from FieldOfStudyPage */
+.field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+/* Grid */
+.engineering-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding-bottom: 24px;
+}
+
+/* Card */
+.engineering-card {
+  background-color: var(--card-bg, #f5ede0);
+  border-radius: 22px;
+  padding: 22px 14px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--text-primary);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+  min-height: 140px;
+  animation: cardSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.engineering-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.14);
+}
+
+.engineering-card:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.engineering-card.selected {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 0 3px rgba(42, 157, 110, 0.15), 0 8px 24px -6px rgba(0, 0, 0, 0.12);
+}
+
+/* Background Scribble */
+.card-bg-scribble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top Left Badge */
+.card-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 26px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  color: var(--text-primary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.card-badge svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Label */
+.engineering-card-label {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0;
+  z-index: 2;
+  text-align: left;
+  padding-right: 22px;
+}
+
+/* Right Cutout Arrow */
+.card-cutout-arrow {
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid var(--bg);
+  z-index: 3;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.engineering-card:hover .card-cutout-arrow {
+  transform: translateY(-50%) translateX(-2px);
+}
+
+.card-cutout-arrow svg {
+  transition: transform 0.25s ease;
+}
+
+.engineering-card:hover .card-cutout-arrow svg {
+  transform: translate(2px, -2px);
+}
+
+/* Selection Indicator */
+.eng-card-check {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 12px rgba(42, 157, 110, 0.4);
+  z-index: 5;
+}
+
+.eng-card-check svg {
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes cardSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
