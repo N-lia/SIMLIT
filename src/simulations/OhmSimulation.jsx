@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { htmlToElement } from '../utils/dom.js'
 import './Simulation.css'
 
 const W = 380, H = 210
@@ -74,7 +74,6 @@ function drawOhm(ctx, voltage, resistance, dotOffset) {
   ctx.beginPath(); ctx.moveTo(bulbX-4, bulbY+3); ctx.lineTo(bulbX-2, bulbY-3); ctx.lineTo(bulbX+2, bulbY+3); ctx.lineTo(bulbX+4, bulbY-3); ctx.stroke()
 
   // ── Animated electron dots ──
-  const speed = Math.min(current * 18, 60)
   const dotSpacing = 38
   const totalPath = 2 * (right - left) + 2 * (bot - top)
   const numDots = 8
@@ -83,7 +82,7 @@ function drawOhm(ctx, voltage, resistance, dotOffset) {
   for (let i = 0; i < numDots; i++) {
     let d = ((dotOffset + i * dotSpacing) % totalPath + totalPath) % totalPath
     let x, y
-    const seg1 = right - left, seg2 = bot - top, seg3 = right - left, seg4 = bot - top
+    const seg1 = right - left, seg2 = bot - top
     if (d < seg1)       { x = left + d;      y = top }
     else if (d < seg1 + seg2) { x = right; y = top + (d - seg1) }
     else if (d < 2*seg1+seg2) { x = right - (d - seg1 - seg2); y = bot }
@@ -94,48 +93,82 @@ function drawOhm(ctx, voltage, resistance, dotOffset) {
   return { current, power }
 }
 
-export default function OhmSimulation() {
-  const canvasRef  = useRef(null)
-  const rafRef     = useRef(null)
-  const offsetRef  = useRef(0)
-  const [voltage,    setVoltage]    = useState(9)
-  const [resistance, setResistance] = useState(30)
-  const [stats, setStats] = useState({ current: 0.3, power: 2.7 })
-
-  const animate = useCallback(() => {
-    const current = voltage / resistance
-    offsetRef.current = (offsetRef.current + Math.min(current * 18, 60) / 60) % 1000
-    const ctx = canvasRef.current?.getContext('2d')
-    if (!ctx) return
-    const s = drawOhm(ctx, voltage, resistance, offsetRef.current)
-    setStats(s)
-    rafRef.current = requestAnimationFrame(animate)
-  }, [voltage, resistance])
-
-  useEffect(() => {
-    rafRef.current = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(rafRef.current)
-  }, [animate])
-
-  return (
-    <div className="sim-inner">
-      <div className="canvas-area">
-        <canvas ref={canvasRef} className="sim-canvas" width={W} height={H} />
-        <div className="sim-stats">
-          <div className="stat"><span className="stat-label">Current</span><span className="stat-val">{stats.current?.toFixed(3)} A</span></div>
-          <div className="stat"><span className="stat-label">Power</span><span className="stat-val">{stats.power?.toFixed(2)} W</span></div>
+export function mountOhmSimulation(container) {
+  const root = htmlToElement(`
+    <div class="sim-inner">
+      <div class="canvas-area">
+        <canvas class="sim-canvas" width="${W}" height="${H}"></canvas>
+        <div class="sim-stats">
+          <div class="stat"><span class="stat-label">Current</span><span class="stat-val" data-current></span></div>
+          <div class="stat"><span class="stat-label">Power</span><span class="stat-val" data-power></span></div>
         </div>
       </div>
-      <div className="controls-panel">
-        <div className="control-row">
-          <label>Voltage <span className="ctrl-val">{voltage} V</span></label>
-          <input type="range" min="1" max="24" value={voltage} onChange={e => setVoltage(+e.target.value)} />
+      <div class="controls-panel">
+        <div class="control-row">
+          <label>Voltage <span class="ctrl-val" data-voltage-label></span></label>
+          <input type="range" min="1" max="24" value="9" data-voltage-range />
         </div>
-        <div className="control-row">
-          <label>Resistance <span className="ctrl-val">{resistance} Ω</span></label>
-          <input type="range" min="1" max="100" value={resistance} onChange={e => setResistance(+e.target.value)} />
+        <div class="control-row">
+          <label>Resistance <span class="ctrl-val" data-resistance-label></span></label>
+          <input type="range" min="1" max="100" value="30" data-resistance-range />
         </div>
       </div>
     </div>
-  )
+  `)
+
+  const canvas = root.querySelector('canvas')
+  const voltageRange = root.querySelector('[data-voltage-range]')
+  const resistanceRange = root.querySelector('[data-resistance-range]')
+  const voltageLabel = root.querySelector('[data-voltage-label]')
+  const resistanceLabel = root.querySelector('[data-resistance-label]')
+  const currentLabel = root.querySelector('[data-current]')
+  const powerLabel = root.querySelector('[data-power]')
+
+  let voltage = 9
+  let resistance = 30
+  let offset = 0
+  let rafId = null
+
+  function updateStats(stats) {
+    if (currentLabel) currentLabel.textContent = `${stats.current.toFixed(3)} A`
+    if (powerLabel) powerLabel.textContent = `${stats.power.toFixed(2)} W`
+    if (voltageLabel) voltageLabel.textContent = `${voltage} V`
+    if (resistanceLabel) resistanceLabel.textContent = `${resistance} Ω`
+  }
+
+  function animate() {
+    const current = voltage / resistance
+    offset = (offset + Math.min(current * 18, 60) / 60) % 1000
+    const ctx = canvas.getContext('2d')
+    if (ctx) {
+      const stats = drawOhm(ctx, voltage, resistance, offset)
+      updateStats(stats)
+    }
+    rafId = requestAnimationFrame(animate)
+  }
+
+  function handleVoltageChange(event) {
+    voltage = Number(event.target.value)
+    if (voltageLabel) voltageLabel.textContent = `${voltage} V`
+  }
+
+  function handleResistanceChange(event) {
+    resistance = Number(event.target.value)
+    if (resistanceLabel) resistanceLabel.textContent = `${resistance} Ω`
+  }
+
+  voltageRange.addEventListener('input', handleVoltageChange)
+  resistanceRange.addEventListener('input', handleResistanceChange)
+
+  updateStats({ current: voltage / resistance, power: voltage * (voltage / resistance) })
+  animate()
+
+  container.appendChild(root)
+
+  return () => {
+    if (rafId !== null) cancelAnimationFrame(rafId)
+    voltageRange.removeEventListener('input', handleVoltageChange)
+    resistanceRange.removeEventListener('input', handleResistanceChange)
+    if (container.contains(root)) container.removeChild(root)
+  }
 }
