@@ -1,0 +1,204 @@
+.beam-wrapper {
+    font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(145deg, #eef2f7 0%, #dce5ec 100%);
+    padding: 24px;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;
+    color: #333;
+    flex: 1;
+}
+
+.beam-wrapper * {
+    box-sizing: border-box;
+    user-select: none;
+}
+
+/* main card */
+.beam-wrapper .sim-card {
+    max-width: 1500px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 2rem;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(2px);
+    overflow: hidden;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+/* header */
+.beam-wrapper .header {
+    padding: 1.2rem 2rem 0.6rem 2rem;
+    background: rgba(255,255,255,0.8);
+    border-bottom: 2px solid #e2e8f0;
+}
+.beam-wrapper h1 {
+    font-size: 1.9rem;
+    margin: 0;
+    color: #0a2f44;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.beam-wrapper h1 small {
+    background: #1e5f7a;
+    color: white;
+    padding: 4px 18px;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+.beam-wrapper .sub {
+    color: #2c5a6e;
+    margin: 8px 0 0 0;
+    border-left: 5px solid #f97316;
+    padding-left: 16px;
+    font-weight: 500;
+}
+
+/* two column layout */
+.beam-wrapper .flex-dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 1.5rem 2rem 2rem 2rem;
+}
+.beam-wrapper .controls {
+    flex: 1.2;
+    min-width: 280px;
+    background: #f8fafc;
+    border-radius: 1.8rem;
+    padding: 1.2rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border: 1px solid #e2edf2;
+}
+.beam-wrapper .visualization {
+    flex: 2.8;
+    min-width: 550px;
+}
+
+/* control groups */
+.beam-wrapper .ctrl-group {
+    margin-bottom: 1.4rem;
+    border-bottom: 1px solid #e2edf2;
+    padding-bottom: 0.9rem;
+}
+.beam-wrapper .ctrl-group label {
+    font-weight: 700;
+    color: #0c4e6e;
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+.beam-wrapper .param-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.beam-wrapper input[type="range"] {
+    flex: 1;
+    height: 4px;
+    border-radius: 5px;
+    background: #cbd5e6;
+}
+.beam-wrapper .num-input {
+    width: 85px;
+    padding: 4px 8px;
+    border-radius: 40px;
+    border: 1px solid #94a3b8;
+    text-align: center;
+    background: white;
+    font-weight: 500;
+}
+.beam-wrapper select, .beam-wrapper .num-input {
+    background: white;
+}
+.beam-wrapper button {
+    background: #0284c7;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 40px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.1s;
+    font-size: 0.75rem;
+}
+.beam-wrapper button.secondary {
+    background: #475569;
+}
+.beam-wrapper button.removeLoadBtn {
+    background: #cbd5e1;
+    color: #0f172a;
+    padding: 4px 8px;
+}
+.beam-wrapper .load-item {
+    background: #eef2ff;
+    border-radius: 60px;
+    padding: 6px 12px;
+    margin: 8px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+}
+.beam-wrapper .load-item input {
+    width: 70px;
+    border-radius: 30px;
+    border: 1px solid #cbd5e1;
+    padding: 4px 6px;
+}
+.beam-wrapper .badge {
+    background: #0f172a;
+    color: #facc15;
+    padding: 4px 10px;
+    border-radius: 40px;
+    font-family: monospace;
+    font-size: 0.7rem;
+}
+.beam-wrapper canvas {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 1.2rem;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+    margin-bottom: 14px;
+    transition: all 0.1s;
+}
+.beam-wrapper .legend {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #edf4fa;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    margin-top: 4px;
+    margin-bottom: 12px;
+}
+.beam-wrapper .warning-card {
+    background: #fff7e5;
+    border-left: 6px solid #f97316;
+    padding: 8px 12px;
+    border-radius: 20px;
+    margin-top: 12px;
+    font-size: 0.75rem;
+}
+.beam-wrapper .stress-dist {
+    background: #f1f5f9;
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+}
+@media (max-width: 850px) {
+    .beam-wrapper .flex-dashboard { padding: 1rem; flex-direction: column; }
+    .beam-wrapper .visualization { min-width: 100%; }
+}
