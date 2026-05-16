@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { render, useEffect, useRef } from '/src/utils/react-lite.js';
 import './PipeFlowSimulation.css';
 
 export default function PipeFlowSimulation() {
@@ -11,14 +11,14 @@ export default function PipeFlowSimulation() {
     const $ = (id) => root.querySelector(`#${id}`);
 
     // --- DOM elements ---
-    const lengthSlider = $("length"), lengthVal = $("lengthVal");
-    const diamSlider = $("diam"), diamVal = $("diamVal");
-    const roughSlider = $("rough"), roughVal = $("roughVal");
+    const lengthSlider = $("length");
+    const diamSlider = $("diam");
+    const roughSlider = $("rough");
     const flowVal = $("flowVal");
-    const bendsSlider = $("bends"), bendsVal = $("bendsVal");
-    const valveSlider = $("valve"), valveVal = $("valveVal");
-    const viscSlider = $("visc"), viscVal = $("viscVal");
-    const pumpSlider = $("pumpPower"), pumpVal = $("pumpVal");
+    const bendsSlider = $("bends");
+    const valveSlider = $("valve");
+    const viscSlider = $("visc");
+    const pumpSlider = $("pumpPower");
     const warningDiv = $("failureWarning");
     const reSpan = $("reDisplay");
     const outletSpan = $("outletPress");
@@ -65,13 +65,10 @@ export default function PipeFlowSimulation() {
 
     // Minor loss coefficients
     function minorLossCoeff(bends, valveOpening) {
-        let K_bend = bends * 0.45;      // each 90° bend K≈0.45
-        let K_valve = 0;
-        if (valveOpening > 0.01) {
-            // typical globe valve characteristic: K ~ 10*(1-opening)^2 + 0.2
-            K_valve = 4.5 * Math.pow(1 - valveOpening, 1.5) + 0.2;
-            if (K_valve > 40) K_valve = 40;
-        } else K_valve = 100;
+        const K_bend = bends * 0.45;      // each 90° bend K≈0.45
+        const K_valve = valveOpening > 0.01
+            ? Math.min(40, 4.5 * Math.pow(1 - valveOpening, 1.5) + 0.2)
+            : 100;
         return K_bend + K_valve;
     }
 
@@ -130,13 +127,10 @@ export default function PipeFlowSimulation() {
         const totalHeadLoss = h_friction + h_minor;   // meters
         
         // inlet pressure (at pipe start) from pump or default tank pressure
-        let pumpHead_m = 0;
         let effectivePumpHead = 0;
         if (pumpPower > 0 && Q > 0.0001) {
             const eff = 0.65; // efficiency
-            pumpHead_m = (pumpPower * eff) / (rho * g * Q);
-            if (pumpHead_m > 120) pumpHead_m = 120;
-            effectivePumpHead = pumpHead_m;
+            effectivePumpHead = Math.min(120, (pumpPower * eff) / (rho * g * Q));
         }
         // starting pressure: typical supply pressure (200 kPa gauge) + pump head (converted)
         const supplyPressure_kPa = 180;   // kPa gauge from reservoir
@@ -147,7 +141,7 @@ export default function PipeFlowSimulation() {
         // outlet pressure (gauge)
         let outletPressure_kPa = inletPressure_kPa - (totalHeadLoss * rho * g / 1000);
         let cavitationRisk = false;
-        let warningMsg = "";
+        let warningMsg;
         if (outletPressure_kPa < 5.0) {
             cavitationRisk = true;
             warningMsg = "⚠️ CRITICAL: Very high head loss! Outlet pressure near zero → CAVITATION risk! Increase diameter or reduce flow.";
@@ -190,8 +184,6 @@ export default function PipeFlowSimulation() {
     function drawPipe(hyd) {
         if (!ctxPipe) return;
         ctxPipe.clearRect(0, 0, width, heightPipe);
-        const L = hyd.L;
-        const D_mm = hyd.D_mm;
         const vel = hyd.V;
         const inletP = hyd.inletPressure_kPa;
         const outletP = hyd.outletPressure_kPa;
@@ -223,7 +215,6 @@ export default function PipeFlowSimulation() {
                 }
             }
             if (numBends % 2 === 0) {
-                currentX += xStep;
                 pts.push({x: endX, y: currentY});
             } else {
                 let sign = (Math.floor((numBends-1) / 2) % 2 === 0) ? 1 : -1;
@@ -350,10 +341,7 @@ export default function PipeFlowSimulation() {
         ctxPipe.fillStyle = "#d97706";
         ctxPipe.fillText(`Head loss = ${hyd.totalHeadLoss.toFixed(1)} m  (friction ${hyd.h_friction.toFixed(1)}m + minor ${hyd.h_minor.toFixed(1)}m)`, startX+20, heightPipe - 15);
         
-        let reColor = "#1e293b";
-        if (hyd.Re < 2000) reColor = "#3b82f6";
-        else if (hyd.Re < 4000) reColor = "#f59e0b";
-        else reColor = "#dc2626";
+        const reColor = hyd.Re < 2000 ? "#3b82f6" : hyd.Re < 4000 ? "#f59e0b" : "#dc2626";
         ctxPipe.fillStyle = reColor;
         ctxPipe.fillRect(width - 150, 15, 12, 12);
         ctxPipe.fillStyle = "#1e293b";
@@ -401,7 +389,7 @@ export default function PipeFlowSimulation() {
         for (let i = 0; i <= 100; i++) {
             let Q_m3h = (i / 100) * 130;
             let Q_m3s = Q_m3h / 3600;
-            let H_pump = 0;
+            let H_pump;
             if (pumpPower > 0 && Q_m3s > 0.001) {
                 H_pump = (pumpPower * eff) / (rho * g * Q_m3s);
                 if (H_pump > 80) H_pump = 80;
@@ -449,7 +437,6 @@ export default function PipeFlowSimulation() {
         
         let opQ = hyd.Q_m3h;
         let opH_sys = hyd.totalHeadLoss;
-        let opH_pump = hyd.pumpHead_m;
         let xOp = 60 + (opQ / 130) * 700;
         let yOp = 170 - (opH_sys / 55) * 150;
         ctxCurve.beginPath();
@@ -465,7 +452,7 @@ export default function PipeFlowSimulation() {
         ctxCurve.fillText("Pump curve", 650, 60);
     }
     
-    function animate(t) {
+    function animate() {
         const hyd = computeHydraulics();
         updateParticles(hyd.V);
         drawPipe(hyd);
@@ -601,4 +588,9 @@ export default function PipeFlowSimulation() {
       </div>
     </div>
   );
+}
+export function mountPipeFlowSimulation(container) {
+  const app = render(PipeFlowSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
