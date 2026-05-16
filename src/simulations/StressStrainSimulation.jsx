@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { render, useEffect, useRef } from '/src/utils/react-lite.js';
 import './StressStrainSimulation.css';
 
 export default function StressStrainSimulation() {
@@ -23,7 +23,6 @@ export default function StressStrainSimulation() {
     let tempFactor = 1.0;
     let rateFactor = 1.0;
     let force = 0;          // N
-    let length_mm = 100;
     let area_mm2 = 50;
     let fractured = false;
     
@@ -85,13 +84,11 @@ export default function StressStrainSimulation() {
         const fractureStrainRef = getFractureStrain(refCurve);
         
         let newStrain;
-        let newFractured = false;
+        const newFractured = stress >= maxStressRef && force > 0;
         
-        if (stress >= maxStressRef && force > 0) {
-            newFractured = true;
+        if (newFractured) {
             newStrain = fractureStrainRef;
         } else {
-            newFractured = false;
             let currentMaxPoint = loadingPath.length ? loadingPath[loadingPath.length-1] : null;
             if (currentMaxPoint && stress < currentMaxPoint.stress && currentMaxPoint.strain > 0.002) {
                 let E_initial = (refCurve[1][1] - refCurve[0][1]) / (refCurve[1][0] - refCurve[0][0]);
@@ -260,13 +257,10 @@ export default function StressStrainSimulation() {
         let mouseX = (e.clientX - rect.left) * scaleX;
         let mouseY = (e.clientY - rect.top) * scaleY;
         const refCurve = getModifiedCurve();
-        const maxStrain = refCurve[refCurve.length-1][0]*1.05;
         const maxStress = Math.max(...refCurve.map(p=>p[1]))*1.05;
         const margin = { left: 55, right: 25, top: 20, bottom: 35 };
-        const graphW = canvasWidth - margin.left - margin.right;
         const graphH = canvasHeight - margin.top - margin.bottom;
         if (mouseX >= margin.left && mouseX <= canvasWidth-margin.right && mouseY >= margin.top && mouseY <= canvasHeight-margin.bottom) {
-            let strainClicked = (mouseX - margin.left) / graphW * maxStrain;
             let stressClicked = (canvasHeight-margin.bottom - mouseY) / graphH * maxStress;
             let area_m2 = area_mm2/1e6;
             let forceNew = stressClicked * area_m2;
@@ -279,7 +273,7 @@ export default function StressStrainSimulation() {
         forceChange: (e) => setForceFromSlider(e.target.value),
         resetClick: resetSim,
         autoClick: autoLoadToUTS,
-        lenChange: () => { area_mm2 = parseFloat(areaInput.value); length_mm = parseFloat(lengthInput.value); resetSim(); },
+        lenChange: () => { area_mm2 = parseFloat(areaInput.value); resetSim(); },
         areaChange: () => { area_mm2 = parseFloat(areaInput.value); resetSim(); },
         tempChange: () => { tempFactor = parseFloat(tempSlider.value); tempValSpan.innerText = tempFactor.toFixed(2); resetSim(); },
         rateChange: () => { rateFactor = parseFloat(rateSlider.value); rateValSpan.innerText = rateFactor.toFixed(2); resetSim(); }
@@ -414,4 +408,9 @@ export default function StressStrainSimulation() {
       </div>
     </div>
   );
+}
+export function mountStressStrainSimulation(container) {
+  const app = render(StressStrainSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
