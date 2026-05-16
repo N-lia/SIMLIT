@@ -1,5 +1,10 @@
+.gitignore
+.DS_Store
+create-commit.sh
 # Logs
+
 logs
+
 *.log
 npm-debug.log*
 yarn-debug.log*
