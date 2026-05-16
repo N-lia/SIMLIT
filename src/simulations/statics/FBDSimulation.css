@@ -1,0 +1,294 @@
+/* =========================================
+   FBD Simulation Scoped Styles
+   ========================================= */
+.fbd-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: var(--bg, #0f1419);
+  color: var(--text, #e8eef5);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(15px, 3.8vw, 17px);
+  --bg: #0f1419;
+  --surface: #1a222d;
+  --surface2: #243040;
+  --text: #e8eef5;
+  --muted: #8b9cb3;
+  --accent: #5eb8ff;
+  --accent2: #7ee787;
+  --danger: #ff7b72;
+  --radius: 14px;
+  --touch: 48px;
+}
+.fbd-wrapper * { box-sizing: border-box; }
+.fbd-wrapper .stage-wrap {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.65rem;
+  min-height: clamp(200px, 36vh, 400px);
+}
+.fbd-wrapper .arena-shell {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fbd-wrapper .arena {
+  position: relative;
+  width: min(96vw, 580px);
+  height: min(44vh, 420px);
+  max-width: calc(100vw - 1rem);
+  max-height: min(58vh, 520px);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--surface2);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35), 0 8px 28px rgba(0, 0, 0, 0.45);
+  background: #0a0e13;
+}
+.fbd-wrapper .hud {
+  position: absolute;
+  top: 0.35rem;
+  left: 0.35rem;
+  right: 0.35rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  pointer-events: none;
+}
+.fbd-wrapper canvas#stage {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+.fbd-wrapper canvas#stage.dragging { cursor: grabbing; }
+.fbd-wrapper canvas#stage.dragging-body { cursor: move; }
+.fbd-wrapper .chip {
+  pointer-events: none;
+  background: rgba(26, 34, 45, 0.92);
+  border: 1px solid var(--surface2);
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.fbd-wrapper .chip strong { color: var(--text); font-weight: 600; }
+.fbd-wrapper .panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: min(56vh, 520px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.75rem 1rem calc(0.85rem + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+  border-top: 1px solid var(--surface2);
+  border-radius: var(--radius) var(--radius) 0 0;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.35);
+}
+.fbd-wrapper .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.65rem;
+}
+.fbd-wrapper .row:last-child { margin-bottom: 0; }
+.fbd-wrapper label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+  min-width: 0;
+}
+.fbd-wrapper input[type="text"], .fbd-wrapper select {
+  min-height: var(--touch);
+  padding: 0 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--surface2);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+  width: 100%;
+}
+.fbd-wrapper input[type="range"] {
+  width: 100%;
+  height: 2rem;
+  accent-color: var(--accent);
+}
+.fbd-wrapper .btn {
+  min-height: var(--touch);
+  padding: 0 1rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+.fbd-wrapper .btn-primary { background: var(--accent); color: #041018; }
+.fbd-wrapper .btn-primary:active { filter: brightness(0.92); }
+.fbd-wrapper .btn-ghost { background: var(--surface2); color: var(--text); }
+.fbd-wrapper .btn-danger {
+  background: rgba(255, 123, 114, 0.2);
+  color: var(--danger);
+  border: 1px solid rgba(255, 123, 114, 0.35);
+}
+.fbd-wrapper .grow { flex: 1 1 120px; }
+.fbd-wrapper .presets {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.45rem;
+}
+@media (min-width: 480px) {
+  .fbd-wrapper .presets { grid-template-columns: repeat(3, 1fr); }
+}
+.fbd-wrapper .preset {
+  min-height: var(--touch);
+  border-radius: 10px;
+  border: 1px solid var(--surface2);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.fbd-wrapper .preset:active { background: var(--surface2); }
+.fbd-wrapper .toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.fbd-wrapper .toggles label {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.fbd-wrapper .toggles input { width: 1.15rem; height: 1.15rem; accent-color: var(--accent2); }
+.fbd-wrapper .hint {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-top: 0.5rem;
+}
+.fbd-wrapper .seg-title {
+  margin: 0 0 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.fbd-wrapper .calc-details {
+  margin-top: 0.65rem;
+  border: 1px solid var(--surface2);
+  border-radius: 12px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.fbd-wrapper .calc-details > summary {
+  list-style: none;
+  min-height: var(--touch);
+  padding: 0 0.85rem;
+  display: flex;
+  align-items: center;
+  font-weight: 650;
+  font-size: 0.88rem;
+  cursor: pointer;
+  user-select: none;
+}
+.fbd-wrapper .calc-details > summary::-webkit-details-marker { display: none; }
+.fbd-wrapper .calc-details > summary::after {
+  content: "";
+  margin-left: auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+}
+.fbd-wrapper .calc-details[open] > summary::after { transform: rotate(-135deg); }
+.fbd-wrapper .calc-body {
+  padding: 0 0.85rem 0.85rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.fbd-wrapper .calc-body code, .fbd-wrapper .mono {
+  font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, monospace;
+  font-size: 0.76rem;
+  color: var(--text);
+}
+.fbd-wrapper .calc-body .katex,
+.fbd-wrapper .formula .katex {
+  font-size: 0.95em;
+  color: var(--text);
+}
+.fbd-wrapper .calc-table .katex { font-size: 0.88em; }
+.fbd-wrapper .calc-table th, .fbd-wrapper .calc-table td { vertical-align: middle; }
+.fbd-wrapper .calc-intro { margin: 0 0 0.5rem; }
+.fbd-wrapper .run-state { font-weight: 600; color: var(--accent2); }
+.fbd-wrapper .chip .katex { font-size: 0.88em; }
+.fbd-wrapper .calc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+  font-size: 0.72rem;
+}
+.fbd-wrapper .calc-table th, .fbd-wrapper .calc-table td {
+  border: 1px solid var(--surface2);
+  padding: 0.35rem 0.4rem;
+  text-align: right;
+}
+.fbd-wrapper .calc-table th:first-child, .fbd-wrapper .calc-table td:first-child {
+  text-align: left;
+  max-width: 4.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fbd-wrapper .calc-table th { background: var(--surface2); color: var(--text); font-weight: 600; }
+.fbd-wrapper .formula {
+  margin: 0.35rem 0 0;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--surface2);
+  color: var(--text);
+}
+.fbd-wrapper .btn-toggle.playing {
+  background: var(--accent2);
+  color: #041008;
+}
+@media (min-width: 768px) {
+  .fbd-wrapper { flex-direction: row; align-items: stretch; }
+  .fbd-wrapper .stage-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+    align-items: center;
+  }
+  .fbd-wrapper .arena {
+    width: min(92%, 820px);
+    height: min(68vh, 600px);
+    max-height: min(82vh, 680px);
+  }
+  .fbd-wrapper .panel {
+    width: min(380px, 38vw);
+    max-height: none;
+    border-radius: 0;
+    border-top: none;
+    border-left: 1px solid var(--surface2);
+    box-shadow: none;
+    padding-top: 1rem;
+  }
+}
