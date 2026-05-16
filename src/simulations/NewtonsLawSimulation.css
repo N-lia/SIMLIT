@@ -1,0 +1,174 @@
+.newton-wrapper {
+    font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+    background: linear-gradient(145deg, #e9ecef 0%, #ced4da 100%);
+    padding: 20px;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;
+    color: #333;
+    flex: 1;
+}
+
+.newton-wrapper * {
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.newton-wrapper .sim-card {
+    max-width: 1200px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 2rem;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(2px);
+    padding: 1.2rem 1.5rem 1.8rem;
+}
+
+.newton-wrapper h1 {
+    font-size: 1.8rem;
+    margin: 0 0 0.2rem;
+    color: #212529;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.newton-wrapper h1 small {
+    background: #495057;
+    color: white;
+    padding: 4px 16px;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+
+.newton-wrapper .sub {
+    border-left: 5px solid #d946ef;
+    padding-left: 14px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.newton-wrapper .flex-dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.newton-wrapper .controls {
+    flex: 1.1;
+    min-width: 280px;
+    background: #f8f9fa;
+    border-radius: 1.5rem;
+    padding: 1.2rem;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #dee2e6;
+}
+
+.newton-wrapper .visualization {
+    flex: 2;
+    min-width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.newton-wrapper .control-group {
+    margin-bottom: 1.5rem;
+}
+
+.newton-wrapper .control-group label {
+    font-weight: 700;
+    color: #343a40;
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.newton-wrapper .param-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.newton-wrapper input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    height: 6px;
+    border-radius: 5px;
+    background: #ced4da;
+    margin-bottom: 8px;
+}
+
+.newton-wrapper .num-input {
+    width: 100px;
+    padding: 6px 12px;
+    border-radius: 40px;
+    border: 1px solid #adb5bd;
+    text-align: center;
+    background: white;
+    font-weight: 600;
+    font-family: monospace;
+    font-size: 1rem;
+    color: #212529;
+}
+
+.newton-wrapper .formula-box {
+    background: #212529;
+    color: white;
+    padding: 1.2rem;
+    border-radius: 1rem;
+    text-align: center;
+    margin-top: 1.5rem;
+    font-family: monospace;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.newton-wrapper .formula-box span.var-f { color: #f43f5e; }
+.newton-wrapper .formula-box span.var-m { color: #3b82f6; }
+.newton-wrapper .formula-box span.var-a { color: #10b981; }
+
+.newton-wrapper canvas {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 1.2rem;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    margin-bottom: 12px;
+}
+
+.newton-wrapper .mode-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.newton-wrapper .mode-btn {
+    flex: 1;
+    background: #e9ecef;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #495057;
+}
+
+.newton-wrapper .mode-btn.active {
+    background: #6366f1;
+    color: white;
+}
+
+@media (max-width: 850px) {
+    .newton-wrapper .flex-dashboard {
+        flex-direction: column;
+    }
+    .newton-wrapper .visualization {
+        min-width: 100%;
+    }
+}
