@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { render, useEffect, useRef } from '/src/utils/react-lite.js';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import './EquilibriumSimulation.css';
@@ -75,7 +75,7 @@ export default function EquilibriumSimulation() {
       if (!katex) return "<code>" + escapeHtml(tex) + "</code>";
       try {
         return katex.renderToString(tex, { throwOnError: false, displayMode: !!displayMode, strict: "ignore" });
-      } catch (_) {
+      } catch {
         return "<code>" + escapeHtml(tex) + "</code>";
       }
     }
@@ -447,7 +447,9 @@ export default function EquilibriumSimulation() {
         drag = { id: pick.id, pointerId: e.pointerId };
         try {
           canvas.setPointerCapture(e.pointerId);
-        } catch (_) {}
+        } catch {
+          // Pointer capture can fail if the pointer is already released.
+        }
       } else {
         selectedId = null;
         syncForm();
@@ -473,7 +475,9 @@ export default function EquilibriumSimulation() {
       if (drag && e && typeof e.pointerId === "number") {
         try {
           canvas.releasePointerCapture(e.pointerId);
-        } catch (_) {}
+        } catch {
+          // Pointer capture can fail if the pointer is already released.
+        }
       }
       drag = null;
       canvas.classList.remove("dragging");
@@ -556,4 +560,9 @@ export default function EquilibriumSimulation() {
       </div>
     </div>
   );
+}
+export function mountEquilibriumSimulation(container) {
+  const app = render(EquilibriumSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
