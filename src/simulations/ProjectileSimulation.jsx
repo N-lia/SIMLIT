@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { render, useState, useEffect, useRef, useMemo, useCallback } from '/src/utils/react-lite.js';
 import './ProjectileSimulation.css';
 
 // --- Physics & Math Utilities ---
@@ -7,7 +7,7 @@ function airDensity(alt) {
 }
 
 function derivatives(state, windSpd, dens, CdA, massVal, gVal) {
-    let [x, y, vx, vy] = state;
+    let [, , vx, vy] = state;
     let v_rel_x = vx - windSpd;
     let v_rel_y = vy;
     let v_rel = Math.hypot(v_rel_x, v_rel_y);
@@ -577,4 +577,9 @@ export default function ProjectileSimulation() {
             </div>
         </div>
     );
+}
+export function mountProjectileSimulation(container) {
+  const app = render(ProjectileSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
