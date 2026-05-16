@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { render, useEffect, useRef } from '/src/utils/react-lite.js';
 import './TrussSimulation.css';
 
 export default function TrussSimulation() {
@@ -587,4 +587,9 @@ export default function TrussSimulation() {
       </div>
     </div>
   );
+}
+export function mountTrussSimulation(container) {
+  const app = render(TrussSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
