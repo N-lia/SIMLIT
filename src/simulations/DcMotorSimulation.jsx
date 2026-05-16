@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { render, useState, useEffect, useRef } from '/src/utils/react-lite.js';
 import './DcMotorSimulation.css';
 
 export default function DcMotorSimulation() {
@@ -120,7 +120,6 @@ export default function DcMotorSimulation() {
       ctx.clearRect(0, 0, W, H);
       const cx = W / 2, cy = H / 2;
       const dark = isDark();
-      const p = pRef.current;
       const S = stateRef.current;
 
       const C = {
@@ -567,4 +566,9 @@ export default function DcMotorSimulation() {
       </div>
     </div>
   );
+}
+export function mountDcMotorSimulation(container) {
+  const app = render(DcMotorSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
