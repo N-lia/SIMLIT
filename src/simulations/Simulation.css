@@ -1,0 +1,188 @@
+/* Shared layout for every simulation component */
+
+.sim-inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  min-height: 0;
+}
+
+/* ── Canvas area ── */
+.canvas-area {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 10px 4px;
+  min-height: 0;
+  overflow: hidden;
+}
+.sim-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 14px;
+}
+
+/* ── Floating stats ── */
+.sim-stats {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  pointer-events: none;
+}
+.stat {
+  background: rgba(15,17,23,0.72);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.stat-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.45);
+}
+.stat-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ── Controls panel ── */
+.controls-panel {
+  background: rgba(255,255,255,0.03);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 12px 16px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.control-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.control-row label {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.ctrl-val { color: #ff8c5a; font-weight: 700; }
+
+.control-row input[type="range"] {
+  width: 100%;
+  height: 4px;
+  -webkit-appearance: none;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.control-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #e85d2a;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 8px rgba(232,93,42,0.55);
+  cursor: pointer;
+}
+
+.ctrl-buttons { display: flex; gap: 8px; margin-top: 2px; }
+
+.ctrl-btn-primary {
+  flex: 1;
+  background: #e85d2a;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 11px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ctrl-btn-primary:hover:not(:disabled) { background: #ff7a45; transform: translateY(-1px); }
+.ctrl-btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.ctrl-btn-secondary {
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ctrl-btn-secondary:hover { background: rgba(255,255,255,0.12); }
+
+/* ── Coming Soon ── */
+.coming-soon-wrap { justify-content: center; align-items: center; }
+.coming-soon-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 32px 24px;
+  animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+.coming-soon-emoji { font-size: 56px; filter: grayscale(0.3); }
+.coming-soon-title { font-size: 22px; font-weight: 800; color: #fff; }
+.coming-soon-sub   { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+.coming-soon-badge {
+  font-size: 12px; font-weight: 700;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  padding: 7px 16px;
+  border-radius: 20px;
+  margin-top: 4px;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── KaTeX equation panel ── */
+.katex-panel {
+  background: rgba(255,255,255,0.025);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.katex-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Make KaTeX text white on dark background */
+.katex-panel .katex,
+.katex-panel .katex * { color: rgba(255,255,255,0.82) !important; }
+.katex-panel .katex .mord.text { color: rgba(255,255,255,0.5) !important; }
+
+
