@@ -38,6 +38,7 @@ export const FIELD_TOPICS = {
     color: '#fbd0e6',
     topics: [
       { id: 'gas',  label: 'Ideal Gas Law',   desc: 'Interactive PV = nRT particle sim',  difficulty: 'Intermediate', emoji: '🌡️', implemented: true },
+      { id: 'heat_engine', label: 'Heat Engine', desc: 'Carnot efficiency and piston dynamics', difficulty: 'Advanced', emoji: '🔥', implemented: true },
       { id: 'heat', label: 'Heat Transfer',   desc: 'Conduction, convection and radiation', difficulty: 'Advanced',    emoji: '🔥', implemented: false },
     ],
   },
@@ -82,6 +83,7 @@ export const FIELD_TOPICS = {
     color: '#faf5ee',
     topics: [
       { id: 'case',     label: 'Case Study Simulator', desc: 'Argue landmark legal cases', difficulty: 'Advanced',     emoji: '⚖️', implemented: true },
+      { id: 'courtroom', label: 'Virtual Courtroom', desc: 'Step into the courtroom and present your case', difficulty: 'Advanced', emoji: '🏛️', implemented: true },
       { id: 'contract', label: 'Contract Law',         desc: 'Draft and review contracts', difficulty: 'Intermediate', emoji: '📜', implemented: false },
     ],
   },
