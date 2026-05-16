@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { render, useState, useEffect, useRef } from '/src/utils/react-lite.js';
 import './DoublePendulumSimulation.css';
 
 export default function DoublePendulumSimulation() {
@@ -91,7 +91,6 @@ export default function DoublePendulumSimulation() {
   const energy = (state, P) => {
     const [th1, w1, th2, w2] = state;
     const { m1, m2, L1, L2, g } = P;
-    const x1 =  L1 * Math.sin(th1);
     const y1 = -L1 * Math.cos(th1);
     const vx1 = L1 * w1 * Math.cos(th1);
     const vy1 = L1 * w1 * Math.sin(th1);
@@ -169,7 +168,6 @@ export default function DoublePendulumSimulation() {
     initSim(pRef.current);
 
     return () => window.removeEventListener('resize', handleResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -634,4 +632,9 @@ export default function DoublePendulumSimulation() {
       </div>
     </div>
   );
+}
+export function mountDoublePendulumSimulation(container) {
+  const app = render(DoublePendulumSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
