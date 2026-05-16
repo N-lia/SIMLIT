@@ -47,18 +47,18 @@
 
 .field-card {
   background-color: var(--card-color);
-  border-radius: var(--radius-md);
+  border-radius: 5px 10px 6px 9px / 10px 5px 9px 6px;
   padding: 18px 18px 18px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   cursor: pointer;
-  border: 2.5px solid transparent;
+  border: 1.5px solid var(--line-ink);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   color: #fff;
   position: relative;
   overflow: hidden;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--hand-font);
   text-align: left;
   min-height: 88px;
   animation: cardSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -84,12 +84,12 @@
 
 .field-card.dark-text {
   color: var(--text-primary);
-  border-color: #e8e0d5;
+  border-color: var(--line-ink);
 }
 
 .field-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px -6px rgba(0, 0, 0, 0.15);
+  box-shadow: 4px 5px 0 rgba(37, 35, 31, 0.12);
 }
 
 .field-card:active {
@@ -131,7 +131,8 @@
   width: 72px;
   height: 72px;
   flex-shrink: 0;
-  border-radius: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--line-soft);
   overflow: hidden;
   z-index: 2;
 }
@@ -151,7 +152,7 @@
 .card-arrow {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
