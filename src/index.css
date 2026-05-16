@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* Core palette */
+  --bg: #faf5ee;
+  --bg-warm: #f5ede0;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6560;
+  --text-muted: #9e9690;
+
+  /* Accent colors */
+  --accent-orange: #e85d2a;
+  --accent-orange-light: #ff7a45;
+  --accent-purple: #8b5cf6;
+  --accent-purple-deep: #6d28d9;
+  --accent-green: #2a9d6e;
+  --accent-green-light: #34d399;
+  --accent-red: #d94040;
+  --accent-yellow: #e8a630;
+  --accent-cream: #f5ede0;
+
+  /* Card colors */
+  --card-cs: #e85d2a;
+  --card-eng: #f5ede0;
+  --card-law: #faf5ee;
+  --card-med: #e85d2a;
+
+  /* UI */
+  --btn-dark: #1a1a1a;
+  --btn-dark-hover: #2d2d2d;
+  --input-bg: #f3f0eb;
+  --input-border: #e5e0d8;
+  --input-focus: #8b5cf6;
+  --card-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.1);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: linear-gradient(145deg, #e8e0d6 0%, #d6cec4 100%);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
