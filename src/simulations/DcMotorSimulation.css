@@ -1,0 +1,310 @@
+.dc-motor-container *, .dc-motor-container *::before, .dc-motor-container *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.dc-motor-container {
+  --bg:        #f4f5f7;
+  --surface:   #ffffff;
+  --surface2:  #f1f3f6;
+  --surface3:  #e8eaee;
+  --border:    rgba(0,0,0,0.09);
+  --border2:   rgba(0,0,0,0.16);
+  --t1:        #111318;
+  --t2:        #4b5263;
+  --t3:        #8b93a4;
+  --accent:    #2563eb;
+  --accent-bg: #eff4ff;
+  --warn:      #d97706;
+  --warn-bg:   #fffbeb;
+  --danger:    #dc2626;
+  --danger-bg: #fef2f2;
+  --good:      #059669;
+  --good-bg:   #ecfdf5;
+  --r:         8px;
+  --rl:        12px;
+
+  background: var(--bg);
+  font-family: 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--t1);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dc-motor-container {
+    --bg:        #0d0f12;
+    --surface:   #161820;
+    --surface2:  #1e2028;
+    --surface3:  #262830;
+    --border:    rgba(255,255,255,0.08);
+    --border2:   rgba(255,255,255,0.14);
+    --t1:        #e8eaf0;
+    --t2:        #8892a4;
+    --t3:        #545e6f;
+    --accent:    #60a5fa;
+    --accent-bg: #0f1e35;
+    --warn:      #fbbf24;
+    --warn-bg:   #1c1600;
+    --danger:    #f87171;
+    --danger-bg: #1c0404;
+    --good:      #34d399;
+    --good-bg:   #001a0e;
+  }
+}
+
+.dc-motor-container .app {
+  width: 100%;
+  max-width: 1180px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Header */
+.dc-motor-container .header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 4px 0 2px;
+}
+.dc-motor-container .header h1 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--t1);
+}
+.dc-motor-container .header span {
+  font-size: 11px;
+  color: var(--t3);
+  font-weight: 400;
+}
+
+/* Main layout */
+.dc-motor-container .main-row {
+  display: grid;
+  grid-template-columns: 1fr 272px;
+  gap: 14px;
+  align-items: start;
+}
+
+/* Cards */
+.dc-motor-container .card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--rl);
+  overflow: hidden;
+}
+
+/* Motor canvas */
+.dc-motor-container .motor-wrap { position: relative; }
+.dc-motor-container #motorC { display: block; width: 100%; }
+
+/* Right column */
+.dc-motor-container .right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Params panel */
+.dc-motor-container .params {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--rl);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.dc-motor-container .panel-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--t3);
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border);
+}
+.dc-motor-container .param-row { display: flex; flex-direction: column; gap: 5px; }
+.dc-motor-container .param-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.dc-motor-container .param-label { font-size: 12px; color: var(--t2); font-weight: 400; }
+.dc-motor-container .param-val {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--t1);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.01em;
+}
+
+.dc-motor-container input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--surface3);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.dc-motor-container input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--accent);
+  cursor: grab;
+  transition: box-shadow .15s;
+}
+.dc-motor-container input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+.dc-motor-container input[type=range]::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  cursor: grab;
+}
+
+/* Metrics */
+.dc-motor-container .metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.dc-motor-container .metric {
+  background: var(--surface2);
+  border-radius: var(--r);
+  padding: 9px 11px;
+}
+.dc-motor-container .metric-label {
+  font-size: 10px;
+  color: var(--t3);
+  font-weight: 500;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.dc-motor-container .metric-val {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--t1);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+  line-height: 1;
+}
+.dc-motor-container .metric-unit {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--t3);
+  margin-left: 2px;
+}
+
+/* Temp */
+.dc-motor-container .temp-card {
+  background: var(--surface2);
+  border-radius: var(--r);
+  padding: 9px 11px;
+}
+.dc-motor-container .temp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.dc-motor-container .temp-label { font-size: 10px; font-weight: 500; color: var(--t3); text-transform: uppercase; letter-spacing: .04em; }
+.dc-motor-container .temp-num { font-size: 12px; font-weight: 500; color: var(--t1); font-variant-numeric: tabular-nums; }
+.dc-motor-container .temp-track {
+  height: 4px;
+  background: var(--surface3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.dc-motor-container .temp-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width .4s ease, background .4s ease;
+  background: var(--good);
+}
+
+/* Fault bar */
+.dc-motor-container .fault-bar {
+  border-radius: var(--r);
+  padding: 8px 11px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--good-bg);
+  color: var(--good);
+  border: 0.5px solid color-mix(in srgb, var(--good) 25%, transparent);
+  transition: all .2s ease;
+  line-height: 1.4;
+}
+.dc-motor-container .fault-bar.warn  { background: var(--warn-bg); color: var(--warn); border-color: color-mix(in srgb, var(--warn) 25%, transparent); }
+.dc-motor-container .fault-bar.danger { background: var(--danger-bg); color: var(--danger); border-color: color-mix(in srgb, var(--danger) 25%, transparent); }
+
+/* Fault buttons */
+.dc-motor-container .btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.dc-motor-container button {
+  background: transparent;
+  border: 0.5px solid var(--border2);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--t2);
+  cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.dc-motor-container button:hover { background: var(--surface2); }
+.dc-motor-container button.active { background: var(--warn-bg); color: var(--warn); border-color: color-mix(in srgb, var(--warn) 35%, transparent); }
+.dc-motor-container button.active-danger { background: var(--danger-bg); color: var(--danger); border-color: color-mix(in srgb, var(--danger) 35%, transparent); }
+.dc-motor-container button.reset { color: var(--accent); }
+
+/* Bottom charts */
+.dc-motor-container .chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.dc-motor-container .chart-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--rl);
+  padding: 12px 14px;
+  overflow: hidden;
+}
+.dc-motor-container .chart-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--t3);
+  margin-bottom: 8px;
+}
+.dc-motor-container #tsC, .dc-motor-container #ripC { display: block; width: 100%; }
+
+/* Telemetry overlay */
+.dc-motor-container .telem {
+  position: absolute;
+  bottom: 8px; right: 10px;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  color: var(--t3);
+  pointer-events: none;
+  letter-spacing: .02em;
+}
+
+@media (max-width: 780px) {
+  .dc-motor-container .main-row { grid-template-columns: 1fr; }
+  .dc-motor-container .chart-row { grid-template-columns: 1fr; }
+}
