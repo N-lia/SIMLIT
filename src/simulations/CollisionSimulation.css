@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+.collision-sim-container *, .collision-sim-container *::before, .collision-sim-container *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.collision-sim-container {
+  --bg:       #07090d;
+  --bg2:      #0b0e14;
+  --bg3:      #10141c;
+  --panel:    #0d1018;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.13);
+  --t1:       #dce4f0;
+  --t2:       #6a7888;
+  --t3:       #323d4a;
+  --mono:     'IBM Plex Mono', monospace;
+  --sans:     'IBM Plex Sans', sans-serif;
+  --phosphor: #39ff8a;
+  --amber:    #ffb830;
+  --cyan:     #00d4ff;
+  --red:      #ff5050;
+  --violet:   #b78cff;
+
+  background: var(--bg);
+  color: var(--t1);
+  font-family: var(--sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 18px 28px;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ── Header ── */
+.collision-sim-container .hdr {
+  width: 100%; max-width: 1280px;
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 0.5px solid var(--border);
+  margin-bottom: 14px;
+  gap: 12px;
+}
+.collision-sim-container .hdr-left { display: flex; align-items: baseline; gap: 14px; }
+.collision-sim-container .logo {
+  font-family: var(--mono); font-size: 13px; font-weight: 500;
+  color: var(--cyan); letter-spacing: .1em; text-transform: uppercase;
+}
+.collision-sim-container .sub { font-family: var(--mono); font-size: 10px; color: var(--t3); letter-spacing: .04em; }
+.collision-sim-container .conservation-badge {
+  font-family: var(--mono); font-size: 11px; color: var(--phosphor);
+  background: rgba(57,255,138,0.07);
+  border: 0.5px solid rgba(57,255,138,0.22);
+  border-radius: 4px; padding: 3px 10px; letter-spacing: .04em;
+}
+
+/* ── App ── */
+.collision-sim-container .app { width: 100%; max-width: 1280px; display: flex; flex-direction: column; gap: 12px; }
+
+/* ── Main grid ── */
+.collision-sim-container .main-grid {
+  display: grid;
+  grid-template-columns: 1fr 310px;
+  gap: 12px; align-items: start;
+}
+
+/* ── Sim canvas ── */
+.collision-sim-container .sim-wrap {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px; overflow: hidden; position: relative;
+}
+.collision-sim-container #simC { display: block; width: 100%; cursor: crosshair; }
+.collision-sim-container .sim-tag {
+  position: absolute; top: 10px; left: 12px;
+  font-family: var(--mono); font-size: 10px; color: var(--t3);
+  letter-spacing: .08em; text-transform: uppercase; pointer-events: none;
+}
+.collision-sim-container .sim-tag span { color: var(--cyan); }
+.collision-sim-container .scanlines {
+  position: absolute; inset: 0; border-radius: 10px; pointer-events: none;
+  background: repeating-linear-gradient(to bottom,
+    transparent 0px, transparent 2px,
+    rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
+}
+.collision-sim-container .drag-hint {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 10px; color: var(--t3);
+  letter-spacing: .04em; pointer-events: none;
+  transition: opacity .4s;
+}
+
+/* ── Right column ── */
+.collision-sim-container .right-col { display: flex; flex-direction: column; gap: 10px; }
+
+.collision-sim-container .ctrl {
+  background: var(--panel);
+  border: 0.5px solid var(--border);
+  border-radius: 10px; padding: 14px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.collision-sim-container .sec-title {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  color: var(--t3); letter-spacing: .1em; text-transform: uppercase;
+  padding-bottom: 9px; border-bottom: 0.5px solid var(--border);
+}
+.collision-sim-container .param-row { display: flex; flex-direction: column; gap: 5px; }
+.collision-sim-container .param-head { display: flex; justify-content: space-between; align-items: baseline; }
+.collision-sim-container .param-label { font-family: var(--mono); font-size: 11px; color: var(--t2); letter-spacing: .02em; }
+.collision-sim-container .param-val   { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--t1); }
+
+.collision-sim-container input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 3px; background: var(--bg3); border-radius: 2px; outline: none; cursor: pointer;
+}
+.collision-sim-container input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--cyan); border: 2px solid var(--bg);
+  cursor: grab; transition: box-shadow .15s;
+}
+.collision-sim-container input[type=range]::-webkit-slider-thumb:active {
+  cursor: grabbing; box-shadow: 0 0 0 4px rgba(0,212,255,0.2);
+}
+
+/* ── Readouts ── */
+.collision-sim-container .readout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.collision-sim-container .readout {
+  background: var(--bg3); border: 0.5px solid var(--border);
+  border-radius: 6px; padding: 8px 10px;
+}
+.collision-sim-container .r-label {
+  font-family: var(--mono); font-size: 9px; color: var(--t3);
+  letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px;
+}
+.collision-sim-container .r-val {
+  font-family: var(--mono); font-size: 15px; font-weight: 400;
+  color: var(--t1); font-variant-numeric: tabular-nums; line-height: 1;
+}
+.collision-sim-container .r-val.c { color: var(--cyan); }
+.collision-sim-container .r-val.g { color: var(--phosphor); }
+.collision-sim-container .r-val.a { color: var(--amber); }
+.collision-sim-container .r-val.r { color: var(--red); }
+.collision-sim-container .r-val.v { color: var(--violet); }
+
+/* ── Mode buttons ── */
+.collision-sim-container .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.collision-sim-container button {
+  background: var(--bg3); border: 0.5px solid var(--border2);
+  border-radius: 6px; padding: 7px 10px;
+  font-family: var(--mono); font-size: 11px; font-weight: 400;
+  color: var(--t2); cursor: pointer; letter-spacing: .03em;
+  transition: all .13s; text-align: left;
+}
+.collision-sim-container button:hover { background: rgba(255,255,255,0.04); color: var(--t1); }
+.collision-sim-container button.on-c  { background: rgba(0,212,255,0.08);   color: var(--cyan);    border-color: rgba(0,212,255,0.3); }
+.collision-sim-container button.on-g  { background: rgba(57,255,138,0.08);  color: var(--phosphor);border-color: rgba(57,255,138,0.3); }
+.collision-sim-container button.on-a  { background: rgba(255,184,48,0.08);  color: var(--amber);   border-color: rgba(255,184,48,0.3); }
+.collision-sim-container button.on-v  { background: rgba(183,140,255,0.08); color: var(--violet);  border-color: rgba(183,140,255,0.3); }
+.collision-sim-container button.on-r  { background: rgba(255,80,80,0.08);   color: var(--red);     border-color: rgba(255,80,80,0.3); }
+.collision-sim-container button.full  { grid-column: span 2; }
+
+/* ── Status ── */
+.collision-sim-container .status {
+  background: var(--bg3); border: 0.5px solid var(--border);
+  border-radius: 6px; padding: 8px 12px;
+  font-family: var(--mono); font-size: 11px; color: var(--t2); line-height: 1.5;
+}
+.collision-sim-container .status.ok   { color: var(--phosphor); border-color: rgba(57,255,138,0.25); background: rgba(57,255,138,0.04); }
+.collision-sim-container .status.warn { color: var(--amber);    border-color: rgba(255,184,48,0.25); background: rgba(255,184,48,0.04); }
+.collision-sim-container .status.bad  { color: var(--red);      border-color: rgba(255,80,80,0.25);  background: rgba(255,80,80,0.04); }
+
+/* ── Bottom charts ── */
+.collision-sim-container .bottom-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.collision-sim-container .chart-card {
+  background: var(--bg2); border: 0.5px solid var(--border);
+  border-radius: 10px; padding: 11px 13px; overflow: hidden;
+}
+.collision-sim-container .chart-title {
+  font-family: var(--mono); font-size: 10px; color: var(--t3);
+  letter-spacing: .08em; text-transform: uppercase; margin-bottom: 7px;
+}
+.collision-sim-container .chart-title span { color: var(--amber); }
+.collision-sim-container canvas.chart { display: block; width: 100%; }
+
+/* ── Collision flash overlay ── */
+.collision-sim-container .flash { position: absolute; inset: 0; border-radius: 10px; pointer-events: none; opacity: 0; transition: opacity .08s; }
+
+@media (max-width: 960px) {
+  .collision-sim-container .main-grid  { grid-template-columns: 1fr; }
+  .collision-sim-container .bottom-row { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .collision-sim-container .bottom-row { grid-template-columns: 1fr; }
+}
