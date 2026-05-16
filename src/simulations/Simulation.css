@@ -23,7 +23,9 @@
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 14px;
+  border-radius: 6px;
+  border: 1.5px solid var(--line-ink);
+  background: rgba(255, 244, 223, 0.5);
 }
 
 /* ── Floating stats ── */
@@ -37,10 +39,10 @@
   pointer-events: none;
 }
 .stat {
-  background: rgba(15,17,23,0.72);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 10px;
+  background: rgba(255, 244, 223, 0.82);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
   padding: 5px 10px;
   display: flex;
   flex-direction: column;
@@ -51,18 +53,18 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: rgba(255,255,255,0.45);
+  color: var(--ink-faint);
 }
 .stat-val {
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: var(--ink);
 }
 
 /* ── Controls panel ── */
 .controls-panel {
-  background: rgba(255,255,255,0.03);
-  border-top: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255, 244, 223, 0.58);
+  border-top: 1.5px dashed var(--line-soft);
   padding: 12px 16px 22px;
   display: flex;
   flex-direction: column;
@@ -77,19 +79,19 @@
 .control-row label {
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255,255,255,0.5);
+  color: var(--ink-soft);
   display: flex;
   justify-content: space-between;
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
-.ctrl-val { color: #ff8c5a; font-weight: 700; }
+.ctrl-val { color: var(--accent-red); font-weight: 700; }
 
 .control-row input[type="range"] {
   width: 100%;
   height: 4px;
   -webkit-appearance: none;
-  background: rgba(255,255,255,0.1);
+  background: rgba(37, 35, 31, 0.14);
   border-radius: 2px;
   outline: none;
   cursor: pointer;
@@ -98,10 +100,10 @@
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  background: #e85d2a;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: 0 0 8px rgba(232,93,42,0.55);
+  background: var(--accent-red);
+  border-radius: 4px;
+  border: 2px solid var(--paper-light);
+  box-shadow: 0 0 0 2px rgba(37,35,31,0.16);
   cursor: pointer;
 }
 
@@ -109,33 +111,33 @@
 
 .ctrl-btn-primary {
   flex: 1;
-  background: #e85d2a;
-  color: #fff;
-  border: none;
-  border-radius: 12px;
+  background: var(--accent-red);
+  color: var(--paper-light);
+  border: 1.5px solid var(--ink);
+  border-radius: 6px 9px 5px 8px / 8px 5px 9px 6px;
   padding: 11px;
   font-size: 14px;
   font-weight: 700;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--hand-font);
   cursor: pointer;
   transition: all 0.2s;
 }
-.ctrl-btn-primary:hover:not(:disabled) { background: #ff7a45; transform: translateY(-1px); }
+.ctrl-btn-primary:hover:not(:disabled) { background: var(--accent-orange-light); transform: translateY(-1px); }
 .ctrl-btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .ctrl-btn-secondary {
-  background: rgba(255,255,255,0.07);
-  color: rgba(255,255,255,0.65);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
+  background: rgba(255, 244, 223, 0.52);
+  color: var(--ink-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 6px 9px 5px 8px / 8px 5px 9px 6px;
   padding: 11px 16px;
   font-size: 14px;
   font-weight: 600;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--hand-font);
   cursor: pointer;
   transition: all 0.2s;
 }
-.ctrl-btn-secondary:hover { background: rgba(255,255,255,0.12); }
+.ctrl-btn-secondary:hover { background: rgba(216, 180, 92, 0.18); }
 
 /* ── Coming Soon ── */
 .coming-soon-wrap { justify-content: center; align-items: center; }
@@ -149,13 +151,13 @@
   animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
 }
 .coming-soon-emoji { font-size: 56px; filter: grayscale(0.3); }
-.coming-soon-title { font-size: 22px; font-weight: 800; color: #fff; }
-.coming-soon-sub   { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+.coming-soon-title { font-size: 22px; font-weight: 800; color: var(--ink); }
+.coming-soon-sub   { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
 .coming-soon-badge {
   font-size: 12px; font-weight: 700;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.5);
+  background: rgba(255, 244, 223, 0.62);
+  border: 1px solid var(--line-soft);
+  color: var(--ink-soft);
   padding: 7px 16px;
   border-radius: 20px;
   margin-top: 4px;
@@ -167,8 +169,8 @@
 
 /* ── KaTeX equation panel ── */
 .katex-panel {
-  background: rgba(255,255,255,0.025);
-  border-top: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255, 244, 223, 0.58);
+  border-top: 1.5px dashed var(--line-soft);
   padding: 8px 14px;
   display: flex;
   flex-direction: column;
@@ -180,9 +182,7 @@
   justify-content: center;
   align-items: center;
 }
-/* Make KaTeX text white on dark background */
 .katex-panel .katex,
-.katex-panel .katex * { color: rgba(255,255,255,0.82) !important; }
-.katex-panel .katex .mord.text { color: rgba(255,255,255,0.5) !important; }
-
+.katex-panel .katex * { color: var(--ink) !important; }
+.katex-panel .katex .mord.text { color: var(--ink-soft) !important; }
 
