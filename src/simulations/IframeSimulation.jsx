@@ -1,18 +1,23 @@
 import './Simulation.css'
 
-function IframeSimulation({ topic }) {
-  // Use the topic ID to load the corresponding HTML file from the public directory
-  const htmlSrc = `/${topic?.id}.html`
+export function mountIframeSimulation(container, topic = {}) {
+  const root = document.createElement('div')
+  root.className = 'sim-inner'
+  root.style.padding = '0'
+  root.style.overflow = 'hidden'
+  root.style.height = '100%'
 
-  return (
-    <div className="sim-inner" style={{ padding: 0, overflow: 'hidden', height: '100%' }}>
-      <iframe 
-        src={htmlSrc} 
-        style={{ width: '100%', height: '100%', border: 'none' }}
-        title={topic?.label || 'Simulation'}
-      />
-    </div>
-  )
+  const iframe = document.createElement('iframe')
+  iframe.src = `/${topic?.id || ''}.html`
+  iframe.title = topic?.label || 'Simulation'
+  iframe.style.width = '100%'
+  iframe.style.height = '100%'
+  iframe.style.border = 'none'
+
+  root.appendChild(iframe)
+  container.appendChild(root)
+
+  return () => {
+    container.removeChild(root)
+  }
 }
-
-export default IframeSimulation
