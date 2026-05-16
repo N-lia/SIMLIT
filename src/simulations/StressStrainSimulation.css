@@ -1,0 +1,207 @@
+.stress-wrapper {
+    font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+    background: linear-gradient(145deg, #e9f0f5 0%, #d4e0e8 100%);
+    padding: 20px;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;
+    color: #333;
+    flex: 1;
+}
+
+.stress-wrapper * {
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.stress-wrapper .sim-card {
+    max-width: 1400px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 2rem;
+    box-shadow: 0 25px 40px rgba(0, 0, 0, 0.25);
+    padding: 1.2rem 1.5rem 1.8rem;
+    transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.stress-wrapper h1 {
+    font-size: 1.8rem;
+    margin: 0 0 0.2rem;
+    color: #0a2f44;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.stress-wrapper h1 small {
+    background: #1e5f7a;
+    color: white;
+    padding: 4px 16px;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+
+.stress-wrapper .sub {
+    border-left: 5px solid #dc2626;
+    padding-left: 14px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    color: #2c3e4e;
+}
+
+.stress-wrapper .flex-dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.stress-wrapper .controls {
+    flex: 1.2;
+    min-width: 280px;
+    background: #f8fafc;
+    border-radius: 1.5rem;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #cbd5e1;
+}
+
+.stress-wrapper .visualization {
+    flex: 2.4;
+    min-width: 560px;
+}
+
+.stress-wrapper .control-group {
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid #e2edf2;
+    padding-bottom: 0.8rem;
+}
+
+.stress-wrapper .control-group label {
+    font-weight: 700;
+    color: #0c4e6e;
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+.stress-wrapper .param-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.stress-wrapper input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    height: 4px;
+    border-radius: 5px;
+    background: #cbd5e6;
+    margin: 8px 0;
+}
+
+.stress-wrapper .num-input {
+    width: 90px;
+    padding: 4px 8px;
+    border-radius: 40px;
+    border: 1px solid #94a3b8;
+    text-align: center;
+    background: white;
+    font-weight: 500;
+    font-family: inherit;
+}
+
+.stress-wrapper input[type="number"].num-input {
+    color: #333;
+}
+
+.stress-wrapper .material-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.stress-wrapper .material-btn {
+    background: #e2e8f0;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 60px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.75rem;
+    transition: 0.1s;
+    color: #333;
+}
+
+.stress-wrapper .material-btn.active {
+    background: #0284c7;
+    color: white;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #0284c7;
+}
+
+.stress-wrapper canvas {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 1.2rem;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.stress-wrapper .legend {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.7rem;
+    padding: 6px 12px;
+    background: #edf4fa;
+    border-radius: 60px;
+    margin-top: 6px;
+}
+
+.stress-wrapper .specimen-container {
+    background: #f1f5f9;
+    border-radius: 50px;
+    padding: 15px;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.stress-wrapper .warning {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 6px 12px;
+    border-radius: 36px;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.stress-wrapper button.small {
+    background: #cbd5e1;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    color: #333;
+}
+
+@media (max-width: 850px) {
+    .stress-wrapper .sim-card {
+        padding: 1rem;
+    }
+    .stress-wrapper .flex-dashboard {
+        flex-direction: column;
+    }
+    .stress-wrapper .visualization {
+        min-width: 100%;
+    }
+}
