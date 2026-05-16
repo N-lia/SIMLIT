@@ -1,0 +1,167 @@
+/* =========================================
+   Simulation Select Page
+   ========================================= */
+
+.sim-select-page {
+  padding-top: 20px;
+  overflow-y: auto;
+}
+
+.sim-select-title-section {
+  margin-bottom: 20px;
+}
+
+.sim-field-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent-orange);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.sim-select-title {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.sim-select-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Topic list */
+.sim-topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 24px;
+}
+
+.sim-topic-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 2px solid var(--input-border);
+  border-radius: var(--radius-md);
+  padding: 16px 14px 16px 16px;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: cardSlideUp 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+  position: relative;
+}
+
+.sim-topic-card:hover {
+  border-color: var(--accent-orange);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -8px rgba(232, 93, 42, 0.18);
+}
+
+.sim-topic-card:active {
+  transform: translateY(0) scale(0.985);
+}
+
+/* Emoji */
+.topic-emoji-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--bg-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sim-topic-card:hover .topic-emoji-wrap {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+/* Info */
+.topic-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.topic-top-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.topic-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topic-soon-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--input-bg);
+  border-radius: 6px;
+  padding: 2px 7px;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+.topic-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: 7px;
+}
+
+.topic-difficulty {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+/* Arrow */
+.topic-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--input-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sim-topic-card:hover .topic-arrow {
+  background: var(--accent-orange);
+  color: #fff;
+  transform: translateX(2px);
+}
+
+@keyframes cardSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
