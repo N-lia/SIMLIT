@@ -6,11 +6,14 @@
   width: 100%;
   max-width: 430px;
   min-height: 100svh;
-  background-color: var(--bg);
+  background: var(--paper-texture);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  border-left: 1.5px solid var(--line-ink);
+  border-right: 1.5px solid var(--line-ink);
+  box-shadow: 0 20px 45px rgba(61, 46, 29, 0.22);
 }
 
 /* =========================================
@@ -24,7 +27,9 @@
   width: 100%;
   padding: 24px 24px 32px;
   animation: slideIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
-  background-color: var(--bg);
+  background:
+    linear-gradient(rgba(255, 244, 223, 0.38), rgba(244, 234, 214, 0.38)),
+    var(--paper-texture);
 }
 
 @keyframes slideIn {
@@ -71,8 +76,8 @@
 
 /* Back / Icon Button */
 .icon-btn {
-  background: none;
-  border: none;
+  background: rgba(255, 244, 223, 0.35);
+  border: 1.5px solid var(--line-soft);
   color: var(--text-primary);
   cursor: pointer;
   display: flex;
@@ -80,13 +85,14 @@
   justify-content: center;
   width: 42px;
   height: 42px;
-  border-radius: 50%;
+  border-radius: 6px 9px 5px 8px / 8px 5px 9px 6px;
   transition: background-color 0.2s, transform 0.15s;
   flex-shrink: 0;
 }
 
 .icon-btn:hover {
-  background-color: rgba(0, 0, 0, 0.06);
+  background-color: rgba(216, 180, 92, 0.18);
+  border-color: var(--line-ink);
 }
 
 .icon-btn:active {
@@ -113,13 +119,13 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--input-border);
+  background-color: var(--line-soft);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .progress-dots .dot.active {
-  background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-light) 100%);
+  background: var(--accent-red);
   width: 24px;
   border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(232, 93, 42, 0.3);
+  box-shadow: 0 2px 0 rgba(37, 35, 31, 0.16);
 }
