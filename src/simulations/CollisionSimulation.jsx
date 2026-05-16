@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { render, useState, useEffect, useRef } from '/src/utils/react-lite.js';
 import './CollisionSimulation.css';
 
 export default function CollisionSimulation() {
@@ -157,7 +157,6 @@ export default function CollisionSimulation() {
     presetElastic();
 
     return () => window.removeEventListener('resize', handleResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -201,6 +200,11 @@ export default function CollisionSimulation() {
     const SIM_DT = 1/120;
     const STEPS_FRAME = 2;
     const HIST = 300;
+    const NEIGHBOR_OFFSETS = [
+      [-1, -1], [0, -1], [1, -1],
+      [-1,  0], [0,  0], [1,  0],
+      [-1,  1], [0,  1], [1,  1],
+    ];
 
     const resolveCollision = (a, b) => {
       const dx = b.x - a.x, dy = b.y - a.y;
@@ -252,15 +256,43 @@ export default function CollisionSimulation() {
         }
       }
 
+      const maxRadius = s.balls.reduce((max, b) => Math.max(max, b.r), 1);
+      const cellSize = Math.max(maxRadius * 2, 32);
+      const grid = new Map();
       for (let i = 0; i < s.balls.length; i++) {
-        for (let j = i+1; j < s.balls.length; j++) {
-          const a = s.balls[i], b = s.balls[j];
-          const dx = b.x - a.x, dy = b.y - a.y;
-          if ((dx*dx + dy*dy) < (a.r + b.r)*(a.r + b.r)) {
-            const keBefore = a.ke + b.ke;
-            resolveCollision(a, b);
-            const heat = Math.max(0, keBefore - (a.ke + b.ke));
-            s.totalHeat += heat;
+        const b = s.balls[i];
+        const cx = Math.floor(b.x / cellSize);
+        const cy = Math.floor(b.y / cellSize);
+        const key = `${cx},${cy}`;
+        const bucket = grid.get(key);
+        if (bucket) bucket.push(i);
+        else grid.set(key, [i]);
+      }
+
+      const testedPairs = new Set();
+      for (let i = 0; i < s.balls.length; i++) {
+        const a = s.balls[i];
+        const cx = Math.floor(a.x / cellSize);
+        const cy = Math.floor(a.y / cellSize);
+
+        for (const [ox, oy] of NEIGHBOR_OFFSETS) {
+          const bucket = grid.get(`${cx + ox},${cy + oy}`);
+          if (!bucket) continue;
+
+          for (const j of bucket) {
+            if (j <= i) continue;
+            const pairKey = `${i}:${j}`;
+            if (testedPairs.has(pairKey)) continue;
+            testedPairs.add(pairKey);
+
+            const b = s.balls[j];
+            const dx = b.x - a.x, dy = b.y - a.y;
+            if ((dx*dx + dy*dy) < (a.r + b.r)*(a.r + b.r)) {
+              const keBefore = a.ke + b.ke;
+              resolveCollision(a, b);
+              const heat = Math.max(0, keBefore - (a.ke + b.ke));
+              s.totalHeat += heat;
+            }
           }
         }
       }
@@ -435,7 +467,7 @@ export default function CollisionSimulation() {
       }
     };
 
-    const drawLineChart = (c, ctxC, data, color, label) => {
+    const drawLineChart = (c, ctxC, data, color) => {
       const W = c.width, H = c.height;
       ctxC.clearRect(0, 0, W, H);
       const pad = { l:28, r:8, t:8, b:20 };
@@ -610,4 +642,9 @@ export default function CollisionSimulation() {
       </div>
     </div>
   );
+}
+export function mountCollisionSimulation(container) {
+  const app = render(CollisionSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
