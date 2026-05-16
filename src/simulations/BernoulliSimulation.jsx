@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { render, useEffect, useRef } from '/src/utils/react-lite.js';
 import KaTeX from './KaTeX';
 import './BernoulliSimulation.css';
 
@@ -71,7 +71,6 @@ export default function BernoulliSimulation() {
       const Q = A_A * vA_in;
       const vB = Q / A_B;
       const vC = Q / A_C;
-      const velocities = [vA_in, vB, vC];
 
       // Total head at inlet (energy per unit weight)
       let H_A = P_A/(rho*g) + (vA_in*vA_in)/(2*g) + zA;
@@ -451,4 +450,9 @@ export default function BernoulliSimulation() {
       </div>
     </div>
   );
+}
+export function mountBernoulliSimulation(container) {
+  const app = render(BernoulliSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }
