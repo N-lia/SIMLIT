@@ -172,14 +172,14 @@ export default function ProjectileSimulation() {
         // target (draggable)
         let targetScr = toScreen(targetX, groundYFn(targetX, slopeDeg));
         ctx.beginPath(); ctx.moveTo(targetScr.x-12, targetScr.y-6); ctx.lineTo(targetScr.x, targetScr.y+6); ctx.lineTo(targetScr.x+12, targetScr.y-6); ctx.fillStyle="#ef4444"; ctx.fill();
-        ctx.fillStyle="#b91c1c"; ctx.font="bold 11px system-ui"; ctx.fillText("🎯", targetScr.x-5, targetScr.y-8);
+        ctx.fillStyle="#b91c1c"; ctx.font="bold 11px system-ui"; ctx.fillText("", targetScr.x-5, targetScr.y-8);
         
         // measurement point
         if(measurePoint) {
             let scrM = toScreen(measurePoint.x, measurePoint.y);
             ctx.beginPath(); ctx.moveTo(scrM.x-10, scrM.y); ctx.lineTo(scrM.x+10, scrM.y); ctx.moveTo(scrM.x, scrM.y-10); ctx.lineTo(scrM.x, scrM.y+10);
             ctx.strokeStyle = "#f97316"; ctx.lineWidth=2; ctx.stroke();
-            ctx.fillStyle = "#f97316"; ctx.font="bold 9px system-ui"; ctx.fillText(`📏 ${measurePoint.x.toFixed(1)}m, ${measurePoint.y.toFixed(1)}m`, scrM.x+5, scrM.y-5);
+            ctx.fillStyle = "#f97316"; ctx.font="bold 9px system-ui"; ctx.fillText(` ${measurePoint.x.toFixed(1)}m, ${measurePoint.y.toFixed(1)}m`, scrM.x+5, scrM.y-5);
         }
         
         // cannon (draggable angle indicator)
@@ -425,26 +425,26 @@ export default function ProjectileSimulation() {
         <div className="proj-container">
             <div className="proj-sim-card">
                 <div className="proj-header">
-                    <h1>🎯 Projectile Motion Pro <small>drag & wind • presets • interactive measurement</small></h1>
+                    <h1> Projectile Motion Pro <small>drag & wind • presets • interactive measurement</small></h1>
                     <div className="proj-toolbar">
-                        <button onClick={fire} style={{background:'#ea580c'}}>🚀 FIRE</button>
+                        <button onClick={fire} style={{background:'#ea580c'}}> FIRE</button>
                         <button className="secondary" onClick={resetView}>⟳ Reset view</button>
-                        <button className="secondary" onClick={setOptimalAngle}>📐 Optimal angle (flat)</button>
-                        <button className="secondary" onClick={() => setMeasurePoint(null)}>🗑️ Clear measure</button>
+                        <button className="secondary" onClick={setOptimalAngle}> Optimal angle (flat)</button>
+                        <button className="secondary" onClick={() => setMeasurePoint(null)}> Clear measure</button>
                     </div>
                 </div>
                 <div className="proj-flex-row">
                     <div className="proj-controls">
                         <div className="proj-ctrl-group">
-                            <label className="group-label">🔫 Cannon & projectile</label>
+                            <label className="group-label"> Cannon & projectile</label>
                             <div className="proj-param-row">
                                 <span>Object:</span>
                                 <select value={params.objectType} onChange={handleObjectSelect}>
                                     <option value="custom">Custom</option>
-                                    <option value="baseball">⚾ Baseball</option>
-                                    <option value="cannonball">🔘 Cannonball</option>
-                                    <option value="pumpkin">🎃 Pumpkin</option>
-                                    <option value="feather">🪶 Feather</option>
+                                    <option value="baseball"> Baseball</option>
+                                    <option value="cannonball"> Cannonball</option>
+                                    <option value="pumpkin"> Pumpkin</option>
+                                    <option value="feather"> Feather</option>
                                 </select>
                             </div>
                             <div className="proj-param-row">
@@ -462,11 +462,11 @@ export default function ProjectileSimulation() {
                                 <input type="range" min="0" max="30" step="0.5" value={params.y0} onChange={e => updateParam('y0', +e.target.value)}/>
                                 <span className="proj-num-input">{params.y0.toFixed(1)}</span>
                             </div>
-                            <div className="proj-warning">💡 Drag the cannon barrel to change angle!</div>
+                            <div className="proj-warning"> Drag the cannon barrel to change angle!</div>
                         </div>
 
                         <div className="proj-ctrl-group">
-                            <label className="group-label">🌍 Environment</label>
+                            <label className="group-label"> Environment</label>
                             <div className="proj-param-row" style={{marginBottom:'8px'}}>
                                 <span>Gravity:</span>
                                 <select value={params.gravityPreset} onChange={handleGravitySelect}>
@@ -490,7 +490,7 @@ export default function ProjectileSimulation() {
                         </div>
 
                         <div className="proj-ctrl-group">
-                            <label className="group-label">🌬️ Air resistance & wind</label>
+                            <label className="group-label"> Air resistance & wind</label>
                             <label style={{fontSize:'0.85rem', display:'block', marginBottom:'6px', color:'#334155'}}>
                                 <input type="checkbox" checked={params.dragEnabled} onChange={e=>updateParam('dragEnabled', e.target.checked)} style={{marginRight:'6px'}}/> 
                                 Enable air resistance
@@ -520,7 +520,7 @@ export default function ProjectileSimulation() {
                         </div>
 
                         <div className="proj-ctrl-group" style={{borderBottom:'none'}}>
-                            <label className="group-label">🎯 Target & ground</label>
+                            <label className="group-label"> Target & ground</label>
                             <div className="proj-param-row">
                                 <span>Target dist (m):</span>
                                 <input type="range" min="0" max="250" step="1" value={params.targetX} onChange={e=>updateParam('targetX', +e.target.value)}/>
@@ -534,19 +534,19 @@ export default function ProjectileSimulation() {
                         </div>
 
                         <div className="proj-stats-bar">
-                            <span>⏱️ {trajData.totalTime.toFixed(2)} s</span>
-                            <span>📏 {trajData.range.toFixed(1)} m</span>
-                            <span>📐 {trajData.maxHeight.toFixed(1)} m</span>
-                            <span>{hitInfo.hit ? "🎯 HIT! ✅" : `🎯 Miss (${hitInfo.missDist.toFixed(1)} m)`}</span>
+                            <span>⏱ {trajData.totalTime.toFixed(2)} s</span>
+                            <span> {trajData.range.toFixed(1)} m</span>
+                            <span> {trajData.maxHeight.toFixed(1)} m</span>
+                            <span>{hitInfo.hit ? " HIT! " : ` Miss (${hitInfo.missDist.toFixed(1)} m)`}</span>
                         </div>
                         
                         {measurePoint ? (
                             <div className="proj-measure-panel">
-                                📏 Measured: {measurePoint.x.toFixed(1)}m x, {measurePoint.y.toFixed(1)}m y @ {measurePoint.time.toFixed(2)}s
+                                 Measured: {measurePoint.x.toFixed(1)}m x, {measurePoint.y.toFixed(1)}m y @ {measurePoint.time.toFixed(2)}s
                             </div>
                         ) : (
                             <div className="proj-measure-panel" style={{color:'#64748b', borderColor:'#cbd5e1', background:'#f8fafc'}}>
-                                📏 Click on trajectory to measure.
+                                 Click on trajectory to measure.
                             </div>
                         )}
                     </div>
@@ -561,17 +561,17 @@ export default function ProjectileSimulation() {
                             onClick={handleCanvasClick}
                         ></canvas>
                         <div className="proj-legend">
-                            <span>🟢 Trajectory (live)</span>
-                            <span>🔴 Velocity vector</span>
-                            <span>🟡 Apex marker</span>
-                            <span>🎯 Drag target to move</span>
-                            <span>📐 Drag cannon</span>
+                            <span> Trajectory (live)</span>
+                            <span> Velocity vector</span>
+                            <span> Apex marker</span>
+                            <span> Drag target to move</span>
+                            <span> Drag cannon</span>
                         </div>
                         <div style={{display: 'flex', gap: '12px', marginTop: '8px'}}>
                             <canvas ref={xgraphRef} width={350} height={110} style={{width:'48%', background:'#fff', borderRadius:'1rem'}}></canvas>
                             <canvas ref={ygraphRef} width={350} height={110} style={{width:'48%', background:'#fff', borderRadius:'1rem'}}></canvas>
                         </div>
-                        <div className="proj-legend" style={{marginTop:'8px', background:'none'}}>📈 x(t) and y(t) – follow the moving point</div>
+                        <div className="proj-legend" style={{marginTop:'8px', background:'none'}}> x(t) and y(t) – follow the moving point</div>
                     </div>
                 </div>
             </div>

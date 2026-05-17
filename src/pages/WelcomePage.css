@@ -110,6 +110,75 @@
   margin-top: 8px;
 }
 
+@media (min-width: 768px) {
+  .welcome-page {
+    display: grid;
+    grid-template-columns: minmax(340px, 0.92fr) minmax(420px, 1.08fr);
+    grid-template-rows: auto minmax(420px, auto) auto;
+    column-gap: clamp(34px, 5vw, 76px);
+    row-gap: 18px;
+    align-items: center;
+    padding-top: clamp(22px, 3vw, 36px);
+  }
+
+  .welcome-header,
+  .welcome-footer {
+    grid-column: 1 / -1;
+  }
+
+  .welcome-header {
+    align-items: center;
+  }
+
+  .hero-section {
+    grid-column: 1;
+    margin-top: 0;
+    align-self: center;
+  }
+
+  .hero-heading {
+    font-size: clamp(58px, 5.7vw, 86px);
+    max-width: 9ch;
+    margin-bottom: 18px;
+  }
+
+  .hero-subtext {
+    font-size: clamp(18px, 1.45vw, 22px);
+    max-width: 26ch;
+  }
+
+  .hero-visual {
+    grid-column: 2;
+    grid-row: 2 / 3;
+    min-height: 420px;
+    margin-top: 0;
+    align-self: center;
+  }
+
+  .circle-bg {
+    width: min(34vw, 430px);
+    height: min(34vw, 430px);
+  }
+
+  .hero-image {
+    width: min(32vw, 390px);
+  }
+
+  .welcome-footer {
+    grid-column: 1;
+    align-items: flex-start;
+    padding-top: 0;
+  }
+
+  .welcome-footer .btn-primary {
+    width: min(100%, 340px);
+  }
+
+  .login-text {
+    text-align: left;
+  }
+}
+
 .circle-bg {
   position: absolute;
   width: 280px;

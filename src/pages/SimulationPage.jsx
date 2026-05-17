@@ -1,5 +1,6 @@
 import { FIELD_TOPICS } from '../data/topics.js'
 import { mountComingSoon } from '../simulations/ComingSoon.jsx'
+import { iconSvg } from '../utils/icons.js'
 import './SimulationPage.css'
 
 const SIM_LOADERS = {
@@ -21,6 +22,8 @@ const SIM_LOADERS = {
   mohr: () => import('../simulations/MohrsCircleSimulation.jsx').then(m => m.mountMohrsCircleSimulation),
   motor: () => import('../simulations/DcMotorSimulation.jsx').then(m => m.mountDcMotorSimulation),
   nand_flash: () => import('../simulations/NandFlashSimulation.jsx').then(m => m.mountNandFlashSimulation),
+  cpu_scheduler: () => import('../simulations/cs/CpuSchedulerSimulation.jsx').then(m => m.mountCpuSchedulerSimulation),
+  vectors: () => import('../simulations/VectorAdditionSimulation.jsx').then(m => m.mountVectorAdditionSimulation),
   wavelab: () => import('../simulations/IframeSimulation.jsx').then(m => m.mountIframeSimulation),
   kirchhoff: () => import('../simulations/IframeSimulation.jsx').then(m => m.mountIframeSimulation),
   case: () => import('../simulations/law/LawCasesSimulation.jsx').then(m => m.mountLawCasesSimulation),
@@ -43,7 +46,7 @@ export function mountSimulationPage({ subfieldId, topicId, onBack, pageClass = '
         </svg>
       </button>
       <div class="sim-header-center">
-        <span class="sim-emoji">${topic.emoji || ''}</span>
+        <span class="sim-emoji">${iconSvg(topic.icon)}</span>
         <span class="sim-topic-name">${topic.label || topic.id || topicId}</span>
       </div>
       <span class="sim-field-chip">${fieldData.label || ''}</span>
@@ -67,12 +70,18 @@ export function mountSimulationPage({ subfieldId, topicId, onBack, pageClass = '
     loadSimulation()
       .then((mountSimulation) => {
         if (disposed) return
+        if (typeof mountSimulation !== 'function') {
+          throw new Error(`Simulation "${topicId}" did not export a mount function.`)
+        }
         loading.remove()
         result = mountSimulation(simBody, topic)
       })
       .catch((error) => {
         console.error(error)
         if (disposed) return
+        if (!loading.isConnected) {
+          simBody.appendChild(loading)
+        }
         loading.textContent = 'Could not load this simulation.'
       })
   } else {

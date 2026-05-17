@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "cannon-es": "^0.20.0",
-    "katex": "^0.16.45"
+    "katex": "^0.16.45",
+    "puppeteer": "^24.43.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

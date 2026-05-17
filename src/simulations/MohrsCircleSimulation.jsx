@@ -273,11 +273,11 @@ export default function MohrsCircleSimulation() {
         update();
         const msgDiv = $('misconceptionMsg');
         if (msgDiv) {
-            msgDiv.innerHTML = "⚠️ <strong>Failure mode demonstration:</strong> Wrong sign convention (e.g., assuming compression as positive) would flip the circle's quadrant. Here σₓ = -50 MPa (compression), large negative shear. Mohr's circle still gives correct principal stresses: always use tension positive!";
+            msgDiv.innerHTML = " <strong>Failure mode demonstration:</strong> Wrong sign convention (e.g., assuming compression as positive) would flip the circle's quadrant. Here σₓ = -50 MPa (compression), large negative shear. Mohr's circle still gives correct principal stresses: always use tension positive!";
             msgDiv.style.background = "#fee2e2";
             setTimeout(() => {
                 msgDiv.style.background = "#fff7e5";
-                msgDiv.innerHTML = "💡 <strong>Key insight:</strong> Rotating the element changes the apparent stresses, but principal stresses (where τ=0) are invariant — they are the extremes on Mohr’s circle.";
+                msgDiv.innerHTML = " <strong>Key insight:</strong> Rotating the element changes the apparent stresses, but principal stresses (where τ=0) are invariant — they are the extremes on Mohr’s circle.";
             }, 5000);
         }
     }
@@ -322,35 +322,35 @@ export default function MohrsCircleSimulation() {
   return (
     <div className="mohr-wrapper" ref={rootRef}>
       <div className="sim-card">
-        <h1>🎯 Mohr's Circle Simulator <small>σ₁, σ₂, τ_max | Plane Stress Transformation</small></h1>
-        <div className="sub">📐 Rotate the element → see how stresses change, but principal stresses &amp; max shear are invariant.</div>
+        <h1> Mohr's Circle Simulator <small>σ₁, σ₂, τ_max | Plane Stress Transformation</small></h1>
+        <div className="sub"> Rotate the element → see how stresses change, but principal stresses &amp; max shear are invariant.</div>
 
         <div className="flex-dashboard">
           <div className="controls">
             <div className="control-group">
-              <label>📉 Normal stress σₓ (MPa)</label>
+              <label> Normal stress σₓ (MPa)</label>
               <input type="range" id="sigmax" min="-100" max="200" step="1" defaultValue="80" />
               <div className="param-row"><span id="sigmaxVal" className="num-input">80</span> <span style={{fontSize: '0.7rem'}}>(+ tension, - compression)</span></div>
             </div>
             <div className="control-group">
-              <label>📈 Normal stress σᵧ (MPa)</label>
+              <label> Normal stress σᵧ (MPa)</label>
               <input type="range" id="sigmay" min="-100" max="200" step="1" defaultValue="30" />
               <div className="param-row"><span id="sigmayVal" className="num-input">30</span></div>
             </div>
             <div className="control-group">
-              <label>✂️ Shear stress τ_xy (MPa)</label>
+              <label> Shear stress τ_xy (MPa)</label>
               <input type="range" id="tauxy" min="-100" max="100" step="1" defaultValue="40" />
               <div className="param-row"><span id="tauxyVal" className="num-input">40</span> <span style={{fontSize: '0.7rem'}}>(positive as shown)</span></div>
             </div>
             <div className="control-group">
-              <label>🔄 Element rotation angle θ (degrees)</label>
+              <label> Element rotation angle θ (degrees)</label>
               <input type="range" id="theta" min="-90" max="90" step="1" defaultValue="0" />
               <div className="param-row"><span id="thetaVal" className="num-input">0°</span> <button id="resetThetaBtn">Reset</button></div>
             </div>
             <div className="control-group">
-              <label>⚙️ Sign convention: tension positive</label>
+              <label> Sign convention: tension positive</label>
               <div style={{fontSize: '0.7rem'}}>(σ positive → right/up, negative → left/down)</div>
-              <button id="toggleExampleBtn" style={{marginTop: '6px', background: '#475569'}}>💡 Load failure case (wrong sign)</button>
+              <button id="toggleExampleBtn" style={{marginTop: '6px', background: '#475569'}}> Load failure case (wrong sign)</button>
             </div>
             <div className="stress-value" id="principalDisplay">
               σ₁ = -- MPa, σ₂ = -- MPa<br />
@@ -360,23 +360,23 @@ export default function MohrsCircleSimulation() {
               σₓ' = --, σᵧ' = --, τ_xy' = --
             </div>
             <div className="warning-note" id="misconceptionMsg">
-              💡 <strong>Key insight:</strong> Rotating the element changes the apparent stresses, but the principal stresses (where τ=0) are invariant — they are the extremes on Mohr’s circle.
+               <strong>Key insight:</strong> Rotating the element changes the apparent stresses, but the principal stresses (where τ=0) are invariant — they are the extremes on Mohr’s circle.
             </div>
           </div>
 
           <div className="visualization">
             <canvas id="mohrCanvas" width="650" height="400" style={{width: '100%', aspectRatio: '650/400'}}></canvas>
             <div className="legend">
-              <span>🔵 Mohr's Circle</span>
-              <span>🔴 Principal stresses (σ₁, σ₂)</span>
-              <span>🟢 Max shear (τ_max)</span>
-              <span>🟣 Current stress state (σₓ, τ_xy) &amp; rotation</span>
+              <span> Mohr's Circle</span>
+              <span> Principal stresses (σ₁, σ₂)</span>
+              <span> Max shear (τ_max)</span>
+              <span> Current stress state (σₓ, τ_xy) &amp; rotation</span>
             </div>
             <canvas id="elementCanvas" width="600" height="300" style={{width: '100%', aspectRatio: '600/300'}}></canvas>
             <div className="legend" style={{marginBottom: 0}}>
-              <span>📐 Stress element (rotated by θ)</span>
-              <span>⬅️➡️ Normal stress → arrows</span>
-              <span>↕️ Shear stress arrows</span>
+              <span> Stress element (rotated by θ)</span>
+              <span>⬅ Normal stress → arrows</span>
+              <span>↕ Shear stress arrows</span>
             </div>
           </div>
         </div>

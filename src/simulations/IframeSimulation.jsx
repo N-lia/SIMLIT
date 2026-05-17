@@ -6,12 +6,14 @@ export function mountIframeSimulation(container, topic = {}) {
   root.style.padding = '0'
   root.style.overflow = 'hidden'
   root.style.height = '100%'
+  root.style.minHeight = '100%'
 
   const iframe = document.createElement('iframe')
   iframe.src = `/${topic?.id || ''}.html`
   iframe.title = topic?.label || 'Simulation'
   iframe.style.width = '100%'
   iframe.style.height = '100%'
+  iframe.style.minHeight = '100%'
   iframe.style.border = 'none'
 
   root.appendChild(iframe)

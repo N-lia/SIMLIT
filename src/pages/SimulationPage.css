@@ -29,7 +29,16 @@
   align-items: center;
   gap: 7px;
 }
-.sim-emoji      { font-size: 18px; }
+.sim-emoji {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent-red);
+  font-size: 18px;
+}
+.sim-emoji .app-icon {
+  width: 1.1em;
+  height: 1.1em;
+}
 .sim-topic-name { font-size: 15px; font-weight: 700; color: #fff; }
 .sim-topic-name { color: var(--ink); }
 
@@ -63,6 +72,11 @@
   color: var(--ink-soft);
   font-family: var(--hand-font);
   font-size: 1rem;
+}
+
+.sim-body > .sim-inner {
+  flex: 1 0 auto;
+  min-height: calc(100svh - 61px);
 }
 
 .sim-body :is(
@@ -127,4 +141,90 @@
 .sim-body input[type="range"]::-webkit-slider-thumb {
   background: var(--accent-red) !important;
   border-color: var(--paper-light) !important;
+}
+
+@media (max-width: 767px) {
+  .sim-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .sim-field-chip {
+    max-width: 8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sim-body :is(
+    .beam-wrapper,
+    .hydrostatic-wrapper,
+    .newton-wrapper,
+    .pipe-wrapper,
+    .bernoulli-wrapper,
+    .stress-wrapper,
+    .mohr-wrapper,
+    .fbd-wrapper,
+    .truss-wrapper,
+    .eq-wrapper,
+    .dc-motor-container,
+    .collision-sim-container,
+    .double-pendulum-container,
+    .proj-container
+  ) {
+    min-height: auto !important;
+    padding: 12px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .sim-page {
+    width: 100%;
+    min-height: 100svh;
+  }
+
+  .sim-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    padding: 16px clamp(24px, 3vw, 48px);
+  }
+
+  .sim-topic-name {
+    font-size: 20px;
+  }
+
+  .sim-field-chip {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+
+  .sim-body {
+    overflow: auto;
+  }
+
+  .sim-body > .sim-inner {
+    min-height: calc(100svh - 79px);
+  }
+
+  .sim-body :is(
+    .beam-wrapper,
+    .hydrostatic-wrapper,
+    .newton-wrapper,
+    .pipe-wrapper,
+    .bernoulli-wrapper,
+    .stress-wrapper,
+    .mohr-wrapper,
+    .fbd-wrapper,
+    .truss-wrapper,
+    .eq-wrapper,
+    .dc-motor-container,
+    .collision-sim-container,
+    .double-pendulum-container,
+    .proj-container
+  ) {
+    width: 100% !important;
+    min-height: calc(100svh - 79px) !important;
+    padding: clamp(18px, 2.5vw, 34px) !important;
+  }
 }

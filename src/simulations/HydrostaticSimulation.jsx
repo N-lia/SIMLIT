@@ -5,17 +5,17 @@ export function mountHydrostaticSimulation(container) {
   const root = htmlToElement(`
     <div class="hydrostatic-wrapper">
       <div class="sim-card">
-        <h1>🌊 Hydrostatic Pressure Simulator <small>P = P₀ + ρ·g·h | Force on submerged surfaces</small></h1>
-        <div class="sub">📐 Pressure depends ONLY on depth & density — NOT on container shape!</div>
+        <h1> Hydrostatic Pressure Simulator <small>P = P₀ + ρ·g·h | Force on submerged surfaces</small></h1>
+        <div class="sub"> Pressure depends ONLY on depth & density — NOT on container shape!</div>
 
         <div class="flex-dashboard">
           <div class="controls">
             <div class="control-group">
-              <label>💧 Fluid type & density</label>
+              <label> Fluid type & density</label>
               <div class="fluid-select" id="fluidGroup">
-                <label><input type="radio" name="fluid" value="water" checked /> 💧 Water (ρ=1000 kg/m³)</label>
-                <label><input type="radio" name="fluid" value="oil" /> 🛢️ Oil (ρ=850 kg/m³)</label>
-                <label><input type="radio" name="fluid" value="mercury" /> ⚡ Mercury (ρ=13546 kg/m³)</label>
+                <label><input type="radio" name="fluid" value="water" checked />  Water (ρ=1000 kg/m³)</label>
+                <label><input type="radio" name="fluid" value="oil" />  Oil (ρ=850 kg/m³)</label>
+                <label><input type="radio" name="fluid" value="mercury" />  Mercury (ρ=13546 kg/m³)</label>
               </div>
               <div class="param-row" style="margin-top: 8px;">
                 <div class="param">Custom ρ (kg/m³): <input type="range" id="customRho" min="200" max="20000" step="10" value="1000" disabled /></div>
@@ -24,13 +24,13 @@ export function mountHydrostaticSimulation(container) {
             </div>
 
             <div class="control-group">
-              <label>📏 Liquid depth H (m)</label>
+              <label> Liquid depth H (m)</label>
               <input type="range" id="depthTotal" min="0.2" max="5.0" step="0.02" value="2.4" />
               <span id="depthVal" class="num-input">2.40</span>
             </div>
 
             <div class="control-group">
-              <label>🎯 Submerged rectangular gate</label>
+              <label> Submerged rectangular gate</label>
               <div class="param-row">
                 <div class="param">Gate width (m): <input type="range" id="widthGate" min="0.3" max="3.0" step="0.05" value="1.2" /><span id="widthVal" class="num-input">1.20</span></div>
                 <div class="param">Gate height (m): <input type="range" id="heightGate" min="0.2" max="2.5" step="0.05" value="1.0" /><span id="heightVal" class="num-input">1.00</span></div>
@@ -43,7 +43,7 @@ export function mountHydrostaticSimulation(container) {
             </div>
 
             <div class="control-group">
-              <label>🌍 Atmospheric pressure</label>
+              <label> Atmospheric pressure</label>
               <div class="toggle-switch">
                 <label><input type="radio" name="atm" value="include" checked /> Include P_atm (101.3 kPa)</label>
                 <label><input type="radio" name="atm" value="exclude" /> Exclude (gauge pressure)</label>
@@ -51,23 +51,23 @@ export function mountHydrostaticSimulation(container) {
             </div>
 
             <div class="control-group">
-              <label>🧪 Misconception test: two tanks, same H</label>
-              <button id="showMisconceptionBtn" style="background: #0f5f8a; border: none; padding: 6px 12px; border-radius: 40px; color: white; cursor: pointer; font-weight: 600;">🔍 Compare Bottom Pressures</button>
-              <div id="misconceptionMsg" class="warning-note" style="margin-top: 8px;">💡 Click to prove: pressure at bottom depends only on depth, not container shape!</div>
+              <label> Misconception test: two tanks, same H</label>
+              <button id="showMisconceptionBtn" style="background: #0f5f8a; border: none; padding: 6px 12px; border-radius: 40px; color: white; cursor: pointer; font-weight: 600;"> Compare Bottom Pressures</button>
+              <div id="misconceptionMsg" class="warning-note" style="margin-top: 8px;"> Click to prove: pressure at bottom depends only on depth, not container shape!</div>
             </div>
           </div>
 
           <div class="visualization">
             <canvas id="tankCanvas" width="800" height="420" style="width: 100%; aspect-ratio: 800 / 420"></canvas>
             <div class="legend-row">
-              <span>🎨 Color = pressure (blue low → red high)</span>
-              <span>⬆️ Pressure arrows (length ∝ pressure)</span>
-              <span>📐 Gate: <span id="forceDisplay" class="force-badge">Force: -- kN</span></span>
-              <span>🎯 Center of pressure marker 🟡</span>
+              <span> Color = pressure (blue low → red high)</span>
+              <span>⬆ Pressure arrows (length ∝ pressure)</span>
+              <span> Gate: <span id="forceDisplay" class="force-badge">Force: -- kN</span></span>
+              <span> Center of pressure marker </span>
             </div>
             <canvas id="pressureGraphCanvas" width="800" height="180" style="width: 100%; margin-top: 10px"></canvas>
             <div class="legend-row" style="justify-content: center;">
-              <span>📈 Pressure vs Depth (linear: P = P₀ + ρgh)</span>
+              <span> Pressure vs Depth (linear: P = P₀ + ρgh)</span>
             </div>
           </div>
         </div>
@@ -130,7 +130,7 @@ export function mountHydrostaticSimulation(container) {
     if (!customRad) {
       const fluidDiv = $('fluidGroup')
       const customLabel = document.createElement('label')
-      customLabel.innerHTML = '<input type="radio" name="fluid" value="custom" id="customFluidRadio"> 🧪 Custom ρ'
+      customLabel.innerHTML = '<input type="radio" name="fluid" value="custom" id="customFluidRadio">  Custom ρ'
       fluidDiv.appendChild(customLabel)
       const newRadio = customLabel.querySelector('input')
       customRadioElement = newRadio
@@ -350,7 +350,7 @@ export function mountHydrostaticSimulation(container) {
     const P0 = includeAtm ? atmPressurePa : 0
     const P_bottom = P0 + rho * g * H
     if (misconceptionMsgDiv) {
-      misconceptionMsgDiv.innerHTML = `🔬 MISCONCEPTION BUSTER: Two different-shaped containers (wide & narrow) both filled to depth ${H.toFixed(2)} m. <br> ✅ Bottom pressure = ${(P_bottom/1000).toFixed(1)} kPa in BOTH containers. Pressure does NOT depend on shape! 💡`
+      misconceptionMsgDiv.innerHTML = ` MISCONCEPTION BUSTER: Two different-shaped containers (wide & narrow) both filled to depth ${H.toFixed(2)} m. <br>  Bottom pressure = ${(P_bottom/1000).toFixed(1)} kPa in BOTH containers. Pressure does NOT depend on shape! `
       misconceptionMsgDiv.style.background = '#e0f2fe'
       misconceptionMsgDiv.style.borderLeftColor = '#0284c7'
     }

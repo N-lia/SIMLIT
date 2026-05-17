@@ -446,7 +446,7 @@ export default function CollisionSimulation() {
           uiRef.pdriftOut.current.className = 'r-val' + (drift > 0.5 ? ' r' : drift > 0.05 ? ' a' : ' g');
         }
         if(uiRef.consBadge.current) {
-          uiRef.consBadge.current.textContent = drift < 0.1 ? 'Σp conserved ✓' : `Σp drift ${drift.toFixed(2)}%`;
+          uiRef.consBadge.current.textContent = drift < 0.1 ? 'Σp conserved ' : `Σp drift ${drift.toFixed(2)}%`;
           uiRef.consBadge.current.style.color = drift < 0.1 ? 'var(--phosphor)' : 'var(--amber)';
         }
       }
@@ -615,7 +615,7 @@ export default function CollisionSimulation() {
                 <button className="full" onClick={presetNewton}>Newton's cradle (5)</button>
                 <button className="full" onClick={presetOblique}>Oblique 2-body</button>
                 <button className="full" onClick={presetMassive}>Heavy vs light (10:1)</button>
-                <button className="full on-r" onClick={clearBalls}>✕ Clear all</button>
+                <button className="full on-r" onClick={clearBalls}> Clear all</button>
               </div>
             </div>
 

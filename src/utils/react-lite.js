@@ -95,8 +95,10 @@ function areDepsEqual(prevDeps, nextDeps) {
 }
 
 function runEffects(instance) {
+  if (instance.disposed) return;
   instance.pendingEffects.forEach((hookIndex) => {
     const hook = instance.hooks[hookIndex];
+    if (!hook || typeof hook.effect !== 'function') return;
     if (hook.cleanup) {
       try {
         hook.cleanup();
@@ -104,12 +106,26 @@ function runEffects(instance) {
         console.error(error);
       }
     }
-    hook.cleanup = hook.effect() || null;
+    try {
+      hook.cleanup = hook.effect() || null;
+    } catch (error) {
+      hook.cleanup = null;
+      console.error(error);
+    }
   });
   instance.pendingEffects = [];
 }
 
+function queueEffects(instance) {
+  Promise.resolve().then(() => runEffects(instance));
+}
+
 function cleanupEffects(instance) {
+  instance.disposed = true;
+  cleanupHookEffects(instance);
+}
+
+function cleanupHookEffects(instance) {
   instance.hooks.forEach((hook) => {
     if (hook && typeof hook.cleanup === 'function') {
       try {
@@ -124,20 +140,24 @@ function cleanupEffects(instance) {
 }
 
 function scheduleRender(instance) {
-  if (instance.scheduled) return;
+  if (instance.disposed || instance.scheduled) return;
   instance.scheduled = true;
   Promise.resolve().then(() => {
+    if (instance.disposed) return;
     instance.scheduled = false;
+    cleanupHookEffects(instance);
     instance.hookIndex = 0;
+    instance.forceEffects = true;
     activeInstance = instance;
     const nextRoot = instance.component(instance.props);
     activeInstance = null;
+    instance.forceEffects = false;
     const node = wrapFragment(nextRoot);
     if (instance.root && instance.root.parentNode) {
       instance.root.parentNode.replaceChild(node, instance.root);
     }
     instance.root = node;
-    runEffects(instance);
+    queueEffects(instance);
   });
 }
 
@@ -158,6 +178,8 @@ export function render(Component, props = {}) {
     hookIndex: 0,
     pendingEffects: [],
     scheduled: false,
+    disposed: false,
+    forceEffects: false,
     root: null,
   };
 
@@ -167,7 +189,7 @@ export function render(Component, props = {}) {
     const nextRoot = instance.component(instance.props);
     activeInstance = null;
     instance.root = wrapFragment(nextRoot);
-    runEffects(instance);
+    queueEffects(instance);
     return {
       root: instance.root,
       cleanup: () => {
@@ -220,7 +242,7 @@ export function useEffect(effect, deps) {
   }
   const hookIndex = activeInstance.hookIndex++;
   const prevHook = activeInstance.hooks[hookIndex];
-  const hasChanged = !prevHook || !areDepsEqual(prevHook.deps, deps);
+  const hasChanged = activeInstance.forceEffects || !prevHook || !areDepsEqual(prevHook.deps, deps);
   if (hasChanged) {
     activeInstance.hooks[hookIndex] = {
       deps: deps ? [...deps] : undefined,

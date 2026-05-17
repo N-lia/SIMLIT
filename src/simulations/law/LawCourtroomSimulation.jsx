@@ -1,9 +1,10 @@
-import { htmlToElement } from '../../utils/dom.js'
+import { render } from '../../utils/react-lite.js'
 import './LawCourtroomSimulation.css'
 
-export function mountLawCourtroomSimulation(container) {
-  const root = htmlToElement(`
-    <div class="court-sim-container">
+export default function LawCourtroomSimulation() {
+  return (
+
+    <div className="court-sim-container">
       
       {/* TOP HEADER */}
       <header className="court-top-header">
@@ -223,9 +224,12 @@ export function mountLawCourtroomSimulation(container) {
       </nav>
       
     </div>
-  `)
-  container.appendChild(root)
-  return () => {
-    if (container.contains(root)) container.removeChild(root)
-  }
+
+  );
+}
+
+export function mountLawCourtroomSimulation(container) {
+  const app = render(LawCourtroomSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }

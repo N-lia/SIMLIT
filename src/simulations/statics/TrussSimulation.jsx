@@ -212,8 +212,8 @@ export default function TrussSimulation() {
         const failureList = $("failureList");
 
         if (!analysisValid) {
-            if(memberTable) memberTable.innerHTML = "<span style='color:red'>⚠️ Unstable or unsolvable truss (mechanism)</span>";
-            if(statusMsg) statusMsg.innerHTML = "⚠️ Mechanism / insufficient supports";
+            if(memberTable) memberTable.innerHTML = "<span style='color:red'> Unstable or unsolvable truss (mechanism)</span>";
+            if(statusMsg) statusMsg.innerHTML = " Mechanism / insufficient supports";
             if(failureList) failureList.innerHTML = "Add supports or diagonal members";
             return;
         }
@@ -223,7 +223,7 @@ export default function TrussSimulation() {
             let forceKN = (m.force/1000).toFixed(1);
             let stressMPA = (m.stress/1e6).toFixed(1);
             let color = m.force > 0 ? "#2563eb" : (m.force < 0 ? "#dc2626" : "#555");
-            let status = m.failed ? `❌ ${m.failReason}` : "OK";
+            let status = m.failed ? ` ${m.failReason}` : "OK";
             html += `<tr><td>${idx+1}</td><td style="color:${color}">${forceKN}</td><td>${stressMPA}</td><td>${status}</td></tr>`;
         });
         html += "</table>";
@@ -233,8 +233,8 @@ export default function TrussSimulation() {
         let failedMembers = members.filter(m=>m.failed);
         let failText = failedMembers.map(m=>`Member ${members.indexOf(m)+1} (${m.failReason})`).join(", ");
         if (failureList) {
-            if (failText) failureList.innerHTML = `⚠️ Failure: ${failText}`;
-            else failureList.innerHTML = "✅ No failures";
+            if (failText) failureList.innerHTML = ` Failure: ${failText}`;
+            else failureList.innerHTML = " No failures";
         }
         
         let minFOS = 1e9;
@@ -242,7 +242,7 @@ export default function TrussSimulation() {
             if(!m.failed && Math.abs(m.stress)>0) minFOS = Math.min(minFOS, getMaterial().yield / Math.abs(m.stress)); 
         });
         let fosMsg = minFOS < 100 ? `FOS = ${minFOS.toFixed(1)}` : "FOS > 10";
-        if (statusMsg) statusMsg.innerHTML = `✅ Stable | ${fosMsg}`;
+        if (statusMsg) statusMsg.innerHTML = ` Stable | ${fosMsg}`;
     }
 
     function drawCanvas() {
@@ -533,7 +533,7 @@ export default function TrussSimulation() {
   return (
     <div className="truss-wrapper" ref={rootRef}>
       <div className="sim-wrapper">
-        <h1>📐 Truss Simulator 2.0 <small>Direct Stiffness | Real-time Force Distribution</small></h1>
+        <h1> Truss Simulator 2.0 <small>Direct Stiffness | Real-time Force Distribution</small></h1>
         <div className="flex-row">
           <div className="canvas-panel">
             <canvas id="trussCanvas" width="900" height="520" style={{width: '100%', aspectRatio: '900/520'}}></canvas>
@@ -541,31 +541,31 @@ export default function TrussSimulation() {
               <span><span className="force-color" style={{background: '#3b82f6'}}></span> Tension (blue)</span>
               <span><span className="force-color" style={{background: '#ef4444'}}></span> Compression (red)</span>
               <span><span className="force-color" style={{background: '#94a3b8'}}></span> Zero-force</span>
-              <span>🟡 Load arrow</span>
-              <span>🟣 Support</span>
-              <span>💀 Failure</span>
+              <span> Load arrow</span>
+              <span> Support</span>
+              <span> Failure</span>
             </div>
           </div>
           <div className="controls-panel">
             <div className="toolbar">
-              <button id="modeJointBtn">➕ Joint</button>
-              <button id="modeMemberBtn">🔗 Member</button>
-              <button id="modeLoadBtn">⚡ Load</button>
-              <button id="modeSupportBtn">🪑 Support</button>
-              <button id="deleteBtn">🗑️ Delete</button>
+              <button id="modeJointBtn"> Joint</button>
+              <button id="modeMemberBtn"> Member</button>
+              <button id="modeLoadBtn"> Load</button>
+              <button id="modeSupportBtn"> Support</button>
+              <button id="deleteBtn"> Delete</button>
             </div>
             <div className="param-group">
-              <label>📐 Templates</label>
+              <label> Templates</label>
               <select id="templateSelect" defaultValue="warren">
-                <option value="triangle">🔺 Simple triangle</option>
-                <option value="warren">🌉 Warren truss</option>
-                <option value="pratt">🚆 Pratt truss</option>
+                <option value="triangle"> Simple triangle</option>
+                <option value="warren"> Warren truss</option>
+                <option value="pratt"> Pratt truss</option>
                 <option value="rectangle">⬜ Rectangle (unstable)</option>
               </select>
               <button id="loadTemplateBtn" style={{marginTop: '6px', width: '100%'}}>Load template</button>
             </div>
             <div className="param-group">
-              <label>🏗️ Material &amp; section</label>
+              <label> Material &amp; section</label>
               <select id="materialSelect" defaultValue="steel">
                 <option value="steel">Steel (E=200 GPa)</option>
                 <option value="aluminum">Aluminum (E=70 GPa)</option>
@@ -574,13 +574,13 @@ export default function TrussSimulation() {
               <label style={{marginTop: '6px'}}>A (cm²) <input type="number" id="areaInput" defaultValue="5.0" step="0.5" /></label>
             </div>
             <div className="param-group">
-              <label>📊 Member forces &amp; status</label>
+              <label> Member forces &amp; status</label>
               <div id="memberTable" className="member-table">Waiting for analysis...</div>
-              <div className="status" id="statusMsg">✅ Ready</div>
+              <div className="status" id="statusMsg"> Ready</div>
               <div id="failureList" style={{fontSize: '0.7rem', marginTop: '6px'}}></div>
             </div>
             <div style={{fontSize: '0.7rem', background: '#eef2ff', padding: '6px', borderRadius: '12px', color: '#1e40af'}}>
-              💡 <strong>Live demo:</strong> Add load, delete a member → force redistributes instantly.
+               <strong>Live demo:</strong> Add load, delete a member → force redistributes instantly.
             </div>
           </div>
         </div>

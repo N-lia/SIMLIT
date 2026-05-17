@@ -305,7 +305,7 @@ export default function BernoulliSimulation() {
         ctx.stroke();
         ctx.fillStyle = "#1e40af";
         ctx.font = "italic 10px";
-        ctx.fillText("⚡ constant total energy (frictionless)", barStartX+20, barTopY+130 - (data.totalSpecific[0]*scaleEnergy)-4);
+        ctx.fillText(" constant total energy (frictionless)", barStartX+20, barTopY+130 - (data.totalSpecific[0]*scaleEnergy)-4);
         ctx.setLineDash([]);
       } else {
         ctx.setLineDash([4, 6]);
@@ -328,14 +328,14 @@ export default function BernoulliSimulation() {
       
       // display outlet jet speed
       if (jetSpan) {
-        jetSpan.innerHTML = `💧 Jet exit speed: ${vExit.toFixed(2)} m/s`;
+        jetSpan.innerHTML = ` Jet exit speed: ${vExit.toFixed(2)} m/s`;
       }
       
       // dynamic annotations
       ctx.font = "500 10px 'Segoe UI'";
       ctx.fillStyle = "#075985";
       if(velocities[1] > velocities[0] && pressures_kPa[1] < pressures_kPa[0]) {
-        ctx.fillText("✓ Higher velocity → LOWER pressure !", xPos[1]-65, centerY[1]-halfHeights[1]-18);
+        ctx.fillText(" Higher velocity → LOWER pressure !", xPos[1]-65, centerY[1]-halfHeights[1]-18);
       }
       
       // small note
@@ -376,7 +376,7 @@ export default function BernoulliSimulation() {
   return (
     <div className="bernoulli-wrapper" ref={rootRef}>
       <div className="sim-card">
-        <h1>🌀 Bernoulli Flow Simulator <small>energy trading along a streamline</small></h1>
+        <h1> Bernoulli Flow Simulator <small>energy trading along a streamline</small></h1>
         <div className="sub">
           <KaTeX math="P + \frac{1}{2}\rho v^2 + \rho g h = \text{constant}" />
         </div>
@@ -385,31 +385,31 @@ export default function BernoulliSimulation() {
           {/* CONTROLS PANEL */}
           <div className="controls">
             <div className="control-group">
-              <label>⚙️ Fluid Density ρ (kg/m³)</label>
+              <label> Fluid Density ρ (kg/m³)</label>
               <input type="range" id="density" min="400" max="1400" step="10" defaultValue="1000" />
               <span id="densityVal" className="numeric-input" style={{display: 'inline-block', width: '70px', marginLeft: '8px'}}>1000</span>
             </div>
 
             <div className="control-group">
-              <label>📏 Pipe Diameters (m)</label>
+              <label> Pipe Diameters (m)</label>
               <div className="param-row">
-                <div className="param">🔵 A: <input type="range" id="dA" min="0.03" max="0.2" step="0.002" defaultValue="0.10" /><span id="dA_val" className="numeric-input">0.10</span></div>
-                <div className="param">🟢 B: <input type="range" id="dB" min="0.02" max="0.18" step="0.002" defaultValue="0.05" /><span id="dB_val" className="numeric-input">0.05</span></div>
-                <div className="param">🟠 C: <input type="range" id="dC" min="0.03" max="0.2" step="0.002" defaultValue="0.08" /><span id="dC_val" className="numeric-input">0.08</span></div>
+                <div className="param"> A: <input type="range" id="dA" min="0.03" max="0.2" step="0.002" defaultValue="0.10" /><span id="dA_val" className="numeric-input">0.10</span></div>
+                <div className="param"> B: <input type="range" id="dB" min="0.02" max="0.18" step="0.002" defaultValue="0.05" /><span id="dB_val" className="numeric-input">0.05</span></div>
+                <div className="param"> C: <input type="range" id="dC" min="0.03" max="0.2" step="0.002" defaultValue="0.08" /><span id="dC_val" className="numeric-input">0.08</span></div>
               </div>
             </div>
 
             <div className="control-group">
-              <label>⛰️ Elevation (m) at sections</label>
+              <label> Elevation (m) at sections</label>
               <div className="param-row">
-                <div className="param">📍 A: <input type="range" id="zA" min="-0.5" max="2.0" step="0.05" defaultValue="0.0" /><span id="zA_val" className="numeric-input">0.0</span></div>
-                <div className="param">📍 B: <input type="range" id="zB" min="-0.5" max="2.0" step="0.05" defaultValue="0.6" /><span id="zB_val" className="numeric-input">0.6</span></div>
-                <div className="param">📍 C: <input type="range" id="zC" min="-0.5" max="2.0" step="0.05" defaultValue="0.2" /><span id="zC_val" className="numeric-input">0.2</span></div>
+                <div className="param"> A: <input type="range" id="zA" min="-0.5" max="2.0" step="0.05" defaultValue="0.0" /><span id="zA_val" className="numeric-input">0.0</span></div>
+                <div className="param"> B: <input type="range" id="zB" min="-0.5" max="2.0" step="0.05" defaultValue="0.6" /><span id="zB_val" className="numeric-input">0.6</span></div>
+                <div className="param"> C: <input type="range" id="zC" min="-0.5" max="2.0" step="0.05" defaultValue="0.2" /><span id="zC_val" className="numeric-input">0.2</span></div>
               </div>
             </div>
 
             <div className="control-group">
-              <label>💨 Inlet conditions (Section A)</label>
+              <label> Inlet conditions (Section A)</label>
               <div className="param-row">
                 <div className="param">Velocity v_A (m/s): <input type="range" id="vIn" min="0.5" max="8.0" step="0.1" defaultValue="2.5" /><span id="vIn_val" className="numeric-input">2.5</span></div>
                 <div className="param">Pressure P_A (kPa): <input type="range" id="pIn" min="50" max="400" step="5" defaultValue="150" /><span id="pIn_val" className="numeric-input">150</span></div>
@@ -418,7 +418,7 @@ export default function BernoulliSimulation() {
 
             <div className="control-group">
               <div className="toggle-switch">
-                <label>🌀 Flow regime:</label>
+                <label> Flow regime:</label>
                 <label style={{background: '#cbd5e1', padding: '2px 12px', borderRadius: '30px'}}>
                   <input type="radio" name="lossMode" value="frictionless" defaultChecked /> Frictionless
                 </label>
@@ -426,10 +426,10 @@ export default function BernoulliSimulation() {
                   <input type="radio" name="lossMode" value="real" /> Real losses
                 </label>
               </div>
-              <div style={{fontSize: '0.7rem', marginTop: '6px', color: '#475569'}}>⚠️ Real mode: head losses (K≈0.28 per segment) reduce total pressure</div>
+              <div style={{fontSize: '0.7rem', marginTop: '6px', color: '#475569'}}> Real mode: head losses (K≈0.28 per segment) reduce total pressure</div>
             </div>
             <div className="misconception">
-              💡 <strong>Key insight / misconception fix:</strong> <em>"Higher speed → higher pressure"</em> is FALSE!<br/>
+               <strong>Key insight / misconception fix:</strong> <em>"Higher speed → higher pressure"</em> is FALSE!<br/>
               Watch at narrow section B: <strong>velocity ↑ , pressure ↓</strong> (Bernoulli effect). Energy shifts between kinetic, pressure & potential.
             </div>
           </div>
@@ -440,9 +440,9 @@ export default function BernoulliSimulation() {
               <canvas id="simCanvas" width="850" height="520" style={{width: '100%', height: 'auto', maxWidth: '850px', aspectRatio: '850/520'}}></canvas>
               <div className="legend">
                 <span style={{color: '#0f5f8a'}}>⬤ Pressure gauge</span>
-                <span>🡆 Velocity arrows (size = speed)</span>
-                <span>📊 Energy per mass: <span style={{background: '#3b82f6', padding: '0 6px', borderRadius: '20px', color: 'white'}}>P/ρ</span> <span style={{background: '#10b981', padding: '0 6px', borderRadius: '20px', color: 'white'}}>½v²</span> <span style={{background: '#f59e0b', padding: '0 6px', borderRadius: '20px', color: 'white'}}>g·z</span></span>
-                <span className="outlet-speed" id="jetSpeedDisplay">💧 Jet exit: -- m/s</span>
+                <span> Velocity arrows (size = speed)</span>
+                <span> Energy per mass: <span style={{background: '#3b82f6', padding: '0 6px', borderRadius: '20px', color: 'white'}}>P/ρ</span> <span style={{background: '#10b981', padding: '0 6px', borderRadius: '20px', color: 'white'}}>½v²</span> <span style={{background: '#f59e0b', padding: '0 6px', borderRadius: '20px', color: 'white'}}>g·z</span></span>
+                <span className="outlet-speed" id="jetSpeedDisplay"> Jet exit: -- m/s</span>
               </div>
             </div>
           </div>

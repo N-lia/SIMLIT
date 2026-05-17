@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite'
 
-// https://vite.dev/config/
 export default defineConfig({
   esbuild: {
+    jsx: 'transform',
     jsxFactory: 'h',
     jsxFragment: 'Fragment',
     jsxInject: 'import { h, Fragment } from "/src/utils/react-lite.js"',

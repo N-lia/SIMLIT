@@ -1,4 +1,5 @@
 import './BioDataPage.css'
+import { iconSvg } from '../utils/icons.js'
 
 const initialFormData = { name: '', age: '', university: '' }
 
@@ -105,7 +106,7 @@ export function mountBioDataPage({ onBack, onComplete, pageClass = '' }) {
         </div>
         <h2 class="success-title">You're all set!</h2>
         <p class="success-message">Welcome, <strong>${formData.name}</strong>.<br />Your personalized learning experience is being prepared.</p>
-        <div class="success-badge">🎓 Profile created</div>
+        <div class="success-badge">${iconSvg('trophy', 'app-icon app-icon-inline')} Profile created</div>
       </div>
     `
   }

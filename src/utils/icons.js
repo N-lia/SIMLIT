@@ -1,0 +1,43 @@
+const PATHS = {
+  activity: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+  anchor: '<circle cx="12" cy="5" r="3"/><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M5 12a7 7 0 0 0 14 0"/>',
+  atom: '<circle cx="12" cy="12" r="1.5"/><ellipse cx="12" cy="12" rx="9" ry="3.5"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(120 12 12)"/>',
+  balance: '<path d="M12 3v18"/><path d="M5 7h14"/><path d="M6 7l-4 7h8L6 7Z"/><path d="M18 7l-4 7h8l-4-7Z"/><path d="M8 21h8"/>',
+  barChart: '<path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/>',
+  battery: '<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 11v2"/><path d="M7 11v2"/><path d="M11 11v2"/>',
+  bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/>',
+  bookOpen: '<path d="M12 7v14"/><path d="M3 5a6 6 0 0 1 9 2 6 6 0 0 1 9-2v14a6 6 0 0 0-9 2 6 6 0 0 0-9-2V5Z"/>',
+  box: '<path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+  brain: '<path d="M9 3a3 3 0 0 0-3 3v1a4 4 0 0 0 0 8v1a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"/><path d="M15 3a3 3 0 0 1 3 3v1a4 4 0 0 1 0 8v1a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3Z"/><path d="M9 8h3"/><path d="M12 12h3"/><path d="M9 16h3"/>',
+  briefcase: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/>',
+  calculator: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h.01"/><path d="M12 11h.01"/><path d="M16 11h.01"/><path d="M8 15h.01"/><path d="M12 15h.01"/><path d="M16 15h.01"/>',
+  circuit: '<path d="M6 6h12v12H6z"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M9 12h6"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  cpu: '<rect x="7" y="7" width="10" height="10" rx="2"/><rect x="10" y="10" width="4" height="4"/><path d="M4 9h3"/><path d="M4 15h3"/><path d="M17 9h3"/><path d="M17 15h3"/><path d="M9 4v3"/><path d="M15 4v3"/><path d="M9 17v3"/><path d="M15 17v3"/>',
+  flask: '<path d="M10 2v6L4 19a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3L14 8V2"/><path d="M8 2h8"/><path d="M7 16h10"/>',
+  flame: '<path d="M12 22a7 7 0 0 0 7-7c0-4-3-6-5-9-.4 3-2 4-4 6-1 1-2 2.4-2 4a4 4 0 0 0 4 4Z"/>',
+  gauge: '<path d="M21 13a9 9 0 1 0-18 0"/><path d="M12 13l4-4"/><path d="M5 19h14"/>',
+  gavel: '<path d="m14 13 7 7"/><path d="m5 6 5-5 7 7-5 5-7-7Z"/><path d="m2 21 7-7"/><path d="m6 10 4 4"/>',
+  gitBranch: '<circle cx="6" cy="5" r="3"/><circle cx="18" cy="19" r="3"/><circle cx="6" cy="19" r="3"/><path d="M6 8v8"/><path d="M8.5 7.5A6 6 0 0 1 18 13v3"/>',
+  heartPulse: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1"/><path d="M3 14h4l2-4 4 8 2-4h6"/><path d="M18 16 12 22l-3-3"/>',
+  landmark: '<path d="M3 10h18"/><path d="M5 10v8"/><path d="M9 10v8"/><path d="M15 10v8"/><path d="M19 10v8"/><path d="M2 20h20"/><path d="m12 3 9 5H3l9-5Z"/>',
+  link: '<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2"/>',
+  magnet: '<path d="M6 3v8a6 6 0 0 0 12 0V3"/><path d="M6 7h4"/><path d="M14 7h4"/><path d="M6 3h4"/><path d="M14 3h4"/>',
+  mapPin: '<path d="M12 21s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>',
+  memory: '<rect x="4" y="6" width="16" height="12" rx="2"/><path d="M8 10h8"/><path d="M8 14h5"/><path d="M7 3v3"/><path d="M12 3v3"/><path d="M17 3v3"/><path d="M7 18v3"/><path d="M12 18v3"/><path d="M17 18v3"/>',
+  network: '<circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M10.5 7.6 6.5 16"/><path d="m13.5 7.6 4 8.4"/><path d="M8 19h8"/>',
+  pill: '<path d="m10.5 20.5 10-10a5 5 0 0 0-7-7l-10 10a5 5 0 0 0 7 7Z"/><path d="m8.5 8.5 7 7"/>',
+  ruler: '<path d="M4 20 20 4"/><path d="m14 4 6 6"/><path d="m4 14 6 6"/><path d="m12 6 2 2"/><path d="m8 10 2 2"/><path d="m16 2 6 6"/>',
+  scale: '<path d="M16 16V4"/><path d="M8 16V4"/><path d="M4 16h16"/><path d="M6 20h12"/><path d="M8 4h8"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
+  thermometer: '<path d="M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0Z"/><path d="M12 9v7"/>',
+  tool: '<path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-3 3-3-3 3-3Z"/>',
+  trophy: '<path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4a3 3 0 0 0 3 3"/><path d="M17 6h3a3 3 0 0 1-3 3"/>',
+  vector: '<path d="M4 18 18 4"/><path d="M11 4h7v7"/><path d="M4 18h8"/><path d="M4 18v-8"/>',
+  waves: '<path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 8 0"/><path d="M2 18c2-3 4-3 6 0s4 3 6 0 4-3 8 0"/>',
+}
+
+export function iconSvg(name, className = 'app-icon') {
+  const path = PATHS[name] || PATHS.activity
+  return `<svg class="${className}" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`
+}

@@ -1,4 +1,5 @@
 import { FIELD_TOPICS, DIFFICULTY_COLOR } from '../data/topics.js'
+import { iconSvg } from '../utils/icons.js'
 import './SimulationSelectPage.css'
 
 export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, pageClass = '' }) {
@@ -37,7 +38,7 @@ export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, pageCl
     const diff = DIFFICULTY_COLOR[topic.difficulty] || DIFFICULTY_COLOR.Beginner
     return `
       <button id="topic-${topic.id}" class="sim-topic-card" style="animation-delay:${index * 0.07}s;">
-        <div class="topic-emoji-wrap">${topic.emoji}</div>
+        <div class="topic-emoji-wrap">${iconSvg(topic.icon)}</div>
         <div class="topic-info">
           <div class="topic-top-row">
             <h3 class="topic-label">${topic.label}</h3>

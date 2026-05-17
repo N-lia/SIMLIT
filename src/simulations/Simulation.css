@@ -150,7 +150,11 @@
   padding: 32px 24px;
   animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
 }
-.coming-soon-emoji { font-size: 56px; filter: grayscale(0.3); }
+.coming-soon-emoji {
+  display: inline-flex;
+  color: var(--accent-red);
+  font-size: 56px;
+}
 .coming-soon-title { font-size: 22px; font-weight: 800; color: var(--ink); }
 .coming-soon-sub   { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
 .coming-soon-badge {
@@ -185,4 +189,3 @@
 .katex-panel .katex,
 .katex-panel .katex * { color: var(--ink) !important; }
 .katex-panel .katex .mord.text { color: var(--ink-soft) !important; }
-

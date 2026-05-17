@@ -1,0 +1,192 @@
+.cpu-scheduler-container {
+  padding: 1.5rem;
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+}
+
+.cpu-app {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.cpu-hero {
+  background: var(--paper-light);
+  border-radius: var(--radius-xl);
+  padding: 1rem 1.8rem;
+  margin-bottom: 1.8rem;
+  border: 1px solid var(--input-border);
+  box-shadow: var(--card-shadow);
+}
+
+.cpu-hero h1 {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--ink);
+  font-family: var(--hand-font);
+  margin-bottom: 0.5rem;
+}
+
+.cpu-sub {
+  color: var(--ink-soft);
+  margin-top: 6px;
+  border-left: 3px solid var(--accent-blue);
+  padding-left: 1rem;
+}
+
+.cpu-dashboard {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 1.5rem;
+}
+
+.cpu-card {
+  background: var(--paper-light);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--input-border);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+
+.cpu-card-header {
+  background: var(--paper-warm);
+  padding: 0.8rem 1.2rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--input-border);
+  font-family: var(--hand-font);
+  font-size: 1.2rem;
+}
+
+.cpu-card-body {
+  padding: 1.2rem;
+}
+
+.cpu-gantt-container {
+  background: var(--paper);
+  border-radius: var(--radius-md);
+  padding: 0.8rem;
+  overflow-x: auto;
+  cursor: pointer;
+  border: 1px solid var(--input-border);
+}
+
+.cpu-gantt-container canvas, .cpu-card-body canvas {
+  display: block;
+  width: 100%;
+  background: var(--paper);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(37, 35, 31, 0.1);
+}
+
+.cpu-queue-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  min-height: 60px;
+  color: var(--ink);
+}
+
+.cpu-queue-item {
+  background: var(--paper-aged);
+  padding: 0.3rem 0.8rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-left: 4px solid var(--accent-orange);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.05);
+}
+
+.cpu-running-process {
+  background: var(--accent-blue);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  display: inline-block;
+  font-weight: 800;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+}
+
+.cpu-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 0.7rem;
+}
+
+.cpu-metric {
+  background: var(--paper-warm);
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  text-align: center;
+  border: 1px dashed var(--input-border);
+}
+
+.cpu-metric-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent-blue);
+  font-family: var(--hand-font);
+}
+
+.cpu-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin: 0.8rem 0;
+}
+
+.cpu-btn-group button {
+  background: var(--paper-warm);
+  border: 1px solid var(--input-border);
+  border-radius: 2rem;
+  padding: 0.5rem 1.2rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: 0.1s;
+  box-shadow: 2px 2px 0 rgba(37, 35, 31, 0.1);
+}
+
+.cpu-btn-group button:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+.cpu-btn-group button.primary { background: var(--accent-blue); color: white; border-color: var(--accent-purple-deep); }
+.cpu-btn-group button.warning { background: var(--accent-orange); color: white; border-color: #8c2a1a; }
+.cpu-btn-group button.danger { background: var(--accent-red); color: white; border-color: #8c2a1a; }
+.cpu-btn-group button.success { background: var(--accent-green); color: white; border-color: #3b612c; }
+
+.cpu-card-body select, .cpu-card-body input {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 2rem;
+  padding: 0.4rem 1rem;
+  color: var(--ink);
+  outline: none;
+}
+
+.cpu-card-body select:focus, .cpu-card-body input:focus {
+  border-color: var(--accent-blue);
+}
+
+.cpu-process-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.cpu-process-table th, .cpu-process-table td {
+  padding: 0.6rem 0.4rem;
+  text-align: left;
+  border-bottom: 1px solid var(--input-border);
+}
+
+.cpu-process-table th {
+  font-family: var(--hand-font);
+  font-size: 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .cpu-dashboard { grid-template-columns: 1fr; }
+}

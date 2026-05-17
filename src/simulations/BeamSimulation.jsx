@@ -337,10 +337,10 @@ export default function BeamSimulation() {
     
     let failed = false;
     let failMsg = "";
-    if (maxStressMPa > yield_MPa) { failed = true; failMsg = `❌ YIELD FAILURE (${maxStressMPa.toFixed(1)} > ${yield_MPa} MPa)`; }
+    if (maxStressMPa > yield_MPa) { failed = true; failMsg = ` YIELD FAILURE (${maxStressMPa.toFixed(1)} > ${yield_MPa} MPa)`; }
     let deflLimit = stateRef.current.L * 1000 / 250;
     if (maxDefl_mm > deflLimit) { failed = true; failMsg += ` | Excessive deflection ${maxDefl_mm.toFixed(1)} mm > ${deflLimit.toFixed(1)} mm`; }
-    if (!failed) failMsg = "✅ Intact | FOS = " + fos.toFixed(2);
+    if (!failed) failMsg = " Intact | FOS = " + fos.toFixed(2);
     
     const failEl = rootRef.current?.querySelector('#liveFailureMsg');
     if (failEl) failEl.innerHTML = failMsg;
@@ -424,18 +424,18 @@ export default function BeamSimulation() {
     <div className="beam-wrapper" ref={rootRef}>
       <div className="sim-card">
         <div className="header">
-          <h1>📐 Ultimate Beam Bending Simulator <small>live shear · moment · deflection · stress</small></h1>
-          <div className="sub">⚡ Interactive loads · real‑time failure & deformation · drag load position → instant update</div>
+          <h1> Ultimate Beam Bending Simulator <small>live shear · moment · deflection · stress</small></h1>
+          <div className="sub"> Interactive loads · real‑time failure & deformation · drag load position → instant update</div>
         </div>
         
         <div className="flex-dashboard">
           <div className="controls">
             <div className="ctrl-group">
-              <label>🏗️ Beam configuration</label>
+              <label> Beam configuration</label>
               <select value={beamType} onChange={e => setBeamType(e.target.value)} style={{ width: '100%', padding: '6px' }}>
-                <option value="simply">🔹 Simply supported</option>
-                <option value="cantilever">🔸 Cantilever (fixed left)</option>
-                <option value="fixed">🔹 Fixed‑fixed</option>
+                <option value="simply"> Simply supported</option>
+                <option value="cantilever"> Cantilever (fixed left)</option>
+                <option value="fixed"> Fixed‑fixed</option>
               </select>
               <div className="param-row" style={{ marginTop: '8px' }}>
                 <span>Length L (m):</span>
@@ -445,15 +445,15 @@ export default function BeamSimulation() {
             </div>
 
             <div className="ctrl-group">
-              <label>🧪 Material & cross‑section</label>
+              <label> Material & cross‑section</label>
               <div className="param-row">
                 <span>E (GPa):</span><input type="number" value={E_GPa} onChange={e => setE_GPa(Number(e.target.value))} step="5" style={{ width: '80px' }} className="num-input" />
                 <span>σ_y (MPa):</span><input type="number" value={yield_MPa} onChange={e => setYield_MPa(Number(e.target.value))} step="10" style={{ width: '80px' }} className="num-input" />
               </div>
               <select value={sectionType} onChange={e => setSectionType(e.target.value)} style={{ width: '100%', marginTop: '6px', padding: '6px' }}>
-                <option value="rect">📐 Rectangle (b x h)</option>
-                <option value="circle">⚪ Circle (diameter)</option>
-                <option value="ibeam">🏗️ I‑beam (HEB)</option>
+                <option value="rect"> Rectangle (b x h)</option>
+                <option value="circle"> Circle (diameter)</option>
+                <option value="ibeam"> I‑beam (HEB)</option>
               </select>
               <div style={{ marginTop: '6px' }}>
                 {sectionType === 'rect' && (
@@ -477,41 +477,41 @@ export default function BeamSimulation() {
             </div>
 
             <div className="ctrl-group">
-              <label>⚡ Loads (superposition)</label>
+              <label> Loads (superposition)</label>
               <div style={{ maxHeight: '240px', overflowY: 'auto' }}>
                 {loads.map(load => (
                   <div key={load.id} className="load-item">
                     {load.type === 'point' ? (
                       <>
-                        <span style={{ fontWeight: 'bold' }}>🔴 Point</span>
+                        <span style={{ fontWeight: 'bold' }}> Point</span>
                         <input type="number" value={load.P} onChange={e => updateLoad(load.id, 'P', Number(e.target.value))} step="1" /> kN
                         <span>@ x=</span>
                         <input type="number" value={load.a} onChange={e => updateLoad(load.id, 'a', Number(e.target.value))} step="0.2" /> m
                       </>
                     ) : (
                       <>
-                        <span style={{ fontWeight: 'bold' }}>🟢 UDL</span>
+                        <span style={{ fontWeight: 'bold' }}> UDL</span>
                         <input type="number" value={load.w} onChange={e => updateLoad(load.id, 'w', Number(e.target.value))} step="0.5" /> kN/m
                         <span>from</span><input type="number" value={load.xStart} onChange={e => updateLoad(load.id, 'xStart', Number(e.target.value))} step="0.5" />
                         <span>to</span><input type="number" value={load.xEnd} onChange={e => updateLoad(load.id, 'xEnd', Number(e.target.value))} step="0.5" />
                       </>
                     )}
-                    <button className="removeLoadBtn" onClick={() => removeLoad(load.id)}>✖</button>
+                    <button className="removeLoadBtn" onClick={() => removeLoad(load.id)}></button>
                   </div>
                 ))}
               </div>
               <div className="param-row" style={{ marginTop: '8px' }}>
-                <button onClick={addPointLoad}>➕ Point load</button>
-                <button onClick={addUDL}>➕ UDL</button>
+                <button onClick={addPointLoad}> Point load</button>
+                <button onClick={addUDL}> UDL</button>
                 <button onClick={clearLoads} className="secondary">Clear all</button>
               </div>
               <div className="warning-card" id="liveFailureMsg">
-                ✅ Intact
+                 Intact
               </div>
             </div>
 
             <div className="stress-dist">
-              <strong>📈 Max values</strong><br />
+              <strong> Max values</strong><br />
               Deflection: <span id="maxDefl" className="badge">-- mm</span><br />
               Bending stress: <span id="maxStress" className="badge">-- MPa</span><br />
               Safety factor: <span id="safetyFactor" className="badge">--</span>
@@ -525,15 +525,15 @@ export default function BeamSimulation() {
             <canvas ref={deflCanvasRef} width="800" height="150" style={{ aspectRatio: '800/150' }}></canvas>
             
             <div className="legend">
-              <span>🔹 Deformed shape (exaggerated)</span>
-              <span>✂️ Shear Force (kN)</span>
-              <span>🔁 Bending Moment (kN·m)</span>
-              <span>📉 Deflection (mm)</span>
+              <span> Deformed shape (exaggerated)</span>
+              <span> Shear Force (kN)</span>
+              <span> Bending Moment (kN·m)</span>
+              <span> Deflection (mm)</span>
             </div>
             
             <canvas ref={stressCanvasRef} width="600" height="120" style={{ width: '100%', background: '#fefce8', borderRadius: '1rem' }}></canvas>
-            <div className="legend">📐 Stress distribution σ = M·y / I (tension + compression)</div>
-            <div style={{ fontSize: '0.7rem', textAlign: 'center', marginTop: '6px' }}>💡 Tip: drag the point load circles on the beam to change position interactively!</div>
+            <div className="legend"> Stress distribution σ = M·y / I (tension + compression)</div>
+            <div style={{ fontSize: '0.7rem', textAlign: 'center', marginTop: '6px' }}> Tip: drag the point load circles on the beam to change position interactively!</div>
           </div>
         </div>
       </div>

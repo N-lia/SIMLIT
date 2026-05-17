@@ -1,9 +1,10 @@
-import { htmlToElement } from '../../utils/dom.js'
+import { render } from '../../utils/react-lite.js'
 import './LawCasesSimulation.css'
 
-export function mountLawCasesSimulation(container) {
-  const root = htmlToElement(`
-    <div class="law-sim-container">
+export default function LawCasesSimulation() {
+  return (
+
+    <div className="law-sim-container">
       {/* SIDEBAR */}
       <aside className="law-sidebar">
         <div className="law-logo">
@@ -81,7 +82,7 @@ export function mountLawCasesSimulation(container) {
       <main className="law-main">
         <div className="law-header">
           <div className="law-title-area">
-            <h1>CASES <span style={{fontSize:'20px'}}>☆</span></h1>
+            <h1>CASES <span style={{fontSize:'20px'}}></span></h1>
             <p>Practice real legal skills with immersive simulations.</p>
           </div>
           <div className="law-header-actions">
@@ -287,9 +288,12 @@ export function mountLawCasesSimulation(container) {
         </div>
       </main>
     </div>
-  `)
-  container.appendChild(root)
-  return () => {
-    if (container.contains(root)) container.removeChild(root)
-  }
+
+  );
+}
+
+export function mountLawCasesSimulation(container) {
+  const app = render(LawCasesSimulation);
+  container.appendChild(app.root);
+  return app.cleanup;
 }

@@ -96,6 +96,9 @@ function renderCurrentPage() {
   clearRoot()
 
   const currentPage = getCurrentPage()
+  rootElement.className = `app-root page-${currentPage}`
+  rootElement.dataset.page = currentPage
+
   const prevPage = getPreviousPage()
   const isGoingBack = prevPage
     ? FLOW_ORDER.indexOf(currentPage) < FLOW_ORDER.indexOf(prevPage)
@@ -156,5 +159,6 @@ function renderCurrentPage() {
 
 export function startApp(root) {
   rootElement = root
+  rootElement.className = 'app-root page-welcome'
   renderCurrentPage()
 }

@@ -5,7 +5,7 @@ export function mountNewtonsLawSimulation(container) {
   const root = htmlToElement(`
     <div class="newton-wrapper">
       <div class="sim-card">
-        <h1>🍎 Newton's 2nd Law Simulator <small>F = ma Interactive</small></h1>
+        <h1> Newton's 2nd Law Simulator <small>F = ma Interactive</small></h1>
         <div class="sub">Input your parameters to dynamically visualize the relationship between Force, Mass, and Acceleration.</div>
 
         <div class="flex-dashboard">
@@ -16,7 +16,7 @@ export function mountNewtonsLawSimulation(container) {
             </div>
 
             <div class="control-group">
-              <label><span style="color:#3b82f6">🟦 Mass (m)</span></label>
+              <label><span style="color:#3b82f6"> Mass (m)</span></label>
               <input type="range" min="1" max="100" step="1" value="10" data-mass-range />
               <div class="param-row">
                 <input type="number" class="num-input" value="10" data-mass-number />
@@ -34,7 +34,7 @@ export function mountNewtonsLawSimulation(container) {
             </div>
 
             <div class="control-group" data-group-calcA style="display:none;">
-              <label><span style="color:#f43f5e">➡️ Force (F)</span></label>
+              <label><span style="color:#f43f5e"> Force (F)</span></label>
               <input type="range" min="-1000" max="1000" step="10" value="50" data-force-range />
               <div class="param-row">
                 <input type="number" class="num-input" value="50" data-force-number />

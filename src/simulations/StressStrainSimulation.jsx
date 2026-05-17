@@ -117,9 +117,9 @@ export default function StressStrainSimulation() {
         
         if (readoutSpan) readoutSpan.innerHTML = `σ = ${stressMpa} MPa | ε = ${strainVal} | E_sec = ${E_inst.toFixed(1)} GPa`;
         if (failureDiv) {
-            if (fractured) failureDiv.innerHTML = "💀 FRACTURE! Specimen broken. Reset force.";
-            else if (stress > 0.9*maxStressRef) failureDiv.innerHTML = "⚠️ Approaching UTS - imminent failure";
-            else failureDiv.innerHTML = "✅ Intact";
+            if (fractured) failureDiv.innerHTML = " FRACTURE! Specimen broken. Reset force.";
+            else if (stress > 0.9*maxStressRef) failureDiv.innerHTML = " Approaching UTS - imminent failure";
+            else failureDiv.innerHTML = " Intact";
         }
         
         drawStressStrainCurve(refCurve);
@@ -224,7 +224,7 @@ export default function StressStrainSimulation() {
         ctxSpec.font = "bold 9px monospace";
         ctxSpec.fillText(`ε = ${(strain*100).toFixed(2)}%`, 37+newLen/2-35, yC+18);
         if(fractured) {
-            ctxSpec.fillStyle="#dc2626"; ctxSpec.font="bold 12px sans-serif"; ctxSpec.fillText("⚡ BROKEN", 37+newLen/2-30, yC-12);
+            ctxSpec.fillStyle="#dc2626"; ctxSpec.font="bold 12px sans-serif"; ctxSpec.fillText(" BROKEN", 37+newLen/2-30, yC-12);
         }
     }
     
@@ -334,13 +334,13 @@ export default function StressStrainSimulation() {
   return (
     <div className="stress-wrapper" ref={rootRef}>
       <div className="sim-card">
-        <h1>📈 Advanced Stress–Strain Simulator <small>Elastic + Plastic | Unload/Reload | Temp &amp; Rate Effects</small></h1>
-        <div className="sub">🧪 Apply force, watch the curve build — unload from plastic region to see permanent set and hysteresis.</div>
+        <h1> Advanced Stress–Strain Simulator <small>Elastic + Plastic | Unload/Reload | Temp &amp; Rate Effects</small></h1>
+        <div className="sub"> Apply force, watch the curve build — unload from plastic region to see permanent set and hysteresis.</div>
 
         <div className="flex-dashboard">
           <div className="controls">
             <div className="control-group">
-              <label>🔩 Material</label>
+              <label> Material</label>
               <div className="material-buttons" id="materialGroup">
                 <button data-mat="steel" className="material-btn active">Steel</button>
                 <button data-mat="aluminum" className="material-btn">Aluminum</button>
@@ -351,7 +351,7 @@ export default function StressStrainSimulation() {
             </div>
 
             <div className="control-group">
-              <label>⚙️ Specimen: L₀ (mm) / A (mm²)</label>
+              <label> Specimen: L₀ (mm) / A (mm²)</label>
               <div className="param-row">
                 <input type="number" id="length" defaultValue="100" step="5" className="num-input" />
                 <input type="number" id="area" defaultValue="50" step="5" className="num-input" />
@@ -359,7 +359,7 @@ export default function StressStrainSimulation() {
             </div>
 
             <div className="control-group">
-              <label>💪 Tensile force (N)</label>
+              <label> Tensile force (N)</label>
               <input type="range" id="forceSlider" min="0" max="25000" step="50" defaultValue="0" />
               <div className="param-row">
                 <span id="forceValue" className="num-input">0 N</span>
@@ -369,39 +369,39 @@ export default function StressStrainSimulation() {
             </div>
 
             <div className="control-group">
-              <label>🌡️ Temperature effect (modifier)</label>
+              <label> Temperature effect (modifier)</label>
               <input type="range" id="tempSlider" min="0.5" max="1.5" step="0.01" defaultValue="1.0" />
               <span id="tempVal" className="num-input">1.00</span>
               <div style={{fontSize: '0.65rem'}}>&lt;1 = weaker/brittle, &gt;1 = softer</div>
             </div>
 
             <div className="control-group">
-              <label>⏱️ Strain rate effect (speed)</label>
+              <label>⏱ Strain rate effect (speed)</label>
               <input type="range" id="rateSlider" min="0.2" max="2.5" step="0.05" defaultValue="1.0" />
               <span id="rateVal" className="num-input">1.00</span>
               <div style={{fontSize: '0.65rem'}}>Higher rate → slightly higher strength</div>
             </div>
 
             <div className="control-group">
-              <div className="warning" id="failureWarning">✅ Intact</div>
+              <div className="warning" id="failureWarning"> Intact</div>
               <div id="stressStrainReadout" style={{marginTop: '8px', fontSize: '0.75rem', background: '#eef2ff', padding: '6px', borderRadius: '20px', textAlign: 'center'}}>
                 σ = 0.00 MPa | ε = 0.0000 | E = --- GPa
               </div>
-              <div id="hintText" style={{fontSize: '0.7rem', marginTop: '6px'}}>💡 Click on graph to set stress target</div>
+              <div id="hintText" style={{fontSize: '0.7rem', marginTop: '6px'}}> Click on graph to set stress target</div>
             </div>
           </div>
 
           <div className="visualization">
             <canvas id="stressStrainCanvas" width="750" height="320" style={{width: '100%', aspectRatio: '750/320'}}></canvas>
             <div className="legend">
-              <span>📈 Full material curve (reference)</span>
-              <span>🔵 Current loading path</span>
-              <span>🟠 Unloading / reloading (hysteresis)</span>
-              <span>📍 Yield • UTS • Fracture</span>
+              <span> Full material curve (reference)</span>
+              <span> Current loading path</span>
+              <span> Unloading / reloading (hysteresis)</span>
+              <span> Yield • UTS • Fracture</span>
             </div>
             <div className="specimen-container">
               <canvas id="specimenCanvas" width="600" height="90" style={{width: '100%', background: '#fef3c7', borderRadius: '40px'}}></canvas>
-              <div>📏 Elongation (exaggerated) | Permanent set after yield</div>
+              <div> Elongation (exaggerated) | Permanent set after yield</div>
             </div>
           </div>
         </div>

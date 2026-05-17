@@ -144,14 +144,14 @@ export default function PipeFlowSimulation() {
         let warningMsg;
         if (outletPressure_kPa < 5.0) {
             cavitationRisk = true;
-            warningMsg = "⚠️ CRITICAL: Very high head loss! Outlet pressure near zero → CAVITATION risk! Increase diameter or reduce flow.";
+            warningMsg = " CRITICAL: Very high head loss! Outlet pressure near zero → CAVITATION risk! Increase diameter or reduce flow.";
             if (outletPressure_kPa < -20) outletPressure_kPa = -20;
         } else if (outletPressure_kPa < 15) {
-            warningMsg = "⚠️ Low outlet pressure, risk of insufficient flow / cavitation near fittings.";
+            warningMsg = " Low outlet pressure, risk of insufficient flow / cavitation near fittings.";
         } else if (V > 7.0) {
-            warningMsg = "⚠️ Very high velocity (>7 m/s) → Excessive head loss! Increase diameter.";
+            warningMsg = " Very high velocity (>7 m/s) → Excessive head loss! Increase diameter.";
         } else {
-            warningMsg = "✅ System operating within reasonable range.";
+            warningMsg = " System operating within reasonable range.";
         }
         if (outletPressure_kPa < vaporPressureKPa - atmPressureKPa) cavitationRisk = true;
         
@@ -350,7 +350,7 @@ export default function PipeFlowSimulation() {
         if (cav) {
             ctxPipe.fillStyle = "#ef4444";
             ctxPipe.font = "bold 12px";
-            ctxPipe.fillText("💥 CAVITATION WARNING! Pressure too low", startX+20, 40);
+            ctxPipe.fillText(" CAVITATION WARNING! Pressure too low", startX+20, 40);
         }
     }
     
@@ -444,7 +444,7 @@ export default function PipeFlowSimulation() {
         ctxCurve.fillStyle = "#facc15";
         ctxCurve.fill();
         ctxCurve.fillStyle = "#000";
-        ctxCurve.fillText("★ Operating", xOp-20, yOp-6);
+        ctxCurve.fillText(" Operating", xOp-20, yOp-6);
         
         ctxCurve.fillStyle = "#1e40af";
         ctxCurve.fillText("System curve", 650, 40);
@@ -463,11 +463,11 @@ export default function PipeFlowSimulation() {
         
         if (warningDiv) {
             if (hyd.cavitationRisk || hyd.outletPressure_kPa < 8) {
-                warningDiv.innerHTML = "💥 FAILURE MODE: Extreme head loss / Cavitation risk! ➜ Increase diameter, reduce flow, or add pump.";
+                warningDiv.innerHTML = " FAILURE MODE: Extreme head loss / Cavitation risk!  Increase diameter, reduce flow, or add pump.";
                 warningDiv.style.background = "#fee2e2";
                 warningDiv.style.borderLeftColor = "#dc2626";
             } else if (hyd.V > 6.5) {
-                warningDiv.innerHTML = "⚠️ Very high velocity & head loss! Pipe too narrow ➜ pressure drops sharply. Increase diameter.";
+                warningDiv.innerHTML = " Very high velocity & head loss! Pipe too narrow  pressure drops sharply. Increase diameter.";
                 warningDiv.style.background = "#fff3e3";
                 warningDiv.style.borderLeftColor = "#f97316";
             } else {
@@ -518,70 +518,70 @@ export default function PipeFlowSimulation() {
   return (
     <div className="pipe-wrapper" ref={rootRef}>
       <div className="sim-container">
-        <h1>📉 Pipe Flow &amp; Head Loss Simulator <small>Darcy-Weisbach + Minor Losses</small></h1>
-        <div className="sub">🔻 Real pipes lose pressure due to friction, bends, length &amp; roughness — see why narrow pipes fail.</div>
+        <h1> Pipe Flow &amp; Head Loss Simulator <small>Darcy-Weisbach + Minor Losses</small></h1>
+        <div className="sub"> Real pipes lose pressure due to friction, bends, length &amp; roughness — see why narrow pipes fail.</div>
 
         <div className="dashboard">
           <div className="controls-panel">
             <div className="control-group">
-              <label>📏 Pipe Length (m)</label>
+              <label> Pipe Length (m)</label>
               <input type="range" id="length" min="5" max="200" step="1" defaultValue="80" />
               <span id="lengthVal" className="num-input">80</span>
             </div>
             <div className="control-group">
-              <label>⚙️ Pipe Diameter (mm)</label>
+              <label> Pipe Diameter (mm)</label>
               <input type="range" id="diam" min="15" max="300" step="2" defaultValue="75" />
               <span id="diamVal" className="num-input">75</span>
-              <span style={{fontSize: '0.7rem', display: 'block', marginTop: '4px'}}>(⚠️ too narrow → catastrophic loss)</span>
+              <span style={{fontSize: '0.7rem', display: 'block', marginTop: '4px'}}>( too narrow → catastrophic loss)</span>
             </div>
             <div className="control-group">
-              <label>🪨 Roughness ε (mm)</label>
+              <label> Roughness ε (mm)</label>
               <input type="range" id="rough" min="0.01" max="3.0" step="0.01" defaultValue="0.25" />
               <span id="roughVal" className="num-input">0.25</span>
             </div>
             <div className="control-group" style={{background: '#e0f2fe', padding: '12px', borderRadius: '12px', border: '1px solid #bae6fd'}}>
-              <label style={{color: '#0369a1'}}>💧 Flow Rate Q (m³/h) [Calculated]</label>
+              <label style={{color: '#0369a1'}}> Flow Rate Q (m³/h) [Calculated]</label>
               <div style={{fontSize: '1.4rem', fontWeight: 'bold', color: '#0284c7', marginTop: '6px', textAlign: 'center'}}>
                 <span id="flowVal">--</span> <span style={{fontSize: '0.9rem', fontWeight: 'normal'}}>m³/h</span>
               </div>
             </div>
             <div className="control-group">
-              <label>🔄 Number of bends (90°)</label>
+              <label> Number of bends (90°)</label>
               <input type="range" id="bends" min="0" max="12" step="1" defaultValue="4" />
               <span id="bendsVal" className="num-input">4</span>
             </div>
             <div className="control-group">
-              <label>🚪 Valve opening (0=closed, 1=full)</label>
+              <label> Valve opening (0=closed, 1=full)</label>
               <input type="range" id="valve" min="0.1" max="1.0" step="0.02" defaultValue="0.75" />
               <span id="valveVal" className="num-input">0.75</span>
             </div>
             <div className="control-group">
-              <label>🧪 Fluid Viscosity ν (cSt)</label>
+              <label> Fluid Viscosity ν (cSt)</label>
               <input type="range" id="visc" min="0.5" max="100" step="0.5" defaultValue="1.0" />
               <span id="viscVal" className="num-input">1.0</span>
               <span style={{fontSize: '0.7rem', display: 'block', marginTop: '4px'}}>(1 cSt = water @20°C)</span>
             </div>
             <div className="control-group">
-              <label>⚡ Pump Power (W) [optional]</label>
+              <label> Pump Power (W) [optional]</label>
               <input type="range" id="pumpPower" min="0" max="5000" step="25" defaultValue="1200" />
               <span id="pumpVal" className="num-input">1200</span>
             </div>
             <div className="warning-badge" id="failureWarning">
-              ✅ System operating normally
+               System operating normally
             </div>
           </div>
 
           <div className="viz-panel">
             <canvas id="pipeCanvas" width="800" height="440" style={{width: '100%', height: 'auto', aspectRatio: '800/440'}}></canvas>
             <div className="legend">
-              <span>🟢 Pressure profile (green = high, red = low)</span>
-              <span>🌀 Particles = flow velocity</span>
-              <span>📊 <strong>Reynolds:</strong> <span id="reDisplay" className="reynolds">---</span></span>
-              <span>📉 Outlet pressure: <strong id="outletPress">--</strong> kPa</span>
+              <span> Pressure profile (green = high, red = low)</span>
+              <span> Particles = flow velocity</span>
+              <span> <strong>Reynolds:</strong> <span id="reDisplay" className="reynolds">---</span></span>
+              <span> Outlet pressure: <strong id="outletPress">--</strong> kPa</span>
             </div>
             <canvas id="curveCanvas" width="800" height="200" style={{width: '100%', height: 'auto', marginTop: '12px'}}></canvas>
             <div style={{fontSize: '0.7rem', textAlign: 'center', marginTop: '6px'}}>
-              📈 System curve (blue) vs Pump curve (orange) — operating point ★
+               System curve (blue) vs Pump curve (orange) — operating point 
             </div>
           </div>
         </div>

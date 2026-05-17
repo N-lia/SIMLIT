@@ -32,6 +32,50 @@
     var(--paper-texture);
 }
 
+@media (max-width: 767px) {
+  .page {
+    padding: 24px 20px 32px;
+  }
+}
+
+@media (min-width: 768px) {
+  .page:not(.sim-page) {
+    width: min(calc(100% - 48px), 1220px);
+    min-height: auto;
+    margin: 24px auto;
+    padding: clamp(24px, 3vw, 44px);
+    border: 1.5px solid var(--line-ink);
+    border-radius: 8px;
+    box-shadow: 8px 10px 0 rgba(37, 35, 31, 0.1);
+    overflow: hidden auto;
+  }
+
+  .app-root.page-simulation {
+    display: block;
+  }
+
+  .icon-btn,
+  .header-spacer {
+    width: 46px;
+    height: 46px;
+  }
+
+  .progress-dots .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .progress-dots .dot.active {
+    width: 34px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .page:not(.sim-page) {
+    width: min(calc(100% - 64px), 1360px);
+  }
+}
+
 @keyframes slideIn {
   from {
     opacity: 0;

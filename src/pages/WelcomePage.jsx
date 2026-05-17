@@ -1,6 +1,7 @@
 import heroImg from '../assets/hero-african.png'
 import './WelcomePage.css'
 import { htmlToElement } from '../utils/dom.js'
+import { iconSvg } from '../utils/icons.js'
 
 export function mountWelcomePage({ onGetStarted }) {
   const root = htmlToElement(`
@@ -8,11 +9,11 @@ export function mountWelcomePage({ onGetStarted }) {
       <header class="welcome-header">
         <div class="logo-group">
           <h1 class="logo-text">SIMLIT</h1>
-          <span class="logo-sparkle sparkle-1">✦</span>
-          <span class="logo-sparkle sparkle-2">✦</span>
+          <span class="logo-sparkle sparkle-1">${iconSvg('activity', 'app-icon')}</span>
+          <span class="logo-sparkle sparkle-2">${iconSvg('activity', 'app-icon')}</span>
         </div>
         <div class="header-decor">
-          <span class="sparkle sparkle-purple">✦</span>
+          <span class="sparkle sparkle-purple">${iconSvg('bookOpen', 'app-icon')}</span>
         </div>
       </header>
       <section class="hero-section">

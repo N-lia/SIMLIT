@@ -217,7 +217,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;heigh
       <button class="full" onclick="loadPreset('divider')">Voltage divider</button>
       <button class="full" onclick="loadPreset('short')">Short circuit</button>
       <button class="full" onclick="loadPreset('mixed')">Mixed network</button>
-      <button class="full on-r" onclick="clearCircuit()">✕ Clear</button>
+      <button class="full on-r" onclick="clearCircuit()"> Clear</button>
       <button class="full" onclick="loadPreset('lamp')">Lamp circuit</button>
     </div>
   </div>
@@ -891,7 +891,7 @@ function updateUI(){
   // Status bar
   const sb=document.getElementById('statusBar');
   const shortCircuit=elements.some(e=>e.type==='wire'&&(solvedCurrents[e.id]??0)>50);
-  if(shortCircuit){ sb.className='status bad'; sb.textContent='⚠ Short circuit detected — excessive current in wire'; }
+  if(shortCircuit){ sb.className='status bad'; sb.textContent=' Short circuit detected — excessive current in wire'; }
   else if(maxKCL>0.1){ sb.className='status warn'; sb.textContent='KCL residual high — check connectivity'; }
   else if(bats.length===0){ sb.className='status'; sb.textContent='No voltage source — add a battery'; }
   else { sb.className='status ok'; sb.textContent=`KCL/KVL satisfied · ${nodes.length} nodes · ${elements.length} elements`; }
