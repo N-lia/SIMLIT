@@ -2,7 +2,7 @@ import { FIELD_TOPICS, DIFFICULTY_COLOR } from '../data/topics.js'
 import { iconSvg } from '../utils/icons.js'
 import './SimulationSelectPage.css'
 
-export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, pageClass = '' }) {
+export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, onViewCards, onOpenNotes, pageClass = '' }) {
   const fieldData = FIELD_TOPICS[subfieldId] || { label: 'Topics', color: '#f5ede0', topics: [] }
   const { label, topics } = fieldData
 
@@ -21,11 +21,17 @@ export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, pageCl
         <div class="dot"></div>
         <div class="dot active"></div>
       </div>
-      <div class="header-spacer"></div>
+      <button id="btn-my-notes-select" class="btn-pill outline" style="padding: 6px 12px; font-size: 14px;">My Notes</button>
     </header>
     <section class="sim-select-title-section">
       <div class="sim-field-badge">${label}</div>
-      <h2 class="sim-select-title">Pick a simulation</h2>
+      <div class="sim-select-title-row">
+        <h2 class="sim-select-title">Pick a simulation</h2>
+        <button id="btn-view-cards" class="btn-pill outline tarot-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Study Cards
+        </button>
+      </div>
       <p class="sim-select-subtitle">Choose what you'd like to explore and interact with.</p>
     </section>
     <section class="sim-topic-list"></section>
@@ -67,6 +73,18 @@ export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, pageCl
   const backButton = root.querySelector('#btn-back-sim-select')
   backButton.addEventListener('click', onBack)
   listeners.push({ element: backButton, handler: onBack })
+
+  const cardsButton = root.querySelector('#btn-view-cards')
+  if (cardsButton && onViewCards) {
+    cardsButton.addEventListener('click', onViewCards)
+    listeners.push({ element: cardsButton, handler: onViewCards })
+  }
+
+  const notesButton = root.querySelector('#btn-my-notes-select')
+  if (notesButton && onOpenNotes) {
+    notesButton.addEventListener('click', onOpenNotes)
+    listeners.push({ element: notesButton, handler: onOpenNotes })
+  }
 
   function cleanup() {
     listeners.forEach(({ element, handler }) => element.removeEventListener('click', handler))

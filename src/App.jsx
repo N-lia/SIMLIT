@@ -1,31 +1,43 @@
 import './App.css'
+import { mountLandingPage } from './pages/LandingPage.jsx'
+import { mountGetNowPage } from './pages/GetNowPage.jsx'
 import { mountWelcomePage } from './pages/WelcomePage.jsx'
 import { mountFieldOfStudyPage } from './pages/FieldOfStudyPage.jsx'
 import { mountEngineeringFieldPage } from './pages/EngineeringFieldPage.jsx'
 import { mountBioDataPage } from './pages/BioDataPage.jsx'
 import { mountSimulationSelectPage } from './pages/SimulationSelectPage.jsx'
 import { mountSimulationPage } from './pages/SimulationPage.jsx'
+import { mountTarotCardsPage } from './pages/TarotCardsPage.jsx'
+import { mountMyNotesPage } from './pages/MyNotesPage.jsx'
 
 const PAGES = {
+  landing:          'landing',
+  getNow:           'getNow',
   welcome:          'welcome',
   fieldOfStudy:     'fieldOfStudy',
   engineeringField: 'engineeringField',
   bioData:          'bioData',
   simulationSelect: 'simulationSelect',
   simulation:       'simulation',
+  tarotCards:       'tarotCards',
+  myNotes:          'myNotes',
 }
 
 const FLOW_ORDER = [
+  PAGES.landing,
+  PAGES.getNow,
   PAGES.welcome,
   PAGES.fieldOfStudy,
   PAGES.bioData,
   PAGES.engineeringField,
   PAGES.simulationSelect,
+  PAGES.tarotCards,
+  PAGES.myNotes,
   PAGES.simulation,
 ]
 
 const appState = {
-  history: [PAGES.welcome],
+  history: [PAGES.landing],
   selectedField: null,
   selectedSubfield: null,
   selectedTopic: null,
@@ -80,6 +92,21 @@ function handleTopicSelect(topicId) {
   navigateTo(PAGES.simulation)
 }
 
+function handleViewCards() {
+  navigateTo(PAGES.tarotCards)
+}
+
+function handleOpenNotes() {
+  navigateTo(PAGES.myNotes)
+}
+
+function startDemo() {
+  appState.selectedField = null
+  appState.selectedSubfield = null
+  appState.selectedTopic = null
+  navigateTo(PAGES.welcome)
+}
+
 function clearRoot() {
   if (!rootElement) return
   rootElement.innerHTML = ''
@@ -107,7 +134,19 @@ function renderCurrentPage() {
 
   let pageRender = null
 
-  if (currentPage === PAGES.welcome) {
+  if (currentPage === PAGES.landing) {
+    pageRender = mountLandingPage({
+      onTryDemo: startDemo,
+      onGetNow: () => navigateTo(PAGES.getNow),
+      pageClass,
+    })
+  } else if (currentPage === PAGES.getNow) {
+    pageRender = mountGetNowPage({
+      onBack: navigateBack,
+      onTryDemo: startDemo,
+      pageClass,
+    })
+  } else if (currentPage === PAGES.welcome) {
     pageRender = mountWelcomePage({
       onGetStarted: () => navigateTo(PAGES.fieldOfStudy),
       pageClass,
@@ -135,6 +174,19 @@ function renderCurrentPage() {
       subfieldId: appState.selectedSubfield,
       onBack: navigateBack,
       onSelect: handleTopicSelect,
+      onViewCards: handleViewCards,
+      onOpenNotes: handleOpenNotes,
+      pageClass,
+    })
+  } else if (currentPage === PAGES.tarotCards) {
+    pageRender = mountTarotCardsPage({
+      subfieldId: appState.selectedSubfield,
+      onBack: navigateBack,
+      pageClass,
+    })
+  } else if (currentPage === PAGES.myNotes) {
+    pageRender = mountMyNotesPage({
+      onBack: navigateBack,
       pageClass,
     })
   } else if (currentPage === PAGES.simulation) {
@@ -142,6 +194,7 @@ function renderCurrentPage() {
       subfieldId: appState.selectedSubfield,
       topicId: appState.selectedTopic,
       onBack: navigateBack,
+      onOpenNotes: handleOpenNotes,
       pageClass,
     })
   }
@@ -159,6 +212,6 @@ function renderCurrentPage() {
 
 export function startApp(root) {
   rootElement = root
-  rootElement.className = 'app-root page-welcome'
+  rootElement.className = 'app-root page-landing'
   renderCurrentPage()
 }
