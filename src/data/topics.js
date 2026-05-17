@@ -74,6 +74,7 @@ export const FIELD_TOPICS = {
     label: 'Computer Science',
     color: '#e85d2a',
     topics: [
+      { id: 'nand_flash',  label: 'NAND Flash Memory', desc: 'Simulate pages, blocks, erases, and wear leveling', difficulty: 'Intermediate', emoji: '💾', implemented: true },
       { id: 'sorting',      label: 'Sorting Algorithms', desc: 'Visualize bubble, merge, quicksort', difficulty: 'Beginner',     emoji: '📊', implemented: false },
       { id: 'pathfinding',  label: 'Pathfinding',        desc: 'BFS and Dijkstra on graphs',         difficulty: 'Intermediate', emoji: '🔗', implemented: false },
     ],

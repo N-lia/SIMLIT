@@ -20,6 +20,7 @@ const SIM_LOADERS = {
   stress: () => import('../simulations/StressStrainSimulation.jsx').then(m => m.mountStressStrainSimulation),
   mohr: () => import('../simulations/MohrsCircleSimulation.jsx').then(m => m.mountMohrsCircleSimulation),
   motor: () => import('../simulations/DcMotorSimulation.jsx').then(m => m.mountDcMotorSimulation),
+  nand_flash: () => import('../simulations/NandFlashSimulation.jsx').then(m => m.mountNandFlashSimulation),
   wavelab: () => import('../simulations/IframeSimulation.jsx').then(m => m.mountIframeSimulation),
   kirchhoff: () => import('../simulations/IframeSimulation.jsx').then(m => m.mountIframeSimulation),
   case: () => import('../simulations/law/LawCasesSimulation.jsx').then(m => m.mountLawCasesSimulation),
