@@ -16,6 +16,10 @@
   margin-bottom: 24px;
 }
 
+.header-spacer {
+  width: 44px;
+}
+
 /* Title */
 .field-title-section {
   margin-bottom: 22px;
@@ -178,11 +182,13 @@
 
 @media (min-width: 768px) {
   .field-page {
-    display: grid;
-    grid-template-columns: minmax(260px, 0.42fr) minmax(460px, 1fr);
-    grid-template-rows: auto 1fr;
-    column-gap: clamp(28px, 4vw, 58px);
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    padding-left: 32px;
+    padding-right: 32px;
     padding-top: clamp(22px, 2.6vw, 34px);
   }
 
@@ -192,29 +198,26 @@
   }
 
   .field-title-section {
-    position: sticky;
-    top: 24px;
-    max-width: 340px;
-    margin-bottom: 0;
+    max-width: none;
+    margin-bottom: 32px;
   }
 
   .field-title {
-    font-size: clamp(42px, 4vw, 60px);
-    max-width: 10ch;
+    font-size: clamp(42px, 5vw, 64px);
+    max-width: none;
     letter-spacing: 0;
   }
 
   .field-subtitle {
-    font-size: 16px;
-    max-width: 28ch;
+    font-size: 18px;
+    max-width: none;
   }
 
   .field-cards {
-    grid-column: 2;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    padding-bottom: 0;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding-bottom: 32px;
   }
 
   .field-card {
@@ -242,43 +245,37 @@
 
 @media (min-width: 1120px) {
   .field-cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .field-card {
-    min-height: 214px;
-    justify-content: space-between;
-  }
-
-  .card-top-content {
-    flex-direction: row;
-    align-items: flex-end;
-    gap: 18px;
-  }
-
-  .card-image-wrapper {
-    width: 138px;
-    height: 138px;
-  }
-}
-
-@media (min-width: 1340px) {
-  .field-cards {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .field-card {
-    min-height: 230px;
+    min-height: 280px;
+    justify-content: flex-end;
   }
 
   .card-top-content {
     flex-direction: column-reverse;
     align-items: flex-start;
+    gap: 18px;
+    height: 100%;
+    justify-content: space-between;
   }
 
   .card-image-wrapper {
     width: 100%;
-    height: 132px;
+    height: 150px;
+    border: none;
+    background: transparent;
+  }
+
+  .card-image {
+    object-fit: contain;
+  }
+
+  .card-arrow {
+    position: absolute;
+    top: 20px;
+    right: 20px;
   }
 }
 
