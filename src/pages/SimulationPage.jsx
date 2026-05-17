@@ -31,7 +31,7 @@ const SIM_LOADERS = {
   heat_engine: () => import('../simulations/IframeSimulation.jsx').then(m => m.mountIframeSimulation),
 }
 
-export function mountSimulationPage({ subfieldId, topicId, onBack, pageClass = '' }) {
+export function mountSimulationPage({ subfieldId, topicId, onBack, onOpenNotes, pageClass = '' }) {
   const fieldData = FIELD_TOPICS[subfieldId] || {}
   const topic = (fieldData.topics || []).find(t => t.id === topicId) || { id: topicId, label: topicId }
   const loadSimulation = SIM_LOADERS[topicId]
@@ -49,7 +49,10 @@ export function mountSimulationPage({ subfieldId, topicId, onBack, pageClass = '
         <span class="sim-emoji">${iconSvg(topic.icon)}</span>
         <span class="sim-topic-name">${topic.label || topic.id || topicId}</span>
       </div>
-      <span class="sim-field-chip">${fieldData.label || ''}</span>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <button id="btn-my-notes-sim" class="btn-pill dark" style="padding: 4px 12px; font-size: 13px;">My Notes</button>
+        <span class="sim-field-chip">${fieldData.label || ''}</span>
+      </div>
     </header>
     <div class="sim-body"></div>
   `
@@ -57,6 +60,11 @@ export function mountSimulationPage({ subfieldId, topicId, onBack, pageClass = '
   const simBody = root.querySelector('.sim-body')
   const backButton = root.querySelector('#btn-back-sim')
   backButton.addEventListener('click', onBack)
+
+  const notesButton = root.querySelector('#btn-my-notes-sim')
+  if (notesButton && onOpenNotes) {
+    notesButton.addEventListener('click', onOpenNotes)
+  }
 
   let result = null
   let disposed = false
@@ -92,6 +100,7 @@ export function mountSimulationPage({ subfieldId, topicId, onBack, pageClass = '
   const cleanup = () => {
     disposed = true
     backButton.removeEventListener('click', onBack)
+    if (notesButton && onOpenNotes) notesButton.removeEventListener('click', onOpenNotes)
     if (typeof result === 'function') {
       result()
     } else if (result && typeof result.cleanup === 'function') {
