@@ -1,299 +1,271 @@
-import { render } from '../../utils/react-lite.js'
+import { render, useMemo, useState } from '../../utils/react-lite.js'
+import { lawCases } from './lawData.js'
 import './LawCasesSimulation.css'
 
-export default function LawCasesSimulation() {
-  return (
+const tabs = [
+  { id: 'all', label: 'All cases' },
+  { id: 'favourites', label: 'Favourites' },
+  { id: 'in-progress', label: 'In progress' },
+  { id: 'completed', label: 'Completed' },
+]
 
+const navItems = ['Dashboard', 'Cases', 'Progress', 'Library', 'Drafting Lab', 'ADR Room', 'Moot Court', 'Notes']
+
+function Icon({ name }) {
+  const paths = {
+    scales: <><path d="M12 3v18" /><path d="M8 8l4-5 4 5" /><path d="M6 8v4c0 3 2 6 6 6s6-3 6-6V8" /><path d="M4 10h16" /></>,
+    folder: <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />,
+    search: <><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></>,
+    filter: <path d="M22 3H2l8 9.5V19l4 2v-8.5L22 3z" />,
+    brief: <><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><path d="M3 12h18" /></>,
+    book: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></>,
+    check: <><path d="M20 6 9 17l-5-5" /></>,
+    star: <path d="m12 3 2.7 5.45 6.02.87-4.36 4.24 1.03 5.99L12 16.72l-5.39 2.83 1.03-5.99-4.36-4.24 6.02-.87L12 3z" />,
+  }
+
+  return (
+    <svg className="law-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      {paths[name] || paths.folder}
+    </svg>
+  )
+}
+
+function getStatusLabel(status) {
+  if (status === 'new') return 'New'
+  if (status === 'completed') return 'Completed'
+  return 'In progress'
+}
+
+export default function LawCasesSimulation() {
+  const [activeTab, setActiveTab] = useState('all')
+  const [query, setQuery] = useState('')
+  const [typeFilter, setTypeFilter] = useState('all')
+  const [favourites, setFavourites] = useState(['criminal-trial'])
+  const [progressById, setProgressById] = useState(() =>
+    Object.fromEntries(lawCases.map((lawCase) => [lawCase.id, lawCase.progress]))
+  )
+  const [selectedId, setSelectedId] = useState(lawCases[0].id)
+  const [notice, setNotice] = useState('Select a case, complete the next task, and watch the curriculum progress update.')
+
+  const selectedCase = lawCases.find((lawCase) => lawCase.id === selectedId) || lawCases[0]
+  const completedCount = Object.values(progressById).filter((value) => value >= 100).length
+  const averageProgress = Math.round(
+    Object.values(progressById).reduce((total, value) => total + value, 0) / lawCases.length
+  )
+  const types = ['all', ...Array.from(new Set(lawCases.map((lawCase) => lawCase.type)))]
+
+  const filteredCases = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase()
+
+    return lawCases.filter((lawCase) => {
+      const progress = progressById[lawCase.id] || 0
+      const matchesTab =
+        activeTab === 'all' ||
+        (activeTab === 'favourites' && favourites.includes(lawCase.id)) ||
+        (activeTab === 'in-progress' && progress > 0 && progress < 100) ||
+        (activeTab === 'completed' && progress >= 100)
+      const matchesType = typeFilter === 'all' || lawCase.type === typeFilter
+      const haystack = `${lawCase.title} ${lawCase.type} ${lawCase.parties} ${lawCase.facts}`.toLowerCase()
+      const matchesQuery = !normalizedQuery || haystack.includes(normalizedQuery)
+
+      return matchesTab && matchesType && matchesQuery
+    })
+  }, [activeTab, favourites, progressById, query, typeFilter])
+
+  const toggleFavourite = (caseId) => {
+    setFavourites((current) =>
+      current.includes(caseId) ? current.filter((id) => id !== caseId) : [...current, caseId]
+    )
+  }
+
+  const completeTask = () => {
+    const current = progressById[selectedCase.id] || 0
+    const next = Math.min(100, current + 20)
+    setProgressById({ ...progressById, [selectedCase.id]: next })
+    setNotice(
+      next >= 100
+        ? `${selectedCase.title} completed. The next repetition should focus on speed and confidence.`
+        : `${selectedCase.title} moved to ${next}%. Next: ${selectedCase.nextStep}`
+    )
+  }
+
+  const resetCase = () => {
+    setProgressById({ ...progressById, [selectedCase.id]: selectedCase.progress })
+    setNotice(`${selectedCase.title} reset to the curriculum starting point.`)
+  }
+
+  return (
     <div className="law-sim-container">
-      {/* SIDEBAR */}
-      <aside className="law-sidebar">
+      <aside className="law-sidebar" aria-label="Law training navigation">
         <div className="law-logo">
-          <div className="law-logo-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 3v18M8 8l4-5 4 5M6 8v4c0 3 2 6 6 6s6-3 6-6V8M4 10h16" />
-            </svg>
-          </div>
+          <div className="law-logo-icon"><Icon name="scales" /></div>
           <div className="law-logo-text">
-            <h2>Legal<br/>Simulator</h2>
+            <h2>Legal Simulator</h2>
             <span>Nigerian Law Training</span>
           </div>
         </div>
 
         <nav className="law-nav">
-          <div className="law-nav-item">
-            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            Dashboard
-          </div>
-          <div className="law-nav-item active">
-            <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-            Cases
-          </div>
-          <div className="law-nav-item">
-            <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-4"/></svg>
-            My Progress
-          </div>
-          <div className="law-nav-item">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            Library
-          </div>
-          <div className="law-nav-item">
-            <svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5l4 4L7 21H3v-4L16.5 3.5z"/></svg>
-            Drafting Lab
-          </div>
-          <div className="law-nav-item">
-            <svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
-            ADR Room
-          </div>
-          <div className="law-nav-item">
-            <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
-            Moot Court
-          </div>
-          <div className="law-nav-item">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            Notes
-          </div>
-          <div className="law-nav-item">
-            <svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10l1 7H6l1-7z"/><path d="M5 11v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
-            Leaderboard
-          </div>
+          {navItems.map((item) => (
+            <button
+              className={`law-nav-item ${item === 'Cases' ? 'active' : ''}`}
+              type="button"
+              onClick={() => setNotice(`${item} is part of the law training workspace.`)}
+            >
+              <Icon name={item === 'Cases' ? 'folder' : item === 'Library' ? 'book' : 'brief'} />
+              {item}
+            </button>
+          ))}
         </nav>
 
         <div className="law-goal">
           <h4>Today's Goal</h4>
-          <p>Complete any<br/>1 task</p>
-          <div className="law-progress-bar">
-            <div className="law-progress-fill" style={{ width: '15%' }}></div>
+          <p>Complete one legal task</p>
+          <div className="law-progress-bar" aria-hidden="true">
+            <div className="law-progress-fill" style={{ width: `${completedCount > 0 ? 100 : averageProgress}%` }}></div>
           </div>
-          <span className="law-goal-text">0/1</span>
+          <span className="law-goal-text">{completedCount > 0 ? '1/1' : '0/1'} complete</span>
         </div>
 
         <div className="law-profile">
-          <div className="law-avatar">
-            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
+          <div className="law-avatar"><Icon name="scales" /></div>
           <div className="law-profile-info">
             <strong>A. OLADELE</strong>
-            <span>LL.B Student ⌄</span>
+            <span>LL.B Student</span>
           </div>
         </div>
       </aside>
 
-      {/* MAIN CONTENT */}
       <main className="law-main">
-        <div className="law-header">
+        <header className="law-header">
           <div className="law-title-area">
-            <h1>CASES <span style={{fontSize:'20px'}}></span></h1>
-            <p>Practice real legal skills with immersive simulations.</p>
+            <span className="law-eyebrow">Case practice studio</span>
+            <h1>Law Cases</h1>
+            <p>Practice Nigerian legal reasoning through facts, procedure, evidence, and advocacy choices.</p>
           </div>
-          <div className="law-header-actions">
-            <button className="law-icon-btn">
-              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </button>
-            <button className="law-icon-btn">
-              <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            </button>
+          <div className="law-header-stats" aria-label="Case progress summary">
+            <div><strong>{lawCases.length}</strong><span>case files</span></div>
+            <div><strong>{averageProgress}%</strong><span>average progress</span></div>
+            <div><strong>{completedCount}</strong><span>completed</span></div>
           </div>
-        </div>
+        </header>
 
-        <div className="law-tabs-area">
+        <section className="law-controls" aria-label="Case filters">
+          <label className="law-search">
+            <Icon name="search" />
+            <span className="sr-only">Search cases</span>
+            <input
+              value={query}
+              onInput={(event) => setQuery(event.target.value)}
+              placeholder="Search facts, parties, or topic"
+            />
+          </label>
           <div className="law-tabs">
-            <button className="law-tab active">ALL CASES</button>
-            <button className="law-tab">FAVOURITES</button>
-            <button className="law-tab">IN PROGRESS</button>
-            <button className="law-tab">COMPLETED</button>
+            {tabs.map((tab) => (
+              <button
+                className={`law-tab ${activeTab === tab.id ? 'active' : ''}`}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
-          <button className="law-filter-btn">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-            Filter ⌄
-          </button>
-        </div>
+          <label className="law-filter">
+            <Icon name="filter" />
+            <span className="sr-only">Filter by type</span>
+            <select value={typeFilter} onChange={(event) => setTypeFilter(event.target.value)}>
+              {types.map((type) => <option value={type}>{type === 'all' ? 'All practice areas' : type}</option>)}
+            </select>
+          </label>
+        </section>
 
-        <div className="law-grid">
-          {/* Card 1 */}
-          <div className="law-folder" data-color="red">
-            <div className="law-folder-tab"></div>
-            <div className="law-folder-body">
-              <div className="law-folder-header">
-                <div className="law-folder-icon">
-                  <svg viewBox="0 0 24 24"><path d="M12 3v18M8 8l4-5 4 5M6 8v4c0 3 2 6 6 6s6-3 6-6V8M4 10h16" /></svg>
-                </div>
-                <div className="law-folder-dots">...</div>
+        <section className="law-workspace">
+          <div className="law-grid" aria-label="Available legal case files">
+            {filteredCases.length === 0 ? (
+              <div className="law-empty-state">
+                <Icon name="folder" />
+                <h3>No matching case</h3>
+                <p>Try another practice area or clear the search field.</p>
               </div>
-              <h3 className="law-folder-title">Criminal Trial</h3>
-              <p className="law-folder-desc">Conduct a full criminal trial from charge to judgment.</p>
-              <div className="law-folder-footer">
-                <div className="law-folder-progress">
-                  <div className="law-folder-bar"><div className="law-folder-fill" style={{width:'60%'}}></div></div>
-                  <span className="law-folder-pct">60%</span>
-                </div>
-              </div>
+            ) : filteredCases.map((lawCase) => {
+              const progress = progressById[lawCase.id] || 0
+              const isSelected = lawCase.id === selectedCase.id
+              const isFavourite = favourites.includes(lawCase.id)
+              return (
+                <article className={`law-folder ${isSelected ? 'selected' : ''}`} data-color={lawCase.color}>
+                  <button className="law-folder-main" type="button" onClick={() => setSelectedId(lawCase.id)}>
+                    <span className="law-folder-tab"></span>
+                    <span className="law-folder-body">
+                      <span className="law-folder-header">
+                        <span className="law-folder-icon"><Icon name={progress >= 100 ? 'check' : 'folder'} /></span>
+                        <span className="law-folder-status">{getStatusLabel(progress >= 100 ? 'completed' : lawCase.status)}</span>
+                      </span>
+                      <strong className="law-folder-title">{lawCase.title}</strong>
+                      <span className="law-folder-desc">{lawCase.parties}</span>
+                      <span className="law-folder-footer">
+                        <span className="law-folder-bar"><span className="law-folder-fill" style={{ width: `${progress}%` }}></span></span>
+                        <span className="law-folder-pct">{progress}%</span>
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    className={`law-favourite ${isFavourite ? 'active' : ''}`}
+                    type="button"
+                    aria-label={`${isFavourite ? 'Remove' : 'Add'} ${lawCase.title} favourite`}
+                    onClick={() => toggleFavourite(lawCase.id)}
+                  >
+                    <Icon name="star" />
+                  </button>
+                </article>
+              )
+            })}
+          </div>
+
+          <aside className="law-case-panel" aria-label="Selected case details">
+            <div className="law-panel-header">
+              <span className="law-case-type">{selectedCase.type}</span>
+              <strong>{progressById[selectedCase.id] || 0}%</strong>
             </div>
-          </div>
-
-          {/* Card 2 */}
-          <div className="law-folder" data-color="blue">
-            <div className="law-folder-tab"></div>
-            <div className="law-folder-body">
-              <div className="law-folder-header">
-                <div className="law-folder-icon shaded">
-                  <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                </div>
-                <div className="law-folder-dots">...</div>
-              </div>
-              <h3 className="law-folder-title">Constitutional Rights</h3>
-              <p className="law-folder-desc">Enforce fundamental rights and challenge state actions.</p>
-              <div className="law-folder-footer">
-                <div className="law-folder-progress">
-                  <div className="law-folder-bar"><div className="law-folder-fill" style={{width:'40%'}}></div></div>
-                  <span className="law-folder-pct">40%</span>
-                </div>
-              </div>
+            <h2>{selectedCase.title}</h2>
+            <p className="law-parties">{selectedCase.parties}</p>
+            <dl className="law-detail-list">
+              <div><dt>Forum</dt><dd>{selectedCase.jurisdiction}</dd></div>
+              <div><dt>Rule focus</dt><dd>{selectedCase.statute}</dd></div>
+              <div><dt>Skill</dt><dd>{selectedCase.skill}</dd></div>
+            </dl>
+            <div className="law-facts">
+              <h3>Case facts</h3>
+              <p>{selectedCase.facts}</p>
             </div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="law-folder" data-color="green">
-            <div className="law-folder-tab"></div>
-            <div className="law-folder-body">
-              <div className="law-folder-header">
-                <div className="law-folder-icon">
-                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+            <div className="law-task-list">
+              <h3>Simulation tasks</h3>
+              {selectedCase.tasks.map((task, index) => (
+                <div className="law-task-row">
+                  <span>{index + 1}</span>
+                  <p>{task}</p>
                 </div>
-                <div className="law-folder-dots">...</div>
-              </div>
-              <h3 className="law-folder-title">Contract Dispute</h3>
-              <p className="law-folder-desc">Analyse facts, review contracts and advise your client.</p>
-              <div className="law-folder-footer">
-                <div className="law-folder-progress">
-                  <div className="law-folder-bar"><div className="law-folder-fill" style={{width:'25%'}}></div></div>
-                  <span className="law-folder-pct">25%</span>
-                </div>
-              </div>
+              ))}
             </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="law-folder" data-color="purple">
-            <div className="law-folder-tab"></div>
-            <div className="law-folder-body">
-              <div className="law-folder-header">
-                <div className="law-folder-icon">
-                  <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                </div>
-                <div className="law-folder-dots">...</div>
-              </div>
-              <h3 className="law-folder-title">Client Interview</h3>
-              <p className="law-folder-desc">Interview the client and uncover the real story.</p>
-              <div className="law-folder-footer">
-                <div className="law-folder-progress">
-                  <div className="law-folder-bar"><div className="law-folder-fill" style={{width:'5%'}}></div></div>
-                  <span className="law-folder-badge">New</span>
-                </div>
-              </div>
+            <div className="law-next-step">
+              <strong>Next move</strong>
+              <p>{selectedCase.nextStep}</p>
             </div>
-          </div>
-
-          {/* Card 5 */}
-          <div className="law-folder" data-color="orange">
-            <div className="law-folder-tab"></div>
-            <div className="law-folder-body">
-              <div className="law-folder-header">
-                <div className="law-folder-icon">
-                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                </div>
-                <div className="law-folder-dots">...</div>
-              </div>
-              <h3 className="law-folder-title">Evidence Lab</h3>
-              <p className="law-folder-desc">Examine evidence, spot inconsistencies and build your case.</p>
-              <div className="law-folder-footer">
-                <div className="law-folder-progress">
-                  <div className="law-folder-bar"><div className="law-folder-fill" style={{width:'30%'}}></div></div>
-                  <span className="law-folder-pct">30%</span>
-                </div>
-              </div>
+            <div className="law-panel-actions">
+              <button className="law-primary-btn" type="button" onClick={completeTask}>Complete next task</button>
+              <button className="law-secondary-btn" type="button" onClick={resetCase}>Reset case</button>
             </div>
-          </div>
-
-          {/* Card 6 */}
-          <div className="law-folder" data-color="tan">
-            <div className="law-folder-tab"></div>
-            <div className="law-folder-body">
-              <div className="law-folder-header">
-                <div className="law-folder-icon shaded">
-                  <svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
-                </div>
-                <div className="law-folder-dots">...</div>
-              </div>
-              <h3 className="law-folder-title">Negotiation Room</h3>
-              <p className="law-folder-desc">Negotiate terms, make strategic offers and reach the best outcome.</p>
-              <div className="law-folder-footer">
-                <div className="law-folder-progress">
-                  <span className="law-folder-badge">New</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 7 */}
-          <div className="law-folder" data-color="teal">
-            <div className="law-folder-tab"></div>
-            <div className="law-folder-body">
-              <div className="law-folder-header">
-                <div className="law-folder-icon">
-                  <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
-                </div>
-                <div className="law-folder-dots">...</div>
-              </div>
-              <h3 className="law-folder-title">Moot Court</h3>
-              <p className="law-folder-desc">Argue an appeal and respond to the bench.</p>
-              <div className="law-folder-footer">
-                <div className="law-folder-progress">
-                  <div className="law-folder-bar"><div className="law-folder-fill" style={{width:'10%'}}></div></div>
-                  <span className="law-folder-pct">10%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 8 */}
-          <div className="law-folder" data-color="yellow">
-            <div className="law-folder-tab"></div>
-            <div className="law-folder-body">
-              <div className="law-folder-header">
-                <div className="law-folder-icon">
-                  <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </div>
-                <div className="law-folder-dots">...</div>
-              </div>
-              <h3 className="law-folder-title">Property & Land Dispute</h3>
-              <p className="law-folder-desc">Resolve land ownership and tenancy conflicts.</p>
-              <div className="law-folder-footer">
-                <div className="law-folder-progress">
-                  <div className="law-folder-bar"><div className="law-folder-fill" style={{width:'15%'}}></div></div>
-                  <span className="law-folder-pct">15%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="law-bottom-banner">
-          <div className="law-banner-text">
-            <svg className="law-banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2v1"/><path d="M12 6a6 6 0 0 1 6 6c0 1.9-1.2 3.6-3 4.5V18H9v-1.5c-1.8-.9-3-2.6-3-4.5a6 6 0 0 1 6-6z"/>
-            </svg>
-            <p>Each case is mapped to Nigerian law curriculum<br/>outcomes and practical skills.</p>
-          </div>
-          <button className="law-banner-btn">VIEW CURRICULUM MAP &rarr;</button>
-        </div>
+            <p className="law-notice" role="status">{notice}</p>
+            <p className="law-disclaimer">Training simulation only. It is not legal advice.</p>
+          </aside>
+        </section>
       </main>
     </div>
-
-  );
+  )
 }
 
 export function mountLawCasesSimulation(container) {
-  const app = render(LawCasesSimulation);
-  container.appendChild(app.root);
-  return app.cleanup;
+  const app = render(LawCasesSimulation)
+  container.appendChild(app.root)
+  return app.cleanup
 }
