@@ -139,6 +139,34 @@
   padding-top: 20px;
 }
 
+@media (max-width: 767px) {
+  .biodata-page {
+    padding-bottom: 24px;
+  }
+
+  .bio-header {
+    margin-bottom: 20px;
+  }
+
+  .bio-subtitle {
+    margin-bottom: 22px;
+  }
+
+  .bio-form {
+    gap: 14px;
+  }
+
+  .form-group input {
+    padding: 13px 0;
+  }
+
+  .bio-footer {
+    margin-top: 24px;
+    padding-top: 0;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+}
+
 @media (min-width: 768px) {
   .biodata-page {
     display: grid;

@@ -189,3 +189,262 @@
 .katex-panel .katex,
 .katex-panel .katex * { color: var(--ink) !important; }
 .katex-panel .katex .mord.text { color: var(--ink-soft) !important; }
+
+/* ── Focused engineering shell: compact simulations that should feel like Double Pendulum ── */
+.focused-sim {
+  --panel: rgba(255, 244, 223, 0.62);
+  --bg2: rgba(255, 244, 223, 0.68);
+  --bg3: rgba(234, 214, 167, 0.42);
+  --border: var(--line-soft);
+  --border2: var(--line-ink);
+  --phosphor: var(--accent-green);
+  --amber: var(--accent-yellow);
+  --cyan: var(--accent-blue);
+  --red: var(--accent-red);
+  --t1: var(--ink);
+  --t2: var(--ink-soft);
+  --t3: var(--ink-faint);
+  --mono: 'IBM Plex Mono', 'Outfit', monospace;
+
+  width: 100%;
+  min-height: 100%;
+  padding: 18px 18px 24px;
+  background: var(--paper-texture);
+  color: var(--t1);
+  font-family: 'Outfit', sans-serif;
+  gap: 14px;
+}
+
+.focused-header {
+  width: 100%;
+  max-width: 1260px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 0.5px solid var(--border);
+  margin: 0 auto;
+}
+
+.focused-logo {
+  display: block;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--phosphor);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.focused-subtitle {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--t3);
+  letter-spacing: 0.04em;
+}
+
+.focused-badge {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--amber);
+  background: rgba(216, 180, 92, 0.16);
+  border: 0.5px solid rgba(216, 180, 92, 0.34);
+  border-radius: 4px;
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+
+.focused-grid {
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 14px;
+  align-items: start;
+}
+
+.focused-canvas-panel {
+  background: var(--bg2);
+  border: 1.5px solid var(--line-ink);
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+.focused-canvas-panel .sim-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: rgba(255, 244, 223, 0.7);
+}
+
+.focused-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.focused-panel {
+  background: var(--panel);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.focused-sim .section-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--t3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.focused-sim .control-row label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--t2);
+  letter-spacing: 0.02em;
+}
+
+.focused-sim .ctrl-val {
+  color: var(--t1);
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.focused-sim .control-row input[type="range"] {
+  height: 3px;
+  background: var(--bg3);
+}
+
+.focused-sim .control-row input[type="range"]::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--phosphor);
+  border: 2px solid var(--paper-light);
+  box-shadow: none;
+}
+
+.focused-readout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.focused-sim .readout {
+  background: var(--bg3);
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.focused-sim .readout-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--t3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.focused-sim .readout-val {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--t1);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.focused-sim .readout-val.green { color: var(--phosphor); }
+.focused-sim .readout-val.amber { color: var(--amber); }
+.focused-sim .readout-val.cyan { color: var(--cyan); }
+.focused-sim .readout-val.red { color: var(--red); }
+
+.focused-sim .mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.focused-sim .mode-grid button {
+  background: var(--bg3);
+  border: 0.5px solid var(--border2);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--t2);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.13s;
+}
+
+.focused-sim .mode-grid button:hover {
+  background: rgba(216, 180, 92, 0.18);
+  color: var(--t1);
+}
+
+.focused-sim .mode-grid button.on {
+  background: rgba(76, 122, 60, 0.12);
+  color: var(--phosphor);
+  border-color: rgba(76, 122, 60, 0.36);
+}
+
+.focused-sim .mode-grid button.full { grid-column: span 2; }
+
+.focused-sim .panel-tag {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--t3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.focused-sim .panel-tag span { color: var(--phosphor); }
+
+.focused-sim .scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(37, 35, 31, 0.04) 2px,
+    rgba(37, 35, 31, 0.04) 4px
+  );
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .focused-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .focused-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .focused-badge {
+    white-space: normal;
+  }
+}

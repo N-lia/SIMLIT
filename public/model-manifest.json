@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "packs": [
+    {
+      "id": "text-lite",
+      "alias": "gemma-4-e2b-it-text-lite",
+      "label": "SIMLIT AI Lite",
+      "filename": "gemma-4-e2b-it-q4_0.gguf",
+      "quant": "Q4_0",
+      "modalities": ["text"],
+      "bundle": "mobile-ai-lite",
+      "sizeGb": 3.04,
+      "minRamGb": 4,
+      "recommendedRamGb": 6,
+      "defaultContext": 2048,
+      "maxTokens": 220,
+      "runtime": {
+        "threads": 4,
+        "batch": 256,
+        "ubatch": 64,
+        "flashAttention": true,
+        "cacheReuse": 128,
+        "kvKeyType": "q8_0",
+        "kvValueType": "q8_0",
+        "parallelSlots": 1
+      }
+    },
+    {
+      "id": "text-plus",
+      "alias": "gemma-4-e2b-it-text-plus",
+      "label": "SIMLIT AI Plus",
+      "filename": "gemma-4-e2b-it-q4_k_m.gguf",
+      "quant": "Q4_K_M",
+      "modalities": ["text"],
+      "bundle": "mobile-ai-plus",
+      "sizeGb": 3.11,
+      "minRamGb": 6,
+      "recommendedRamGb": 8,
+      "defaultContext": 4096,
+      "maxTokens": 260,
+      "runtime": {
+        "threads": 4,
+        "batch": 512,
+        "ubatch": 128,
+        "flashAttention": true,
+        "cacheReuse": 256,
+        "kvKeyType": "q8_0",
+        "kvValueType": "q8_0",
+        "parallelSlots": 1
+      }
+    },
+    {
+      "id": "multimodal-plus",
+      "alias": "gemma-4-e2b-it-multimodal",
+      "label": "SIMLIT Multimodal Pack",
+      "filename": "gemma-4-e2b-it-mm-q4_0.gguf",
+      "quant": "Q4_0",
+      "modalities": ["text", "vision", "audio"],
+      "bundle": "mobile-ai-plus",
+      "sizeGb": null,
+      "minRamGb": 6,
+      "recommendedRamGb": 8,
+      "defaultContext": 2048,
+      "maxTokens": 220,
+      "requestGated": true,
+      "runtime": {
+        "threads": 4,
+        "batch": 256,
+        "ubatch": 64,
+        "flashAttention": true,
+        "cacheReuse": 128,
+        "kvKeyType": "q8_0",
+        "kvValueType": "q8_0",
+        "parallelSlots": 1
+      }
+    }
+  ]
+}

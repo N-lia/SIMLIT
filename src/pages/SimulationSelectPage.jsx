@@ -1,8 +1,8 @@
-import { FIELD_TOPICS, DIFFICULTY_COLOR } from '../data/topics.js'
+import { FIELD_TOPICS } from '../data/topics.js'
 import { iconSvg } from '../utils/icons.js'
 import './SimulationSelectPage.css'
 
-export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, onViewCards, onOpenNotes, pageClass = '' }) {
+export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, onViewCards, onOpenNotes, onOpenProfile, pageClass = '' }) {
   const fieldData = FIELD_TOPICS[subfieldId] || { label: 'Topics', color: '#f5ede0', topics: [] }
   const { label, topics } = fieldData
 
@@ -21,7 +21,14 @@ export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, onView
         <div class="dot"></div>
         <div class="dot active"></div>
       </div>
-      <button id="btn-my-notes-select" class="btn-pill outline" style="padding: 6px 12px; font-size: 14px;">My Notes</button>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <button id="btn-my-notes-select" class="btn-pill outline" style="padding: 6px 12px; font-size: 14px;">My Notes</button>
+        <button id="btn-profile-select" class="icon-btn" style="border: 1.5px solid var(--line-soft); border-radius: 50%; padding: 4px; color: var(--ink);" aria-label="Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </button>
+      </div>
     </header>
     <section class="sim-select-title-section">
       <div class="sim-field-badge">${label}</div>
@@ -41,7 +48,6 @@ export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, onView
   const listeners = []
 
   listContainer.innerHTML = topics.map((topic, index) => {
-    const diff = DIFFICULTY_COLOR[topic.difficulty] || DIFFICULTY_COLOR.Beginner
     return `
       <button id="topic-${topic.id}" class="sim-topic-card" style="animation-delay:${index * 0.07}s;">
         <div class="topic-emoji-wrap">${iconSvg(topic.icon)}</div>
@@ -51,7 +57,6 @@ export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, onView
             ${topic.implemented ? '' : '<span class="topic-soon-badge">Soon</span>'}
           </div>
           <p class="topic-desc">${topic.desc}</p>
-          <span class="topic-difficulty" style="background:${diff.bg}; color:${diff.text};">${topic.difficulty}</span>
         </div>
         <div class="topic-arrow">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -84,6 +89,12 @@ export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, onView
   if (notesButton && onOpenNotes) {
     notesButton.addEventListener('click', onOpenNotes)
     listeners.push({ element: notesButton, handler: onOpenNotes })
+  }
+
+  const profileButton = root.querySelector('#btn-profile-select')
+  if (profileButton && onOpenProfile) {
+    profileButton.addEventListener('click', onOpenProfile)
+    listeners.push({ element: profileButton, handler: onOpenProfile })
   }
 
   function cleanup() {

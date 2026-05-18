@@ -16,6 +16,15 @@ node_modules
 dist
 dist-ssr
 *.local
+.env*
+!.env.demo.example
+
+# Local AI runtime artifacts
+llama-b9204/
+*.gguf
+
+# Accidental nested git workspace
+master/
 
 # Editor directories and files
 .vscode/*

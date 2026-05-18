@@ -284,6 +284,39 @@
 
 /* Responsiveness */
 @media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+  
+  .hero-main {
+    padding: 0 16px;
+    margin-top: 10px;
+  }
+  
+  .hero-title {
+    font-size: 32px;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+  
+  .hero-desc {
+    font-size: 16px;
+    margin-bottom: 24px;
+    padding: 0 8px;
+  }
+  
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    margin-bottom: 40px;
+    padding: 0 20px;
+  }
+  
+  .hero-cta-group button {
+    width: 100%;
+    justify-content: center;
+  }
   .gallery-card.left,
   .gallery-card.right {
     display: none;

@@ -1,0 +1,261 @@
+.bernoulli-wrapper {
+    font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--paper-texture);
+    padding: 20px;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;
+    color: var(--ink);
+}
+
+.bernoulli-wrapper * {
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.bernoulli-wrapper .sim-card {
+    max-width: 1400px;
+    width: 100%;
+    background: rgba(255, 244, 223, 0.7);
+    border: 1.5px solid var(--line-soft);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(2px);
+    overflow: hidden;
+    padding: 1.2rem 1.5rem 1.8rem;
+    transition: all 0.2s;
+}
+
+.bernoulli-wrapper h1 {
+    font-size: 1.7rem;
+    margin: 0 0 0.2rem 0;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.bernoulli-wrapper h1 small {
+    font-size: 0.8rem;
+    font-weight: normal;
+    background: rgba(47, 93, 136, 0.14);
+    color: var(--accent-blue);
+    padding: 4px 12px;
+    border-radius: 40px;
+}
+
+.bernoulli-wrapper .sub {
+    color: var(--ink-soft);
+    border-left: 4px solid var(--accent-blue);
+    padding-left: 12px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.bernoulli-wrapper .dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.bernoulli-wrapper .controls {
+    flex: 1.2;
+    min-width: 260px;
+    background: rgba(255, 244, 223, 0.58);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.2rem;
+    box-shadow: var(--card-shadow);
+    border: 1.5px solid var(--line-soft);
+}
+
+.bernoulli-wrapper .visualization {
+    flex: 3;
+    min-width: 550px;
+}
+
+.bernoulli-wrapper .control-group {
+    margin-bottom: 1.2rem;
+    border-bottom: 1px dashed rgba(37, 35, 31, 0.18);
+    padding-bottom: 0.8rem;
+}
+
+.bernoulli-wrapper .control-group label {
+    font-weight: 600;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+}
+
+.bernoulli-wrapper .param-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.bernoulli-wrapper .param {
+    flex: 1;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+}
+
+.bernoulli-wrapper input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    background: rgba(37, 35, 31, 0.16);
+    height: 4px;
+    border-radius: 5px;
+    -webkit-appearance: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.bernoulli-wrapper input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    border: 2px solid var(--paper-light);
+    cursor: pointer;
+}
+
+.bernoulli-wrapper .numeric-input {
+    width: 85px;
+    padding: 4px 6px;
+    border-radius: 12px;
+    border: 1px solid var(--input-border);
+    text-align: center;
+    font-weight: 500;
+    background: var(--input-bg);
+    display: inline-block;
+    color: var(--ink);
+}
+
+.bernoulli-wrapper .toggle-switch {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 244, 223, 0.5);
+    padding: 8px 12px;
+    border-radius: 40px;
+    margin-top: 8px;
+}
+
+.bernoulli-wrapper .toggle-switch label {
+    margin: 0;
+    font-weight: 500;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.bernoulli-wrapper button {
+    background: var(--ink);
+    border: none;
+    color: var(--paper-light);
+    padding: 4px 12px;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.bernoulli-wrapper .canvas-container {
+    background:
+        linear-gradient(rgba(255, 244, 223, 0.55), rgba(255, 244, 223, 0.55)),
+        var(--paper-texture);
+    border: 1.5px solid var(--line-soft);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--card-shadow);
+    padding: 12px;
+}
+
+.bernoulli-wrapper canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    background:
+        radial-gradient(circle at 18% 22%, rgba(216, 180, 92, 0.13) 0 2px, transparent 2.5px),
+        linear-gradient(180deg, rgba(255, 244, 223, 0.78), rgba(234, 214, 167, 0.48));
+    border: 1px solid rgba(37, 35, 31, 0.14);
+    border-radius: var(--radius-lg);
+    margin-bottom: 8px;
+}
+
+.bernoulli-wrapper .legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 10px;
+    color: var(--ink-soft);
+}
+
+.bernoulli-wrapper .legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.bernoulli-wrapper .outlet-speed {
+    background: var(--ink);
+    color: var(--accent-yellow);
+    padding: 5px 12px;
+    border-radius: 26px;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 0.95rem;
+}
+
+.bernoulli-wrapper .misconception {
+    background: rgba(216, 180, 92, 0.18);
+    border-left: 6px solid var(--accent-yellow);
+    padding: 10px 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+    font-size: 0.8rem;
+    color: var(--ink);
+}
+
+.bernoulli-wrapper .mode-option {
+    background: rgba(216, 180, 92, 0.16);
+    border: 1px solid rgba(37, 35, 31, 0.14);
+    border-radius: 30px;
+    padding: 2px 12px;
+}
+
+.bernoulli-wrapper .mode-note {
+    color: var(--ink-soft);
+    font-size: 0.7rem;
+    margin-top: 6px;
+}
+
+.bernoulli-wrapper .legend-chip {
+    border-radius: 20px;
+    color: var(--paper-light);
+    padding: 0 6px;
+}
+
+.bernoulli-wrapper .legend-chip.pressure { background: var(--accent-blue); }
+.bernoulli-wrapper .legend-chip.kinetic { background: var(--accent-green); }
+.bernoulli-wrapper .legend-chip.potential { background: #8a6500; color: var(--paper-light); }
+
+@media (max-width: 850px) {
+    .bernoulli-wrapper .sim-card {
+        padding: 1rem;
+    }
+    .bernoulli-wrapper .dashboard {
+        flex-direction: column;
+    }
+    .bernoulli-wrapper .visualization {
+        min-width: 100%;
+    }
+}

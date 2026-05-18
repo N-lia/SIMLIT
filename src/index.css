@@ -102,11 +102,11 @@ body {
   }
 
   .app-root {
-    max-width: 430px;
-    margin: 0 auto;
-    border-left: 1.5px solid var(--line-ink);
-    border-right: 1.5px solid var(--line-ink);
-    box-shadow: 0 20px 45px rgba(61, 46, 29, 0.18);
+    max-width: none;
+    margin: 0;
+    border-left: 0;
+    border-right: 0;
+    box-shadow: none;
   }
 }
 

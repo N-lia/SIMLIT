@@ -3,8 +3,7 @@
   min-height: 100%;
   background: var(--paper-texture);
   color: var(--ink);
-  display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
+  display: block;
   overflow: auto;
   border-radius: var(--radius-md);
 }
@@ -149,6 +148,7 @@
   display: block;
   height: 100%;
   background: var(--accent-red);
+  transition: width 0.28s ease;
 }
 
 .law-goal-text {
@@ -282,6 +282,12 @@
   color: var(--paper-light);
 }
 
+.law-primary-btn:disabled,
+.law-secondary-btn:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 .law-workspace {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 390px);
@@ -291,7 +297,7 @@
 
 .law-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 18px;
 }
 
@@ -363,6 +369,13 @@
   flex: 1;
 }
 
+.law-folder-progress-label,
+.law-panel-progress span,
+.law-panel-progress small {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
 .law-folder-pct {
   min-width: 42px;
   text-align: right;
@@ -389,26 +402,6 @@
 .law-folder[data-color="teal"] .law-folder-fill { background: #497f78; }
 .law-folder[data-color="yellow"] .law-folder-tab,
 .law-folder[data-color="yellow"] .law-folder-fill { background: var(--accent-yellow); }
-
-.law-favourite {
-  position: absolute;
-  top: 30px;
-  right: 12px;
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border: 1.5px solid var(--line-soft);
-  border-radius: 999px;
-  background: var(--paper-light);
-  color: var(--ink-soft);
-  cursor: pointer;
-}
-
-.law-favourite.active {
-  color: var(--accent-yellow);
-  border-color: var(--line-ink);
-}
 
 .law-empty-state,
 .law-case-panel {
@@ -440,6 +433,36 @@
   padding: 20px;
   display: grid;
   gap: 16px;
+}
+
+.law-panel-progress {
+  display: grid;
+  gap: 8px;
+  border: 1.5px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: rgba(255, 244, 223, 0.38);
+  padding: 12px;
+}
+
+.law-ai-guidance {
+  border: 1.5px solid rgba(47, 93, 136, 0.28);
+  border-left: 4px solid var(--accent-blue);
+  border-radius: var(--radius-md);
+  background: rgba(47, 93, 136, 0.08);
+  padding: 12px;
+}
+
+.law-ai-guidance strong {
+  color: var(--accent-blue);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.law-ai-guidance p {
+  color: var(--ink-soft);
+  line-height: 1.45;
+  margin-top: 6px;
 }
 
 .law-case-panel h2 {
@@ -503,6 +526,17 @@
   background: rgba(216, 180, 92, 0.22);
 }
 
+.law-task-row.complete span {
+  background: rgba(76, 122, 60, 0.16);
+  border-color: rgba(76, 122, 60, 0.56);
+  color: var(--accent-green);
+}
+
+.law-task-row.complete p {
+  color: var(--ink);
+  font-weight: 700;
+}
+
 .law-secondary-btn {
   background: transparent;
 }
@@ -512,16 +546,85 @@
   line-height: 1.4;
 }
 
+.law-page-notice {
+  margin-top: -10px;
+}
+
 .law-disclaimer {
   border-top: 1.5px dashed var(--line-soft);
   padding-top: 12px;
 }
 
-@media (max-width: 1120px) {
-  .law-sim-container {
-    grid-template-columns: 1fr;
-  }
+.law-dossier-view {
+  display: grid;
+  gap: 18px;
+}
 
+.law-dossier-hero,
+.law-dossier-card {
+  border: 1.5px solid var(--line-ink);
+  border-radius: var(--radius-md);
+  background: rgba(255, 244, 223, 0.54);
+  box-shadow: var(--card-shadow);
+}
+
+.law-dossier-hero {
+  padding: clamp(20px, 3vw, 32px);
+  display: grid;
+  gap: 12px;
+}
+
+.law-dossier-hero > .law-secondary-btn {
+  justify-self: start;
+}
+
+.law-dossier-hero h2 {
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  line-height: 0.95;
+}
+
+.law-dossier-hero > p:not(.law-parties) {
+  max-width: 82ch;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.law-dossier-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.law-dossier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.law-dossier-card {
+  padding: 18px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.law-dossier-card h3 {
+  color: var(--accent-red);
+  font-size: 1.25rem;
+}
+
+.law-dossier-card p {
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.law-dossier-line {
+  border-left: 4px solid var(--accent-yellow);
+  padding-left: 10px;
+}
+
+@media (max-width: 1120px) {
   .law-sidebar {
     min-height: auto;
     border-right: 0;
@@ -541,7 +644,8 @@
 @media (max-width: 900px) {
   .law-header,
   .law-controls,
-  .law-workspace {
+  .law-workspace,
+  .law-dossier-grid {
     grid-template-columns: 1fr;
   }
 

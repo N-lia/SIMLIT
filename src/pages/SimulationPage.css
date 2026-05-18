@@ -39,8 +39,7 @@
   width: 1.1em;
   height: 1.1em;
 }
-.sim-topic-name { font-size: 15px; font-weight: 700; color: #fff; }
-.sim-topic-name { color: var(--ink); }
+.sim-topic-name { font-size: 15px; font-weight: 700; color: var(--ink); }
 
 .sim-field-chip {
   font-size: 11px;
@@ -51,6 +50,35 @@
   padding: 4px 10px;
   border-radius: 20px;
   white-space: nowrap;
+}
+
+.sim-lifecycle-btn {
+  border: 1.5px solid var(--line-soft);
+  border-radius: 6px 9px 5px 8px / 8px 5px 9px 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: var(--hand-font);
+  cursor: pointer;
+  transition: transform 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+}
+
+.sim-lifecycle-btn.running {
+  background: rgba(169, 64, 47, 0.14);
+  color: var(--accent-red);
+  border-color: rgba(169, 64, 47, 0.4);
+}
+
+.sim-lifecycle-btn.stopped {
+  background: rgba(76, 122, 60, 0.14);
+  color: var(--accent-green);
+  border-color: rgba(76, 122, 60, 0.42);
+}
+
+.sim-lifecycle-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(216, 180, 92, 0.22);
+  color: var(--ink);
 }
 
 .sim-body {
@@ -74,6 +102,30 @@
   font-size: 1rem;
 }
 
+.sim-stopped-state {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  flex: 1;
+  min-height: 18rem;
+  padding: 2rem;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.sim-stopped-state strong {
+  color: var(--ink);
+  font-family: var(--hand-font);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+}
+
+.sim-stopped-state span {
+  max-width: 34rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 .sim-body > .sim-inner {
   flex: 1 0 auto;
   min-height: calc(100svh - 61px);
@@ -91,33 +143,72 @@
   .truss-wrapper,
   .eq-wrapper,
   .dc-motor-container,
-  .collision-sim-container,
-  .double-pendulum-container,
-  .proj-container
+  .double-pendulum-container
 ) {
   background: var(--paper-texture) !important;
   color: var(--ink) !important;
   font-family: 'Outfit', sans-serif;
+  --bg: var(--paper) !important;
+  --bg2: var(--paper-light) !important;
+  --bg3: rgba(234, 214, 167, 0.42) !important;
+  --panel: rgba(255, 244, 223, 0.62) !important;
+  --surface: rgba(255, 244, 223, 0.68) !important;
+  --surface2: rgba(234, 214, 167, 0.5) !important;
+  --surface3: rgba(220, 193, 138, 0.4) !important;
+  --border: var(--line-soft) !important;
+  --border2: var(--line-ink) !important;
+  --t1: var(--ink) !important;
+  --t2: var(--ink-soft) !important;
+  --t3: var(--ink-faint) !important;
+  --text: var(--ink) !important;
+  --muted: var(--ink-soft) !important;
+  --accent: var(--accent-blue) !important;
+  --accent2: var(--accent-green) !important;
+  --phosphor: var(--accent-green) !important;
+  --amber: var(--accent-yellow) !important;
+  --cyan: var(--accent-blue) !important;
+  --red: var(--accent-red) !important;
+  --violet: var(--accent-blue) !important;
 }
 
-.sim-body :is(.sim-card, .proj-sim-card, .panel, .controls, .proj-controls, .info-panel, .chart-card, .visualization, .proj-visualization, .canvas-container, .sim-container) {
+.sim-body :is(
+  .sim-card,
+  .panel,
+  .controls,
+  .ctrl,
+  .ctrl-panel,
+  .info-panel,
+  .chart-card,
+  .visualization,
+  .canvas-container,
+  .sim-container,
+  .canvas-panel,
+  .readout,
+  .status,
+  .formula-box,
+  .metrics,
+  .metric-card,
+  .parameter-card,
+  .output-card,
+  .tool-card
+) {
   background: rgba(255, 244, 223, 0.68) !important;
   border: 1.5px solid var(--line-ink) !important;
   border-radius: 6px 10px 7px 9px / 10px 6px 9px 7px !important;
   box-shadow: 4px 5px 0 rgba(37, 35, 31, 0.1) !important;
 }
 
-.sim-body :is(.header, .proj-header) {
+.sim-body :is(.header, .hdr, .toolbar) {
   background: rgba(255, 244, 223, 0.7) !important;
   border-bottom: 1.5px dashed var(--line-soft) !important;
 }
 
-.sim-body :is(h1, h2, h3, .logo, .chart-title, .sec, .panel-tag, .proj-header h1) {
+.sim-body :is(h1, h2, h3, .logo, .chart-title, .sec, .sec-title, .panel-tag, .section-title) {
   color: var(--ink) !important;
   font-family: var(--hand-font);
 }
 
-.sim-body :is(.sub, .subtitle, .tagline, .param-label, .metric-label, .status, .insight, .proj-header small) {
+.sim-body :is(.sub, .subtitle, .tagline, .param-label, .metric-label, .r-label, .readout-label, .status, .insight) {
   color: var(--ink-soft) !important;
 }
 
@@ -132,6 +223,12 @@
   background: rgba(216, 180, 92, 0.24) !important;
   color: var(--accent-red) !important;
   border-color: var(--line-ink) !important;
+}
+
+.sim-body :is(input[type="text"], input[type="number"], select, textarea) {
+  background: var(--input-bg) !important;
+  color: var(--ink) !important;
+  border-color: var(--input-border) !important;
 }
 
 .sim-body input[type="range"] {
@@ -156,6 +253,11 @@
     text-overflow: ellipsis;
   }
 
+  .sim-lifecycle-btn {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
   .sim-body :is(
     .beam-wrapper,
     .hydrostatic-wrapper,
@@ -168,9 +270,7 @@
     .truss-wrapper,
     .eq-wrapper,
     .dc-motor-container,
-    .collision-sim-container,
-    .double-pendulum-container,
-    .proj-container
+    .double-pendulum-container
   ) {
     min-height: auto !important;
     padding: 12px !important;
@@ -219,9 +319,7 @@
     .truss-wrapper,
     .eq-wrapper,
     .dc-motor-container,
-    .collision-sim-container,
-    .double-pendulum-container,
-    .proj-container
+    .double-pendulum-container
   ) {
     width: 100% !important;
     min-height: calc(100svh - 79px) !important;

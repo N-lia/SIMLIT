@@ -1,4 +1,5 @@
-import { render, useMemo, useState } from '../../utils/react-lite.js'
+import { render, useMemo, useRef, useState } from '../../utils/react-lite.js'
+import { askOpposingCounsel } from '../../ai/llamaClient.js'
 import { courtroomSchedule, courtroomSteps, courtroomTools, lawCases } from './lawData.js'
 import './LawCourtroomSimulation.css'
 
@@ -32,35 +33,126 @@ const toolIconById = {
   'citations-helper': 'quote',
   'full-toolkit': 'folder',
 }
+const LAW_PROGRESS_KEY = 'simlit_law_case_progress'
+const LAW_ATTEMPTS_KEY = 'simlit_law_courtroom_attempts'
 
-export default function LawCourtroomSimulation() {
-  const [selectedScheduleId, setSelectedScheduleId] = useState(courtroomSchedule[0].caseId)
+function readStoredMap(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) || {}
+  } catch {
+    return {}
+  }
+}
+
+function writeStoredMap(key, nextMap) {
+  localStorage.setItem(key, JSON.stringify(nextMap))
+}
+
+function recordCourtroomResult(caseId, scorePercent) {
+  const progressMap = readStoredMap(LAW_PROGRESS_KEY)
+  const currentProgress = progressMap[caseId] || 0
+  const earnedProgress = scorePercent >= 80 ? 100 : scorePercent >= 50 ? 80 : 65
+  writeStoredMap(LAW_PROGRESS_KEY, {
+    ...progressMap,
+    [caseId]: Math.max(currentProgress, earnedProgress),
+  })
+
+  const attempts = readStoredMap(LAW_ATTEMPTS_KEY)
+  const previous = attempts[caseId] || { bestScore: 0, attempts: 0 }
+  writeStoredMap(LAW_ATTEMPTS_KEY, {
+    ...attempts,
+    [caseId]: {
+      bestScore: Math.max(previous.bestScore || 0, scorePercent),
+      lastScore: scorePercent,
+      attempts: (previous.attempts || 0) + 1,
+      completedAt: new Date().toISOString(),
+    },
+  })
+}
+
+function getJudgeFeedback(step, correct) {
+  if (correct) {
+    return `Judge: That is the proper move on ${step.skill.toLowerCase()}. Proceed, but keep your authority and requested order clear.`
+  }
+  return `Judge: I need a stronger procedural basis. The better move is: ${step.answer}`
+}
+
+function makeCounselReply(caseFile, message) {
+  const lowerMessage = message.toLowerCase()
+  if (lowerMessage.includes('evidence') || lowerMessage.includes('exhibit')) {
+    return `Opposing counsel: Your evidence theory still has a gap. In ${caseFile.parties}, I will press admissibility, foundation, and weight before the court relies on it.`
+  }
+  if (lowerMessage.includes('right') || lowerMessage.includes('constitution')) {
+    return `Opposing counsel: You must show a concrete breach and a proper remedy. I will argue the facts do not justify the relief you seek.`
+  }
+  if (lowerMessage.includes('contract') || lowerMessage.includes('breach')) {
+    return `Opposing counsel: The alleged breach is not enough by itself. I will argue performance, waiver, mitigation, and the limits of your remedy.`
+  }
+  return `Opposing counsel: I hear your point, but the court needs authority and a clean link to the facts. What rule from ${caseFile.statute} makes your position unavoidable?`
+}
+
+export default function LawCourtroomSimulation({ selectedLawCaseId }) {
+  const initialCaseId = lawCases.some((lawCase) => lawCase.id === selectedLawCaseId)
+    ? selectedLawCaseId
+    : courtroomSchedule[0].caseId
+  const [selectedScheduleId, setSelectedScheduleId] = useState(initialCaseId)
   const [stepIndex, setStepIndex] = useState(0)
   const [answers, setAnswers] = useState({})
+  const [showDebrief, setShowDebrief] = useState(false)
+  const [resultRecorded, setResultRecorded] = useState(false)
   const [activeToolId, setActiveToolId] = useState(courtroomTools[0].id)
   const [notice, setNotice] = useState('Court is in session. Pick the best procedural move for each stage.')
+  const argumentDraftRef = useRef(null)
+  const counselAbortRef = useRef(null)
+  const [isCounselThinking, setIsCounselThinking] = useState(false)
+  const [chatMessages, setChatMessages] = useState(() => {
+    const caseFile = lawCases.find((lawCase) => lawCase.id === initialCaseId) || lawCases[0]
+    return [
+      {
+        role: 'opponent',
+        text: `Opposing counsel: I am ready to argue ${caseFile.parties}. Open with your strongest point, counsel.`,
+      },
+    ]
+  })
 
   const activeSchedule = courtroomSchedule.find((item) => item.caseId === selectedScheduleId) || courtroomSchedule[0]
-  const activeCase = lawCases.find((lawCase) => lawCase.id === activeSchedule.caseId) || lawCases[0]
+  const activeCase = lawCases.find((lawCase) => lawCase.id === selectedScheduleId) || lawCases.find((lawCase) => lawCase.id === activeSchedule.caseId) || lawCases[0]
   const activeStep = courtroomSteps[stepIndex]
   const activeTool = courtroomTools.find((tool) => tool.id === activeToolId) || courtroomTools[0]
-  const score = Object.values(answers).filter(Boolean).length
+  const score = Object.values(answers).filter((answer) => answer?.correct).length
   const answered = Object.prototype.hasOwnProperty.call(answers, activeStep.id)
+  const activeAnswer = answers[activeStep.id]
+  const completedSteps = Object.keys(answers).length
+  const advocacyScore = Math.round((score / courtroomSteps.length) * 100)
 
   const activeCases = useMemo(() => {
-    return courtroomSchedule.map((item) => ({
+    const scheduled = courtroomSchedule.map((item) => ({
       ...item,
       case: lawCases.find((lawCase) => lawCase.id === item.caseId),
     })).filter((item) => item.case)
-  }, [])
+    if (initialCaseId && !scheduled.some((item) => item.caseId === initialCaseId)) {
+      const caseFile = lawCases.find((lawCase) => lawCase.id === initialCaseId)
+      if (caseFile) return [{ time: 'Now', caseId: caseFile.id, hearing: 'Moot argument', case: caseFile }, ...scheduled]
+    }
+    return scheduled
+  }, [initialCaseId])
 
   const chooseAnswer = (option) => {
     const correct = option === activeStep.answer
-    setAnswers({ ...answers, [activeStep.id]: correct })
+    setAnswers({ ...answers, [activeStep.id]: { choice: option, correct, judge: getJudgeFeedback(activeStep, correct) } })
     setNotice(correct ? activeStep.note : `Not quite. Better move: ${activeStep.answer}`)
   }
 
   const nextStep = () => {
+    if (stepIndex >= courtroomSteps.length - 1) {
+      if (!resultRecorded) {
+        recordCourtroomResult(activeCase.id, advocacyScore)
+        setResultRecorded(true)
+      }
+      setShowDebrief(true)
+      setNotice('Session complete. Case progress updated from the courtroom result.')
+      return
+    }
     setStepIndex((current) => (current + 1) % courtroomSteps.length)
     setNotice('Read the facts, then choose the next procedural move.')
   }
@@ -68,7 +160,39 @@ export default function LawCourtroomSimulation() {
   const resetSession = () => {
     setStepIndex(0)
     setAnswers({})
+    setShowDebrief(false)
+    setResultRecorded(false)
     setNotice('Session reset. Start from appearance and build the advocacy sequence again.')
+  }
+
+  const sendArgument = async () => {
+    const composer = argumentDraftRef.current
+    const text = composer?.value.trim() || ''
+    if (!text || isCounselThinking) return
+    const nextMessages = [
+      ...chatMessages,
+      { role: 'student', text },
+      { role: 'opponent', text: 'Opposing counsel is reviewing your authorities...' },
+    ]
+    setChatMessages(nextMessages)
+    if (composer) composer.value = ''
+    setIsCounselThinking(true)
+    setNotice('Local counsel model is reviewing your argument.')
+    counselAbortRef.current?.abort()
+    counselAbortRef.current = new AbortController()
+    const response = await askOpposingCounsel({
+      caseFile: activeCase,
+      argument: text,
+      signal: counselAbortRef.current.signal,
+    })
+    const reply = response.text || makeCounselReply(activeCase, text)
+    setChatMessages([
+      ...chatMessages,
+      { role: 'student', text },
+      { role: 'opponent', text: reply },
+    ])
+    setIsCounselThinking(false)
+    setNotice(response.error ? `Local model unavailable. Fallback counsel replied. ${response.error}` : 'Opposing counsel responded from the local model. Refine your argument with authority and facts.')
   }
 
   return (
@@ -102,6 +226,7 @@ export default function LawCourtroomSimulation() {
           <div className="court-score-card">
             <span>Procedure score</span>
             <strong>{score}/{courtroomSteps.length}</strong>
+            <small>{completedSteps} stage{completedSteps === 1 ? '' : 's'} argued</small>
             <button type="button" onClick={resetSession}>Reset session</button>
           </div>
         </section>
@@ -136,38 +261,94 @@ export default function LawCourtroomSimulation() {
             <section className="court-simulation-card" aria-label="Courtroom procedure prompt">
               <div className="court-section-title">
                 <Icon name="gavel" />
-                <h2>Live Procedure</h2>
+                <h2>{showDebrief ? 'Advocacy Debrief' : 'Live Procedure'}</h2>
               </div>
               <div className="court-case-brief">
                 <span>{activeCase.jurisdiction}</span>
                 <h3>{activeCase.parties}</h3>
                 <p>{activeCase.facts}</p>
               </div>
-              <div className="court-step-box">
-                <div className="court-step-meta">
-                  <span>Step {stepIndex + 1} of {courtroomSteps.length}</span>
-                  <span>{answered ? (answers[activeStep.id] ? 'Correct' : 'Review') : 'Awaiting answer'}</span>
+              {showDebrief ? (
+                <div className="court-debrief">
+                  <div className="court-debrief-score">
+                    <span>Advocacy score</span>
+                    <strong>{advocacyScore}%</strong>
+                    <p>{advocacyScore >= 80 ? 'Strong courtroom control. Now sharpen speed and authority.' : 'Good practice run. Retry the weak stages and make each move more rule-based.'}</p>
+                  </div>
+                  <div className="court-debrief-list">
+                    {courtroomSteps.map((step, index) => {
+                      const answer = answers[step.id]
+                      return (
+                        <article className={`court-debrief-item ${answer?.correct ? 'correct' : 'review'}`}>
+                          <span>Stage {index + 1} - {step.skill}</span>
+                          <strong>{answer?.correct ? 'Handled well' : 'Needs review'}</strong>
+                          <p>{step.review}</p>
+                        </article>
+                      )
+                    })}
+                  </div>
+                  <button className="court-primary-btn" type="button" onClick={resetSession}>Retry courtroom</button>
                 </div>
-                <h3>{activeStep.prompt}</h3>
-                <div className="court-options">
-                  {activeStep.options.map((option) => {
-                    const isChosen = answered && option === activeStep.answer && answers[activeStep.id]
-                    const showCorrect = answered && option === activeStep.answer
-                    return (
-                      <button
-                        className={`${showCorrect ? 'correct' : ''} ${isChosen ? 'chosen' : ''}`}
-                        type="button"
-                        onClick={() => chooseAnswer(option)}
-                      >
-                        {option}
-                      </button>
-                    )
-                  })}
+              ) : (
+                <div className="court-step-box">
+                  <div className="court-step-meta">
+                    <span>Step {stepIndex + 1} of {courtroomSteps.length} - {activeStep.skill}</span>
+                    <span>{answered ? (activeAnswer?.correct ? 'Correct' : 'Review') : 'Awaiting answer'}</span>
+                  </div>
+                  <h3>{activeStep.prompt}</h3>
+                  <div className="court-options">
+                    {activeStep.options.map((option) => {
+                      const isChosen = answered && option === activeAnswer?.choice
+                      const showCorrect = answered && option === activeStep.answer
+                      return (
+                        <button
+                          className={`${showCorrect ? 'correct' : ''} ${isChosen ? 'chosen' : ''}`}
+                          type="button"
+                          onClick={() => chooseAnswer(option)}
+                        >
+                          {option}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {answered ? (
+                    <div className="court-consequence">
+                      <strong>{activeAnswer?.correct ? 'Consequence' : 'Court correction'}</strong>
+                      <p>{activeAnswer?.correct ? activeStep.consequence : activeStep.review}</p>
+                      <blockquote>{activeAnswer?.judge}</blockquote>
+                    </div>
+                  ) : null}
+                  <div className="court-step-actions">
+                    <button className="court-primary-btn" type="button" onClick={nextStep} disabled={!answered}>
+                      {stepIndex >= courtroomSteps.length - 1 ? 'Finish debrief' : 'Next stage'}
+                    </button>
+                    <p role="status">{notice}</p>
+                  </div>
                 </div>
-                <div className="court-step-actions">
-                  <button className="court-primary-btn" type="button" onClick={nextStep}>Next stage</button>
-                  <p role="status">{notice}</p>
-                </div>
+              )}
+            </section>
+
+            <section className="court-argument-card" aria-label="AI opposing counsel argument chat">
+              <div className="court-section-title">
+                <Icon name="message" />
+                <h2>Argument with Opposing Counsel</h2>
+              </div>
+              <div className="court-chat-window">
+                {chatMessages.map((message) => (
+                  <div className={`court-chat-message ${message.role}`}>
+                    <p>{message.text}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="court-chat-composer">
+                <textarea
+                  ref={argumentDraftRef}
+                  placeholder="Type your submission, objection, or reply..."
+                  rows="5"
+                ></textarea>
+                <button className="court-primary-btn" type="button" onClick={sendArgument} disabled={isCounselThinking}>
+                  {isCounselThinking ? 'Reviewing...' : 'Send argument'}
+                </button>
               </div>
             </section>
           </div>
@@ -241,8 +422,10 @@ export default function LawCourtroomSimulation() {
   )
 }
 
-export function mountLawCourtroomSimulation(container) {
-  const app = render(LawCourtroomSimulation)
+export function mountLawCourtroomSimulation(container, topic, options = {}) {
+  const app = render(LawCourtroomSimulation, {
+    selectedLawCaseId: options.selectedLawCaseId,
+  })
   container.appendChild(app.root)
   return app.cleanup
 }

@@ -134,6 +134,11 @@
   font-size: 0.86rem;
 }
 
+.court-score-card small {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
 .court-score-card strong {
   color: var(--accent-red);
   font-size: 1.8rem;
@@ -170,6 +175,7 @@
 
 .court-schedule-card,
 .court-simulation-card,
+.court-argument-card,
 .court-status-card,
 .court-cases-card,
 .court-tools-card,
@@ -309,11 +315,80 @@
   text-align: left;
 }
 
+.court-chat-window {
+  min-height: 220px;
+  max-height: 340px;
+  overflow-y: auto;
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1.5px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(rgba(255, 244, 223, 0.48), rgba(255, 244, 223, 0.48)),
+    var(--paper-texture);
+}
+
+.court-chat-message {
+  max-width: min(82%, 680px);
+  border: 1.5px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  padding: 11px 12px;
+  line-height: 1.45;
+}
+
+.court-chat-message.student {
+  justify-self: end;
+  background: rgba(47, 93, 136, 0.1);
+  border-color: rgba(47, 93, 136, 0.32);
+}
+
+.court-chat-message.opponent {
+  justify-self: start;
+  background: rgba(255, 244, 223, 0.7);
+}
+
+.court-chat-composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  margin-top: 12px;
+  align-items: end;
+}
+
+.court-chat-composer textarea {
+  min-height: 88px;
+  width: 100%;
+  resize: vertical;
+  border: 1.5px solid var(--line-ink);
+  border-radius: var(--radius-md);
+  background: rgba(255, 244, 223, 0.62);
+  color: var(--ink);
+  padding: 12px;
+  font: inherit;
+  line-height: 1.5;
+  outline: none;
+}
+
+.court-chat-composer textarea:focus {
+  border-color: var(--accent-red);
+}
+
 .court-options button:hover,
 .court-tool-btn:hover,
 .court-case-item:hover {
   border-color: var(--line-ink);
   transform: translateY(-1px);
+}
+
+.court-chat-composer button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.court-primary-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .court-options button.correct {
@@ -322,7 +397,73 @@
 }
 
 .court-options button.chosen {
-  box-shadow: inset 4px 0 0 var(--accent-green);
+  box-shadow: inset 4px 0 0 var(--accent-red);
+}
+
+.court-consequence,
+.court-debrief-score,
+.court-debrief-item {
+  border: 1.5px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: rgba(255, 244, 223, 0.42);
+  padding: 12px;
+}
+
+.court-consequence {
+  border-left: 4px solid var(--accent-red);
+}
+
+.court-consequence strong,
+.court-debrief-score span,
+.court-debrief-item span {
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.court-consequence p,
+.court-debrief-score p,
+.court-debrief-item p {
+  color: var(--ink-soft);
+  line-height: 1.45;
+  margin: 6px 0 0;
+}
+
+.court-consequence blockquote {
+  margin: 10px 0 0;
+  border-left: 4px solid var(--accent-yellow);
+  padding-left: 10px;
+  color: var(--ink);
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.court-debrief,
+.court-debrief-list {
+  display: grid;
+  gap: 12px;
+}
+
+.court-debrief-score strong {
+  display: block;
+  color: var(--accent-red);
+  font-size: 2rem;
+  line-height: 1;
+  margin-top: 6px;
+}
+
+.court-debrief-item {
+  display: grid;
+  gap: 4px;
+}
+
+.court-debrief-item.correct {
+  border-color: rgba(76, 122, 60, 0.45);
+}
+
+.court-debrief-item.review {
+  border-color: rgba(169, 64, 47, 0.4);
 }
 
 .court-step-actions {
@@ -458,6 +599,10 @@
 
   .court-step-actions {
     display: grid;
+  }
+
+  .court-chat-composer {
+    grid-template-columns: 1fr;
   }
 
   .court-tools-grid {

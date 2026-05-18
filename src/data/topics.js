@@ -220,9 +220,7 @@ export const FIELD_TOPICS = {
     color: '#d3e8e1',
     topics: [
       { id: 'newton',     label: "Newton's 2nd Law", desc: 'F = ma Interactive visualizer', difficulty: 'Beginner',      icon: 'activity', implemented: true },
-      { id: 'projectile', label: 'Projectile Motion', desc: 'Launch and trace projectile trajectories',  difficulty: 'Beginner',      icon: 'target', implemented: true },
       { id: 'pendulum',   label: 'Simple Pendulum',   desc: 'Oscillation and energy conservation',      difficulty: 'Intermediate',  icon: 'clock', implemented: true },
-      { id: 'collision',  label: 'Collision Sandbox', desc: 'Energy & Momentum Conservation', difficulty: 'Intermediate',  icon: 'atom', implemented: true },
       { id: 'double_pendulum', label: 'Double Pendulum', desc: 'Chaos Onset & Lyapunov Divergence', difficulty: 'Advanced', icon: 'clock', implemented: true },
       { id: 'wavelab', label: 'Wave Lab', desc: 'Interference & Diffraction FDTD solver', difficulty: 'Advanced', icon: 'waves', implemented: true },
     ],
@@ -1002,7 +1000,7 @@ export const FIELD_TOPICS = {
     label: 'Law',
     color: '#faf5ee',
     topics: [
-      { id: 'case',     label: 'Case Study Simulator', desc: 'Argue landmark legal cases', difficulty: 'Advanced',     icon: 'gavel', implemented: true },
+      { id: 'case',     label: 'Case Study Simulator', desc: 'Argue landmark legal cases', difficulty: 'Advanced',     icon: 'bookOpen', implemented: true },
       { id: 'courtroom', label: 'Virtual Courtroom', desc: 'Step into the courtroom and present your case', difficulty: 'Advanced', icon: 'landmark', implemented: true },
       { id: 'contract', label: 'Contract Law',         desc: 'Draft and review contracts', difficulty: 'Intermediate', icon: 'briefcase', implemented: false },
     ],
@@ -1113,7 +1111,10 @@ export const FIELD_TOPICS = {
     label: 'Medicine',
     color: '#e85d2a',
     topics: [
-      { id: 'anatomy',       label: 'Human Anatomy',  desc: 'Interactive body systems', difficulty: 'Intermediate', icon: 'heartPulse', implemented: false },
+      { id: 'health_cases',  label: 'Patient Dossier Simulator', desc: 'Practice clinical reasoning from presentation to next step', difficulty: 'Advanced', icon: 'clipboard', implemented: true },
+      { id: 'clinical_room', label: 'Clinical Room', desc: 'Run through triage, red flags, treatment priorities, and reassessment', difficulty: 'Advanced', icon: 'activity', implemented: true },
+      { id: 'diagnostic_room', label: 'Diagnostic Room', desc: 'Interview a simulated patient by voice and draft a diagnosis plan', difficulty: 'Advanced', icon: 'stethoscope', implemented: true },
+      { id: 'anatomy',       label: 'Anatomy Deck',  desc: 'Interactive First Principles deck of structural anatomy.', difficulty: 'Beginner', icon: 'brain', implemented: true },
       { id: 'pharmacology',  label: 'Pharmacology',   desc: 'Drug interaction simulator', difficulty: 'Advanced',    icon: 'pill', implemented: false },
     ],
   },

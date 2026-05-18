@@ -9,17 +9,17 @@ export function mountWelcomePage({ onGetStarted }) {
     <div class="page welcome-page">
       <main class="hero-main">
         <div class="hero-tag">
-          <span class="tag-highlight">24 topics</span> available this semester
+          <span class="tag-highlight">Over 50</span> active simulations
         </div>
         
         <h1 class="hero-title">
-          Interactive tools crafting<br/>
-          <strong>purposeful academic success</strong>
+          Master complex concepts through <br class="desktop-only"/>
+          <strong>hands-on interaction</strong>
         </h1>
         
         <p class="hero-desc">
-          Beautifully designed, easy-to-use simulations that help you stand out<br/>
-          and connect with foundational engineering, medicine, and law.
+          Engaging, high-fidelity simulations that bridge the gap between theory and practice<br class="desktop-only"/>
+          in Engineering, Medicine, Computer Science and Law.
         </p>
 
         <div class="hero-cta-group">

@@ -29,13 +29,20 @@ function createElement(type, props, ...children) {
     return fragment;
   }
 
-  const element = document.createElement(type);
+  const isSvgTag = ['svg', 'path', 'circle', 'rect', 'line', 'polyline', 'polygon', 'ellipse', 'g', 'defs', 'marker', 'mask', 'text', 'tspan', 'use'].includes(type);
+  const element = isSvgTag
+    ? document.createElementNS('http://www.w3.org/2000/svg', type)
+    : document.createElement(type);
   const normalizedProps = props || {};
 
   for (const [key, value] of Object.entries(normalizedProps)) {
     if (key === 'children') continue;
     if (key === 'className' || key === 'class') {
-      element.className = value ?? '';
+      if (isSvgTag) {
+        element.setAttribute('class', value ?? '');
+      } else {
+        element.className = value ?? '';
+      }
       continue;
     }
     if (key === 'htmlFor') {

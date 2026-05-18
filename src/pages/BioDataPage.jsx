@@ -3,7 +3,13 @@ import { iconSvg } from '../utils/icons.js'
 
 const initialFormData = { name: '', age: '', university: '' }
 
-export function mountBioDataPage({ onBack, onComplete, pageClass = '' }) {
+export function mountBioDataPage({ onBack, onComplete, isEditing = false, pageClass = '' }) {
+  // Pre-load saved data for edit mode
+  let saved = {}
+  if (isEditing) {
+    try { saved = JSON.parse(localStorage.getItem('simlit_profile')) || {} } catch { saved = {} }
+  }
+
   const root = document.createElement('div')
   root.className = `page biodata-page ${pageClass}`
   root.innerHTML = `
@@ -14,17 +20,22 @@ export function mountBioDataPage({ onBack, onComplete, pageClass = '' }) {
           <path d="M12 19L5 12L12 5"/>
         </svg>
       </button>
-      <div class="progress-dots">
+      ${isEditing
+        ? `<div class="hub-header-title">Edit Profile</div>`
+        : `<div class="progress-dots">
         <div class="dot"></div>
         <div class="dot active"></div>
         <div class="dot"></div>
         <div class="dot"></div>
-      </div>
+      </div>`}
       <div class="header-spacer"></div>
     </header>
     <section class="bio-content">
-      <h2 class="bio-title">Tell us about<br/>yourself</h2>
-      <p class="bio-subtitle">Provide your details to personalize<br/>your learning experience.</p>
+      <h2 class="bio-title">${isEditing ? 'Update your\ndetails' : 'Tell us about\nyourself'}</h2>
+      <p class="bio-subtitle">${isEditing
+        ? 'Keep your profile accurate for the best experience.'
+        : 'Provide your details to personalize<br/>your learning experience.'
+      }</p>
       <form id="biodata-form" class="bio-form">
         <div class="form-group" data-field="name">
           <label for="input-name">Full Name</label>
@@ -33,7 +44,7 @@ export function mountBioDataPage({ onBack, onComplete, pageClass = '' }) {
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
-            <input type="text" id="input-name" name="name" placeholder="John Doe" />
+            <input type="text" id="input-name" name="name" placeholder="John Doe" value="${saved.name || ''}" />
           </div>
         </div>
         <div class="form-group" data-field="age">
@@ -45,24 +56,24 @@ export function mountBioDataPage({ onBack, onComplete, pageClass = '' }) {
               <line x1="8" y1="2" x2="8" y2="6"/>
               <line x1="3" y1="10" x2="21" y2="10"/>
             </svg>
-            <input type="number" id="input-age" name="age" placeholder="21" min="10" max="100" />
+            <input type="number" id="input-age" name="age" placeholder="21" min="10" max="100" value="${saved.age || ''}" />
           </div>
         </div>
         <div class="form-group" data-field="university">
-          <label for="input-university">University Name</label>
+          <label for="input-university">University / College</label>
           <div class="input-wrapper">
             <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
               <path d="M6 12v5c3 3 9 3 12 0v-5"/>
             </svg>
-            <input type="text" id="input-university" name="university" placeholder="Stanford University" />
+            <input type="text" id="input-university" name="university" placeholder="Stanford University" value="${saved.university || ''}" />
           </div>
         </div>
       </form>
     </section>
     <footer class="bio-footer">
-      <button id="btn-continue" type="button" class="btn-continue disabled" disabled>
-        <span>Continue</span>
+      <button id="btn-continue" type="button" class="btn-continue${isEditing && saved.name && saved.age && saved.university ? '' : ' disabled'}" ${isEditing && saved.name && saved.age && saved.university ? '' : 'disabled'}>
+        <span>${isEditing ? 'Next — Update Interests' : 'Continue'}</span>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M5 12H19"/>
           <path d="M12 5L19 12L12 19"/>
@@ -71,7 +82,12 @@ export function mountBioDataPage({ onBack, onComplete, pageClass = '' }) {
     </footer>
   `
 
-  let formData = { ...initialFormData }
+  let formData = {
+    ...initialFormData,
+    name: saved.name || initialFormData.name,
+    age: saved.age || initialFormData.age,
+    university: saved.university || initialFormData.university
+  }
   let submitted = false
   let timeoutId = null
   const listeners = []
@@ -130,10 +146,16 @@ export function mountBioDataPage({ onBack, onComplete, pageClass = '' }) {
     event.preventDefault()
     if (submitted) return
     submitted = true
-    renderSuccessState()
-    timeoutId = window.setTimeout(() => {
-      onComplete?.()
-    }, 1400)
+
+    if (isEditing) {
+      // Edit mode: save immediately, no success screen
+      onComplete?.(formData)
+    } else {
+      renderSuccessState()
+      timeoutId = window.setTimeout(() => {
+        onComplete?.(formData)
+      }, 1400)
+    }
   }
 
   nameInput.addEventListener('input', handleChange)

@@ -3,7 +3,7 @@ import globals from 'globals'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'android']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [

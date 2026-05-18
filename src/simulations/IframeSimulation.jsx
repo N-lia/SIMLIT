@@ -9,7 +9,8 @@ export function mountIframeSimulation(container, topic = {}) {
   root.style.minHeight = '100%'
 
   const iframe = document.createElement('iframe')
-  iframe.src = `/${topic?.id || ''}.html`
+  const simulationId = topic?.id || ''
+  iframe.src = `${import.meta.env.BASE_URL}${simulationId}.html`
   iframe.title = topic?.label || 'Simulation'
   iframe.style.width = '100%'
   iframe.style.height = '100%'

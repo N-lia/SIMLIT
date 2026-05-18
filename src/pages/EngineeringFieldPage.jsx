@@ -39,6 +39,7 @@ export function mountEngineeringFieldPage({ onBack, onSelect, pageClass = '' }) 
   const cardsContainer = root.querySelector('.engineering-grid')
   const listeners = []
   let selected = null
+  let timeoutId = null
 
   function renderCards() {
     cardsContainer.innerHTML = SUBFIELDS.map((field, index) => {
@@ -78,7 +79,8 @@ export function mountEngineeringFieldPage({ onBack, onSelect, pageClass = '' }) 
       const handler = () => {
         selected = field.id
         renderCards()
-        setTimeout(() => onSelect(field.id), 350)
+        window.clearTimeout(timeoutId)
+        timeoutId = window.setTimeout(() => onSelect(field.id), 350)
       }
       button.addEventListener('click', handler)
       listeners.push({ element: button, handler })
@@ -92,6 +94,7 @@ export function mountEngineeringFieldPage({ onBack, onSelect, pageClass = '' }) 
   renderCards()
 
   function cleanup() {
+    window.clearTimeout(timeoutId)
     listeners.forEach(({ element, handler }) => element.removeEventListener('click', handler))
   }
 

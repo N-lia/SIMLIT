@@ -76,7 +76,13 @@ The platform currently supports the following interactive simulations:
 
 ## Offline AI Integration (Llama.cpp)
 
-SIMLIT's architecture allows for offline, context-aware AI tutoring using a local LLM via \`llama.cpp\`. By capturing the active simulation state (e.g., active forces, waiting processes, or current legal facts) and forwarding it to the local inference server, the system can provide Socratic-style hints to users without requiring an internet connection or external API keys.
+SIMLIT's architecture supports offline, context-aware AI tutoring through a local \`llama.cpp\` server. The app calls the OpenAI-compatible \`/v1/chat/completions\` endpoint from a small client boundary in \`src/ai/llamaClient.js\`, keeping inference optional and local.
+
+The initial integration keeps the project vision intact: simulations remain the primary learning surface, while the model acts as a requested companion. Text tutoring is available from My Notes, image/audio requests are dormant until the learner attaches media, and the courtroom simulator can ask local opposing counsel to challenge a student's argument before falling back to deterministic replies.
+
+The recommended local model profile is a small MatFormer/E2B instruct GGUF with flash attention enabled when supported, compact context windows for low-end devices, prompt caching, and sliding-window-aware model metadata preserved during conversion.
+
+See [docs/llama-cpp-integration.md](docs/llama-cpp-integration.md) for runtime flags, environment variables, multimodal behavior, and token-per-second tuning for budget Android-class devices such as the itel City 100. See [docs/mobile-architecture.md](docs/mobile-architecture.md) for the Android bundle, native bridge, model-pack, and low-end-device architecture.
 
 ## Running Locally
 

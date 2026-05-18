@@ -4,16 +4,16 @@
 
 .phone-frame {
   width: 100%;
-  max-width: 430px;
+  max-width: none;
   min-height: 100svh;
   background: var(--paper-texture);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border-left: 1.5px solid var(--line-ink);
-  border-right: 1.5px solid var(--line-ink);
-  box-shadow: 0 20px 45px rgba(61, 46, 29, 0.22);
+  border-left: 0;
+  border-right: 0;
+  box-shadow: none;
 }
 
 /* =========================================

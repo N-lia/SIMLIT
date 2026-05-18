@@ -173,6 +173,16 @@
   opacity: 0.8;
 }
 
+.anatomy-deck-sim .tarot-art-placeholder {
+  color: var(--accent-red);
+}
+
+.anatomy-organ-icon {
+  width: 64px;
+  height: 64px;
+  filter: drop-shadow(0 8px 10px rgba(57, 38, 24, 0.12));
+}
+
 .tarot-art-placeholder svg {
   width: 80px;
   height: 80px;

@@ -18,7 +18,6 @@ export function mountLandingPage({ onTryDemo, onGetNow, pageClass = '' }) {
 
       <section class="landing-hero">
         <div class="landing-hero-copy">
-          <p class="landing-kicker">Interactive learning for ambitious minds</p>
           <h1>Learning should feel less like reading notes and more like touching the idea.</h1>
           <p class="landing-lede">
             SIMLIT turns science, engineering, law, medicine, mathematics, and computing topics into living simulations students can adjust, question, and understand in real time.
@@ -40,12 +39,27 @@ export function mountLandingPage({ onTryDemo, onGetNow, pageClass = '' }) {
             <div class="demo-window-top">
               <span></span><span></span><span></span>
             </div>
-            <div class="demo-graph">
-              <div class="demo-axis demo-axis-x"></div>
-              <div class="demo-axis demo-axis-y"></div>
-              <div class="demo-vector demo-vector-a"></div>
-              <div class="demo-vector demo-vector-b"></div>
-              <div class="demo-vector demo-vector-r"></div>
+            <div class="demo-learning-desk">
+              <div class="demo-sim-panel">
+                <div class="demo-orbit">
+                  <span class="demo-orbit-path"></span>
+                  <span class="demo-orbit-body demo-orbit-body-main"></span>
+                  <span class="demo-orbit-body demo-orbit-body-small"></span>
+                </div>
+                <div class="demo-readout">
+                  <span>Force</span>
+                  <strong>18.4 N</strong>
+                </div>
+              </div>
+              <div class="demo-note-strip">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="demo-ai-bubble">
+                ${iconSvg('brain', 'app-icon')}
+                <span>Try lowering the angle.</span>
+              </div>
             </div>
           </div>
           <div class="demo-card demo-card-one">

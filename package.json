@@ -5,9 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:ai": "bash scripts/dev-with-ai.sh",
+    "dev:cloud-ai": "bash scripts/dev-cloud-ai.sh",
+    "ai:desktop": "bash scripts/start-llama-desktop.sh",
     "build": "vite build",
+    "build:mobile-core": "vite build --base ./",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "mobile:sync": "npm run build:mobile-core && npx cap sync android",
+    "mobile:open": "npx cap open android",
+    "mobile:debug": "npm run mobile:sync && cd android && ./gradlew assembleDebug"
   },
   "dependencies": {
     "cannon-es": "^0.20.0",
@@ -15,6 +22,9 @@
     "puppeteer": "^24.43.1"
   },
   "devDependencies": {
+    "@capacitor/android": "^8.3.4",
+    "@capacitor/cli": "^7.6.5",
+    "@capacitor/core": "^8.3.4",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.2.1",
     "globals": "^17.5.0",

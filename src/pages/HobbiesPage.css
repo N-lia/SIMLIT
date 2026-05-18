@@ -1,0 +1,46 @@
+/* =========================================
+   Hobbies Page
+   ========================================= */
+
+   .hobbies-page {
+    /* Reuse base styling from biodata-page */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--paper-light);
+    overflow: hidden;
+  }
+  
+  .hobbies-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .hobby-pill {
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line-soft);
+    background: #fdfaf3;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  
+  .hobby-pill:hover {
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+    transform: translateY(-2px);
+  }
+  
+  .hobby-pill.selected {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+    transform: translateY(-2px);
+  }

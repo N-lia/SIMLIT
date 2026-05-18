@@ -65,6 +65,7 @@ export function mountFieldOfStudyPage({ onBack, onSelect, pageClass = '' }) {
 
   const cardsContainer = root.querySelector('.field-cards')
   let selected = null
+  let timeoutId = null
   const listeners = []
 
   function renderCards() {
@@ -105,7 +106,8 @@ export function mountFieldOfStudyPage({ onBack, onSelect, pageClass = '' }) {
       const handler = () => {
         selected = field.id
         renderCards()
-        setTimeout(() => onSelect(field.id), 350)
+        window.clearTimeout(timeoutId)
+        timeoutId = window.setTimeout(() => onSelect(field.id), 350)
       }
       button.addEventListener('click', handler)
       listeners.push({ element: button, handler })
@@ -119,6 +121,7 @@ export function mountFieldOfStudyPage({ onBack, onSelect, pageClass = '' }) {
   renderCards()
 
   function cleanup() {
+    window.clearTimeout(timeoutId)
     listeners.forEach(({ element, handler }) => {
       element.removeEventListener('click', handler)
     })

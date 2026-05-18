@@ -1,4 +1,5 @@
 import { render, useMemo, useState } from '../../utils/react-lite.js'
+import { askLawCaseTutor } from '../../ai/llamaClient.js'
 import { lawCases } from './lawData.js'
 import './LawCasesSimulation.css'
 
@@ -9,7 +10,7 @@ const tabs = [
   { id: 'completed', label: 'Completed' },
 ]
 
-const navItems = ['Dashboard', 'Cases', 'Progress', 'Library', 'Drafting Lab', 'ADR Room', 'Moot Court', 'Notes']
+const LAW_PROGRESS_KEY = 'simlit_law_case_progress'
 
 function Icon({ name }) {
   const paths = {
@@ -20,7 +21,6 @@ function Icon({ name }) {
     brief: <><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><path d="M3 12h18" /></>,
     book: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></>,
     check: <><path d="M20 6 9 17l-5-5" /></>,
-    star: <path d="m12 3 2.7 5.45 6.02.87-4.36 4.24 1.03 5.99L12 16.72l-5.39 2.83 1.03-5.99-4.36-4.24 6.02-.87L12 3z" />,
   }
 
   return (
@@ -36,18 +36,65 @@ function getStatusLabel(status) {
   return 'In progress'
 }
 
-export default function LawCasesSimulation() {
+function readProgressMap() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(LAW_PROGRESS_KEY)) || {}
+    return Object.fromEntries(lawCases.map((lawCase) => [lawCase.id, saved[lawCase.id] ?? lawCase.progress]))
+  } catch {
+    return Object.fromEntries(lawCases.map((lawCase) => [lawCase.id, lawCase.progress]))
+  }
+}
+
+function getProgressLabel(progress) {
+  if (progress >= 100) return 'Ready for review'
+  if (progress >= 70) return 'Courtroom ready'
+  if (progress >= 35) return 'Building case theory'
+  if (progress > 0) return 'Started'
+  return 'Not started'
+}
+
+function getCompletedTaskCount(progress, totalTasks) {
+  if (!totalTasks) return 0
+  return Math.min(totalTasks, Math.floor((progress / 100) * totalTasks))
+}
+
+function buildDossier(lawCase) {
+  return {
+    clientPosition: lawCase.parties.includes('Client:')
+      ? 'Protect the client, clarify goals, and identify the urgent legal risk before giving advice.'
+      : `Prepare the strongest argument for ${lawCase.parties.split(' v. ')[0] || 'your side'} while anticipating the opposing case.`,
+    centralIssues: [
+      `What facts must be proved in ${lawCase.jurisdiction}?`,
+      `Which rule from ${lawCase.statute} controls the outcome?`,
+      `What weakness will opposing counsel attack first?`,
+    ],
+    evidence: [
+      'Primary facts from the client or record',
+      'Documents, exhibits, or witness testimony that support each issue',
+      'Weak or disputed facts that need a response strategy',
+    ],
+    argumentPlan: [
+      'Open with the legal issue and requested outcome.',
+      'Tie each material fact to the governing rule.',
+      'Answer the opponent before they make their strongest point.',
+    ],
+  }
+}
+
+export default function LawCasesSimulation({ onGoToCourtroom }) {
   const [activeTab, setActiveTab] = useState('all')
   const [query, setQuery] = useState('')
   const [typeFilter, setTypeFilter] = useState('all')
-  const [favourites, setFavourites] = useState(['criminal-trial'])
-  const [progressById, setProgressById] = useState(() =>
-    Object.fromEntries(lawCases.map((lawCase) => [lawCase.id, lawCase.progress]))
-  )
+  const [favourites] = useState(['criminal-trial'])
+  const [viewMode, setViewMode] = useState('library')
+  const [progressById, setProgressById] = useState(readProgressMap)
   const [selectedId, setSelectedId] = useState(lawCases[0].id)
+  const [caseTutorResponse, setCaseTutorResponse] = useState('')
+  const [isCaseTutorThinking, setIsCaseTutorThinking] = useState(false)
   const [notice, setNotice] = useState('Select a case, complete the next task, and watch the curriculum progress update.')
 
   const selectedCase = lawCases.find((lawCase) => lawCase.id === selectedId) || lawCases[0]
+  const dossier = buildDossier(selectedCase)
   const completedCount = Object.values(progressById).filter((value) => value >= 100).length
   const averageProgress = Math.round(
     Object.values(progressById).reduce((total, value) => total + value, 0) / lawCases.length
@@ -72,16 +119,12 @@ export default function LawCasesSimulation() {
     })
   }, [activeTab, favourites, progressById, query, typeFilter])
 
-  const toggleFavourite = (caseId) => {
-    setFavourites((current) =>
-      current.includes(caseId) ? current.filter((id) => id !== caseId) : [...current, caseId]
-    )
-  }
-
   const completeTask = () => {
     const current = progressById[selectedCase.id] || 0
     const next = Math.min(100, current + 20)
-    setProgressById({ ...progressById, [selectedCase.id]: next })
+    const nextProgress = { ...progressById, [selectedCase.id]: next }
+    setProgressById(nextProgress)
+    localStorage.setItem(LAW_PROGRESS_KEY, JSON.stringify(nextProgress))
     setNotice(
       next >= 100
         ? `${selectedCase.title} completed. The next repetition should focus on speed and confidence.`
@@ -90,52 +133,41 @@ export default function LawCasesSimulation() {
   }
 
   const resetCase = () => {
-    setProgressById({ ...progressById, [selectedCase.id]: selectedCase.progress })
+    const nextProgress = { ...progressById, [selectedCase.id]: selectedCase.progress }
+    setProgressById(nextProgress)
+    localStorage.setItem(LAW_PROGRESS_KEY, JSON.stringify(nextProgress))
     setNotice(`${selectedCase.title} reset to the curriculum starting point.`)
+  }
+
+  const openCaseOverview = (caseId) => {
+    setSelectedId(caseId)
+    setCaseTutorResponse('')
+    setViewMode('overview')
+  }
+
+  const askCaseTutor = async () => {
+    if (isCaseTutorThinking) return
+    const progress = progressById[selectedCase.id] || 0
+    setIsCaseTutorThinking(true)
+    setCaseTutorResponse('Case tutor is reading the file...')
+    const response = await askLawCaseTutor({ caseFile: selectedCase, progress })
+    setCaseTutorResponse(
+      response.text ||
+        `Local case tutor unavailable${response.error ? `: ${response.error}` : ''}. Focus on the issue, rule anchor, strongest facts, weakest facts, and next advocacy task.`
+    )
+    setIsCaseTutorThinking(false)
+  }
+
+  const goToCourtroom = () => {
+    if (typeof onGoToCourtroom === 'function') {
+      onGoToCourtroom(selectedCase.id)
+    } else {
+      setNotice(`${selectedCase.title} is ready for courtroom argument.`)
+    }
   }
 
   return (
     <div className="law-sim-container">
-      <aside className="law-sidebar" aria-label="Law training navigation">
-        <div className="law-logo">
-          <div className="law-logo-icon"><Icon name="scales" /></div>
-          <div className="law-logo-text">
-            <h2>Legal Simulator</h2>
-            <span>Nigerian Law Training</span>
-          </div>
-        </div>
-
-        <nav className="law-nav">
-          {navItems.map((item) => (
-            <button
-              className={`law-nav-item ${item === 'Cases' ? 'active' : ''}`}
-              type="button"
-              onClick={() => setNotice(`${item} is part of the law training workspace.`)}
-            >
-              <Icon name={item === 'Cases' ? 'folder' : item === 'Library' ? 'book' : 'brief'} />
-              {item}
-            </button>
-          ))}
-        </nav>
-
-        <div className="law-goal">
-          <h4>Today's Goal</h4>
-          <p>Complete one legal task</p>
-          <div className="law-progress-bar" aria-hidden="true">
-            <div className="law-progress-fill" style={{ width: `${completedCount > 0 ? 100 : averageProgress}%` }}></div>
-          </div>
-          <span className="law-goal-text">{completedCount > 0 ? '1/1' : '0/1'} complete</span>
-        </div>
-
-        <div className="law-profile">
-          <div className="law-avatar"><Icon name="scales" /></div>
-          <div className="law-profile-info">
-            <strong>A. OLADELE</strong>
-            <span>LL.B Student</span>
-          </div>
-        </div>
-      </aside>
-
       <main className="law-main">
         <header className="law-header">
           <div className="law-title-area">
@@ -179,7 +211,60 @@ export default function LawCasesSimulation() {
             </select>
           </label>
         </section>
+        <p className="law-notice law-page-notice" role="status">{notice}</p>
 
+        {viewMode === 'overview' ? (
+          <section className="law-dossier-view" aria-label="Full case overview">
+            <div className="law-dossier-hero">
+              <button className="law-secondary-btn" type="button" onClick={() => setViewMode('library')}>Back to case library</button>
+              <span className="law-case-type">{selectedCase.type}</span>
+              <h2>{selectedCase.title}</h2>
+              <p className="law-parties">{selectedCase.parties}</p>
+              <p>{selectedCase.facts}</p>
+              <div className="law-dossier-actions">
+                <button className="law-primary-btn" type="button" onClick={goToCourtroom}>Go to courtroom</button>
+                <button className="law-secondary-btn" type="button" onClick={completeTask}>Mark dossier review done</button>
+              </div>
+            </div>
+
+            <div className="law-dossier-grid">
+              <section className="law-dossier-card">
+                <h3>Client position</h3>
+                <p>{dossier.clientPosition}</p>
+              </section>
+              <section className="law-dossier-card">
+                <h3>Forum and rule focus</h3>
+                <dl className="law-detail-list">
+                  <div><dt>Forum</dt><dd>{selectedCase.jurisdiction}</dd></div>
+                  <div><dt>Authorities</dt><dd>{selectedCase.statute}</dd></div>
+                  <div><dt>Skill target</dt><dd>{selectedCase.skill}</dd></div>
+                </dl>
+              </section>
+              <section className="law-dossier-card">
+                <h3>Issues to resolve</h3>
+                {dossier.centralIssues.map((issue) => <p className="law-dossier-line">{issue}</p>)}
+              </section>
+              <section className="law-dossier-card">
+                <h3>Evidence map</h3>
+                {dossier.evidence.map((item) => <p className="law-dossier-line">{item}</p>)}
+              </section>
+              <section className="law-dossier-card">
+                <h3>Argument plan</h3>
+                {dossier.argumentPlan.map((item) => <p className="law-dossier-line">{item}</p>)}
+              </section>
+              <section className="law-dossier-card">
+                <h3>Preparation tasks</h3>
+                {selectedCase.tasks.map((task, index) => (
+                  <div className="law-task-row">
+                    <span>{index + 1}</span>
+                    <p>{task}</p>
+                  </div>
+                ))}
+              </section>
+            </div>
+            <p className="law-disclaimer">Training simulation only. It is not legal advice.</p>
+          </section>
+        ) : (
         <section className="law-workspace">
           <div className="law-grid" aria-label="Available legal case files">
             {filteredCases.length === 0 ? (
@@ -190,11 +275,11 @@ export default function LawCasesSimulation() {
               </div>
             ) : filteredCases.map((lawCase) => {
               const progress = progressById[lawCase.id] || 0
+              const completedTasks = getCompletedTaskCount(progress, lawCase.tasks.length)
               const isSelected = lawCase.id === selectedCase.id
-              const isFavourite = favourites.includes(lawCase.id)
               return (
                 <article className={`law-folder ${isSelected ? 'selected' : ''}`} data-color={lawCase.color}>
-                  <button className="law-folder-main" type="button" onClick={() => setSelectedId(lawCase.id)}>
+                  <button className="law-folder-main" type="button" onClick={() => openCaseOverview(lawCase.id)}>
                     <span className="law-folder-tab"></span>
                     <span className="law-folder-body">
                       <span className="law-folder-header">
@@ -203,19 +288,21 @@ export default function LawCasesSimulation() {
                       </span>
                       <strong className="law-folder-title">{lawCase.title}</strong>
                       <span className="law-folder-desc">{lawCase.parties}</span>
+                      <span className="law-folder-progress-label">{getProgressLabel(progress)} - {completedTasks}/{lawCase.tasks.length} tasks</span>
                       <span className="law-folder-footer">
-                        <span className="law-folder-bar"><span className="law-folder-fill" style={{ width: `${progress}%` }}></span></span>
+                        <span
+                          className="law-folder-bar"
+                          role="progressbar"
+                          aria-label={`${lawCase.title} progress`}
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                          aria-valuenow={progress}
+                        >
+                          <span className="law-folder-fill" style={{ width: `${progress}%` }}></span>
+                        </span>
                         <span className="law-folder-pct">{progress}%</span>
                       </span>
                     </span>
-                  </button>
-                  <button
-                    className={`law-favourite ${isFavourite ? 'active' : ''}`}
-                    type="button"
-                    aria-label={`${isFavourite ? 'Remove' : 'Add'} ${lawCase.title} favourite`}
-                    onClick={() => toggleFavourite(lawCase.id)}
-                  >
-                    <Icon name="star" />
                   </button>
                 </article>
               )
@@ -223,49 +310,82 @@ export default function LawCasesSimulation() {
           </div>
 
           <aside className="law-case-panel" aria-label="Selected case details">
-            <div className="law-panel-header">
-              <span className="law-case-type">{selectedCase.type}</span>
-              <strong>{progressById[selectedCase.id] || 0}%</strong>
-            </div>
-            <h2>{selectedCase.title}</h2>
-            <p className="law-parties">{selectedCase.parties}</p>
-            <dl className="law-detail-list">
-              <div><dt>Forum</dt><dd>{selectedCase.jurisdiction}</dd></div>
-              <div><dt>Rule focus</dt><dd>{selectedCase.statute}</dd></div>
-              <div><dt>Skill</dt><dd>{selectedCase.skill}</dd></div>
-            </dl>
-            <div className="law-facts">
-              <h3>Case facts</h3>
-              <p>{selectedCase.facts}</p>
-            </div>
-            <div className="law-task-list">
-              <h3>Simulation tasks</h3>
-              {selectedCase.tasks.map((task, index) => (
-                <div className="law-task-row">
-                  <span>{index + 1}</span>
-                  <p>{task}</p>
-                </div>
-              ))}
-            </div>
-            <div className="law-next-step">
-              <strong>Next move</strong>
-              <p>{selectedCase.nextStep}</p>
-            </div>
-            <div className="law-panel-actions">
-              <button className="law-primary-btn" type="button" onClick={completeTask}>Complete next task</button>
-              <button className="law-secondary-btn" type="button" onClick={resetCase}>Reset case</button>
-            </div>
-            <p className="law-notice" role="status">{notice}</p>
-            <p className="law-disclaimer">Training simulation only. It is not legal advice.</p>
+            {(() => {
+              const selectedProgress = progressById[selectedCase.id] || 0
+              const completedTasks = getCompletedTaskCount(selectedProgress, selectedCase.tasks.length)
+              return (
+                <>
+                  <div className="law-panel-header">
+                    <span className="law-case-type">{selectedCase.type}</span>
+                    <strong>{selectedProgress}%</strong>
+                  </div>
+                  <div className="law-panel-progress">
+                    <span>{getProgressLabel(selectedProgress)}</span>
+                    <div
+                      className="law-folder-bar"
+                      role="progressbar"
+                      aria-label={`${selectedCase.title} selected case progress`}
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      aria-valuenow={selectedProgress}
+                    >
+                      <span className="law-folder-fill" style={{ width: `${selectedProgress}%` }}></span>
+                    </div>
+                    <small>{completedTasks}/{selectedCase.tasks.length} preparation tasks complete</small>
+                  </div>
+                  <h2>{selectedCase.title}</h2>
+                  <p className="law-parties">{selectedCase.parties}</p>
+                  <dl className="law-detail-list">
+                    <div><dt>Forum</dt><dd>{selectedCase.jurisdiction}</dd></div>
+                    <div><dt>Rule focus</dt><dd>{selectedCase.statute}</dd></div>
+                    <div><dt>Skill</dt><dd>{selectedCase.skill}</dd></div>
+                  </dl>
+                  <div className="law-facts">
+                    <h3>Case facts</h3>
+                    <p>{selectedCase.facts}</p>
+                  </div>
+                  <div className="law-task-list">
+                    <h3>Simulation tasks</h3>
+                    {selectedCase.tasks.map((task, index) => (
+                      <div className={`law-task-row ${index < completedTasks ? 'complete' : ''}`}>
+                        <span>{index + 1}</span>
+                        <p>{task}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="law-next-step">
+                    <strong>Next move</strong>
+                    <p>{selectedCase.nextStep}</p>
+                  </div>
+                  <div className="law-panel-actions">
+                    <button className="law-primary-btn" type="button" onClick={() => setViewMode('overview')}>Open full dossier</button>
+                    <button className="law-secondary-btn" type="button" onClick={askCaseTutor} disabled={isCaseTutorThinking}>
+                      {isCaseTutorThinking ? 'Asking tutor...' : 'Ask case tutor'}
+                    </button>
+                    <button className="law-secondary-btn" type="button" onClick={resetCase}>Reset case</button>
+                  </div>
+                  {caseTutorResponse ? (
+                    <div className="law-ai-guidance" role="status">
+                      <strong>Case tutor</strong>
+                      <p>{caseTutorResponse}</p>
+                    </div>
+                  ) : null}
+                  <p className="law-disclaimer">Training simulation only. It is not legal advice.</p>
+                </>
+              )
+            })()}
           </aside>
         </section>
+        )}
       </main>
     </div>
   )
 }
 
-export function mountLawCasesSimulation(container) {
-  const app = render(LawCasesSimulation)
+export function mountLawCasesSimulation(container, topic, options = {}) {
+  const app = render(LawCasesSimulation, {
+    onGoToCourtroom: options.onOpenLawCourtroom,
+  })
   container.appendChild(app.root)
   return app.cleanup
 }
