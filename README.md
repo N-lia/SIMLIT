@@ -89,3 +89,13 @@ See [docs/llama-cpp-integration.md](docs/llama-cpp-integration.md) for runtime f
 1. Install dependencies: \`npm install\`
 2. Start the development server: \`npm run dev\`
 3. Open the provided localhost URL in your browser.
+
+## Testing
+
+Smoke tests use [Playwright](https://playwright.dev) and run against the production build. They open every app page and load each implemented simulation, failing on uncaught errors, `console.error` output, or a topic marked `implemented` that has no working loader.
+
+1. Install the browser once: `npx playwright install chromium`
+2. Run lint: `npm run lint`
+3. Run the smoke tests (builds first): `npm test`
+
+GitHub Actions runs lint, build and the smoke tests on every pull request and on pushes to `main` (see `.github/workflows/ci.yml`).
