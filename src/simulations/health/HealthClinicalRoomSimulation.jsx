@@ -2,6 +2,7 @@ import { render, useMemo, useState } from '../../utils/react-lite.js'
 import { askClinicalStepFeedback } from '../../ai/llamaClient.js'
 import { clinicalSchedule, clinicalSteps, clinicalTools, healthCases } from './healthData.js'
 import './HealthClinicalRoomSimulation.css'
+import { readDoc, writeDoc } from '../../sync/localStore.js'
 
 function Icon({ name }) {
   const paths = {
@@ -33,15 +34,11 @@ const HEALTH_PROGRESS_KEY = 'simlit_health_case_progress'
 const HEALTH_ATTEMPTS_KEY = 'simlit_clinical_room_attempts'
 
 function readStoredMap(key) {
-  try {
-    return JSON.parse(localStorage.getItem(key)) || {}
-  } catch {
-    return {}
-  }
+  return readDoc(key, {})
 }
 
 function writeStoredMap(key, nextMap) {
-  localStorage.setItem(key, JSON.stringify(nextMap))
+  writeDoc(key, nextMap)
 }
 
 function recordClinicalResult(caseId, scorePercent) {

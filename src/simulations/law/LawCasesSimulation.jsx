@@ -2,6 +2,7 @@ import { render, useMemo, useState } from '../../utils/react-lite.js'
 import { askLawCaseTutor } from '../../ai/llamaClient.js'
 import { lawCases } from './lawData.js'
 import './LawCasesSimulation.css'
+import { readDoc, writeDoc } from '../../sync/localStore.js'
 
 const tabs = [
   { id: 'all', label: 'All cases' },
@@ -38,7 +39,7 @@ function getStatusLabel(status) {
 
 function readProgressMap() {
   try {
-    const saved = JSON.parse(localStorage.getItem(LAW_PROGRESS_KEY)) || {}
+    const saved = readDoc(LAW_PROGRESS_KEY, {})
     return Object.fromEntries(lawCases.map((lawCase) => [lawCase.id, saved[lawCase.id] ?? lawCase.progress]))
   } catch {
     return Object.fromEntries(lawCases.map((lawCase) => [lawCase.id, lawCase.progress]))
@@ -124,7 +125,7 @@ export default function LawCasesSimulation({ onGoToCourtroom }) {
     const next = Math.min(100, current + 20)
     const nextProgress = { ...progressById, [selectedCase.id]: next }
     setProgressById(nextProgress)
-    localStorage.setItem(LAW_PROGRESS_KEY, JSON.stringify(nextProgress))
+    writeDoc(LAW_PROGRESS_KEY, nextProgress)
     setNotice(
       next >= 100
         ? `${selectedCase.title} completed. The next repetition should focus on speed and confidence.`
@@ -135,7 +136,7 @@ export default function LawCasesSimulation({ onGoToCourtroom }) {
   const resetCase = () => {
     const nextProgress = { ...progressById, [selectedCase.id]: selectedCase.progress }
     setProgressById(nextProgress)
-    localStorage.setItem(LAW_PROGRESS_KEY, JSON.stringify(nextProgress))
+    writeDoc(LAW_PROGRESS_KEY, nextProgress)
     setNotice(`${selectedCase.title} reset to the curriculum starting point.`)
   }
 

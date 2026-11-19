@@ -11,6 +11,7 @@ import { mountSimulationPage } from './pages/SimulationPage.jsx'
 import { mountTarotCardsPage } from './pages/TarotCardsPage.jsx'
 import { mountMyNotesPage } from './pages/MyNotesPage.jsx'
 import { mountProfilePage } from './pages/ProfilePage.jsx'
+import { clearLocalData, readDoc, writeDoc } from './sync/localStore.js'
 
 const PAGES = {
   landing:          'landing',
@@ -43,12 +44,7 @@ const FLOW_ORDER = [
 ]
 
 function readSavedProfile() {
-  try {
-    return JSON.parse(localStorage.getItem('simlit_profile') || 'null')
-  } catch {
-    localStorage.removeItem('simlit_profile')
-    return null
-  }
+  return readDoc('simlit_profile', null)
 }
 
 const savedProfile = readSavedProfile()
@@ -257,7 +253,7 @@ function handleFieldSelect(fieldId) {
       selectedField: appState.selectedField,
       selectedSubfield: appState.selectedSubfield,
     }
-    localStorage.setItem('simlit_profile', JSON.stringify(updated))
+    writeDoc('simlit_profile', updated)
     appState.userProfile = updated
     resetTo(PAGES.profile)
   } else {
@@ -278,7 +274,7 @@ function handleHobbiesComplete(hobbies) {
     selectedField: appState.selectedField,
     selectedSubfield: appState.selectedSubfield
   }
-  localStorage.setItem('simlit_profile', JSON.stringify(profile))
+  writeDoc('simlit_profile', profile)
   appState.userProfile = profile
   appState.pendingProfile = null
   appState.isEditingProfile = false
@@ -326,7 +322,7 @@ function handleBioDataEditComplete(bioData) {
     age: bioData.age,
     university: bioData.university,
   }
-  localStorage.setItem('simlit_profile', JSON.stringify(updated))
+  writeDoc('simlit_profile', updated)
   appState.userProfile = updated
   appState.isEditingBio = false
   // Chain into hobbies edit
@@ -339,16 +335,13 @@ function handleHobbiesEditComplete(hobbies) {
     ...(appState.userProfile || {}),
     hobbies,
   }
-  localStorage.setItem('simlit_profile', JSON.stringify(updated))
+  writeDoc('simlit_profile', updated)
   appState.userProfile = updated
   navigateTo(PAGES.profile)
 }
 
 function handleLogout() {
-  localStorage.removeItem('simlit_profile')
-  localStorage.removeItem('simlit_notes_list')
-  localStorage.removeItem('simlit_law_case_progress')
-  localStorage.removeItem('simlit_health_case_progress')
+  clearLocalData()
   appState.userProfile = null
   appState.selectedField = null
   appState.selectedSubfield = null
@@ -371,7 +364,7 @@ function handleEngineeringSelect(subfieldId) {
       selectedField: appState.selectedField || 'eng',
       selectedSubfield: subfieldId,
     }
-    localStorage.setItem('simlit_profile', JSON.stringify(updated))
+    writeDoc('simlit_profile', updated)
     appState.userProfile = updated
   }
   navigateTo(PAGES.simulationSelect)

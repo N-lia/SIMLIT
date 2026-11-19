@@ -2,14 +2,11 @@ import { askSimlitTutor, getLlamaRuntimeStatus, readAttachment } from '../ai/lla
 import { escapeHtml, htmlToElement } from '../utils/dom.js'
 import { renderMarkdownText } from '../utils/markdownText.js'
 import './MyNotesPage.css'
+import { readDoc, writeDoc } from '../sync/localStore.js'
 
 export function mountMyNotesPage({ onBack, onOpenTutor, openTutorOnMount = false, pageClass = '' }) {
-  let notes = []
-  try {
-    notes = JSON.parse(localStorage.getItem('simlit_notes_list')) || []
-  } catch {
-    notes = []
-  }
+  let notes = readDoc('simlit_notes_list', [])
+  if (!Array.isArray(notes)) notes = []
   
   if (notes.length === 0) {
     notes.push({ id: Date.now().toString(), title: 'Untitled Note', content: '', date: new Date().toLocaleDateString() })
@@ -107,7 +104,7 @@ export function mountMyNotesPage({ onBack, onOpenTutor, openTutorOnMount = false
   const newNoteBtn = root.querySelector('#btn-new-note')
   
   const saveToLocal = () => {
-    localStorage.setItem('simlit_notes_list', JSON.stringify(notes))
+    writeDoc('simlit_notes_list', notes)
   }
 
   const renderList = () => {
