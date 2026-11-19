@@ -40,7 +40,7 @@ function drawOhm(ctx, voltage, resistance, dotOffset) {
   ctx.beginPath(); ctx.moveTo(left - plateW/2, bmy + 6); ctx.lineTo(left + plateW/2, bmy + 6); ctx.stroke()
   ctx.lineWidth = 1.5
   ctx.beginPath(); ctx.moveTo(left - plateW*0.35, bmy + 12); ctx.lineTo(left + plateW*0.35, bmy + 12); ctx.stroke()
-  ctx.font = '10px Outfit, sans-serif'; ctx.fillStyle = '#facc15'; ctx.textAlign = 'center'
+  ctx.font = '10px Inter, sans-serif'; ctx.fillStyle = '#facc15'; ctx.textAlign = 'center'
   ctx.fillText(`${voltage}V`, left, bmy + 30)
 
   // ── Resistor (bottom wire) ──
@@ -53,7 +53,7 @@ function drawOhm(ctx, voltage, resistance, dotOffset) {
   }
   ctx.lineTo(rzx + 56, rsy)
   ctx.stroke()
-  ctx.fillStyle = '#60a5fa'; ctx.font = '10px Outfit, sans-serif'
+  ctx.fillStyle = '#60a5fa'; ctx.font = '10px Inter, sans-serif'
   ctx.fillText(`${resistance}Ω`, midX, rsy + 16)
 
   // ── Bulb (right side) ──

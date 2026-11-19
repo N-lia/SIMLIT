@@ -1,7 +1,7 @@
 .vector-sim {
   background: var(--paper-texture);
   color: var(--ink);
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   padding: clamp(12px, 2.5vw, 32px);
   overflow-x: hidden;
 }
@@ -17,7 +17,7 @@
 
 .vector-canvas-card,
 .vector-card {
-  background: rgba(255, 244, 223, 0.68);
+  background: rgba(255, 255, 255, 0.68);
   border: 1.5px solid var(--line-ink);
   border-radius: 6px 10px 7px 9px / 10px 6px 9px 7px;
   box-shadow: var(--card-shadow);
@@ -59,7 +59,7 @@
 
 .vector-chip {
   flex: 0 0 auto;
-  background: rgba(216, 180, 92, 0.26);
+  background: rgba(255, 210, 63, 0.26);
   color: var(--accent-red);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
@@ -73,7 +73,7 @@
   min-height: 260px;
   height: clamp(280px, 46vw, 520px);
   overflow: hidden;
-  background: rgba(255, 244, 223, 0.72);
+  background: rgba(255, 255, 255, 0.72);
   border: 1.5px solid var(--line-soft);
   border-radius: 6px;
 }
@@ -113,7 +113,7 @@
 
 .vector-card textarea:focus {
   border-color: var(--input-focus);
-  box-shadow: 0 0 0 3px rgba(47, 93, 136, 0.13);
+  box-shadow: 0 0 0 3px rgba(23, 105, 170, 0.13);
 }
 
 .vector-samples {
@@ -127,7 +127,7 @@
   min-height: 38px;
   padding: 8px 10px;
   text-align: left;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 0.82rem;
   overflow-wrap: anywhere;
 }
@@ -140,7 +140,7 @@
 
 .vector-result-grid div {
   min-width: 0;
-  background: rgba(234, 214, 167, 0.38);
+  background: rgba(236, 236, 231, 0.38);
   border: 1px solid var(--line-soft);
   border-radius: 6px;
   padding: 9px 10px;
@@ -172,7 +172,7 @@
   grid-template-columns: 1fr auto;
   gap: 4px 10px;
   padding: 9px 10px;
-  background: rgba(255, 244, 223, 0.5);
+  background: rgba(255, 255, 255, 0.5);
   border: 1px dashed var(--line-soft);
   border-radius: 6px;
 }
@@ -196,8 +196,8 @@
 
 .vector-error {
   color: var(--accent-red);
-  background: rgba(169, 64, 47, 0.1);
-  border: 1px dashed rgba(169, 64, 47, 0.35);
+  background: rgba(194, 37, 92, 0.1);
+  border: 1px dashed rgba(194, 37, 92, 0.35);
   border-radius: 6px;
   padding: 10px;
 }
@@ -208,7 +208,7 @@
 }
 
 .vector-note code {
-  background: rgba(37, 35, 31, 0.07);
+  background: rgba(31, 31, 31, 0.07);
   border: 1px solid var(--line-soft);
   border-radius: 4px;
   color: var(--accent-red);
@@ -236,7 +236,7 @@
 
   .vector-canvas-card,
   .vector-card {
-    box-shadow: 3px 4px 0 rgba(37, 35, 31, 0.08);
+    box-shadow: 3px 4px 0 rgba(31, 31, 31, 0.08);
   }
 
   .vector-canvas-card {

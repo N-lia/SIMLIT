@@ -36,7 +36,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: rgba(255, 244, 223, 0.34);
+  background: rgba(255, 255, 255, 0.34);
   min-height: 100%;
 }
 
@@ -56,7 +56,7 @@
   border-radius: 6px 8px 5px 7px / 8px 5px 7px 6px;
   display: grid;
   place-items: center;
-  background: rgba(255, 244, 223, 0.6);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .law-logo-text h2 {
@@ -97,13 +97,13 @@
 
 .law-nav-item:hover,
 .law-nav-item.active {
-  background: rgba(216, 180, 92, 0.16);
+  background: rgba(255, 210, 63, 0.16);
   border-color: var(--line-soft);
 }
 
 .law-nav-item.active {
   color: var(--accent-red);
-  border-color: rgba(169, 64, 47, 0.34);
+  border-color: rgba(194, 37, 92, 0.34);
 }
 
 .law-goal {
@@ -111,7 +111,7 @@
   border: 1.5px solid var(--line-ink);
   border-radius: var(--radius-md);
   padding: 14px;
-  background: rgba(255, 244, 223, 0.42);
+  background: rgba(255, 255, 255, 0.42);
 }
 
 .law-goal h4,
@@ -136,7 +136,7 @@
   border: 1.5px solid var(--line-ink);
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(255, 244, 223, 0.54);
+  background: rgba(255, 255, 255, 0.54);
 }
 
 .law-progress-bar {
@@ -204,7 +204,7 @@
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-md);
   padding: 10px 12px;
-  background: rgba(255, 244, 223, 0.38);
+  background: rgba(255, 255, 255, 0.38);
 }
 
 .law-header-stats strong {
@@ -234,7 +234,7 @@
   align-items: center;
   gap: 8px;
   border: 1.5px solid var(--line-soft);
-  background: rgba(255, 244, 223, 0.58);
+  background: rgba(255, 255, 255, 0.58);
   border-radius: var(--radius-md);
   padding: 0 12px;
   min-height: 44px;
@@ -263,7 +263,7 @@
   border: 1.5px solid var(--line-ink);
   border-radius: var(--radius-sm);
   padding: 10px 13px;
-  background: rgba(255, 244, 223, 0.42);
+  background: rgba(255, 255, 255, 0.42);
   color: var(--ink);
   cursor: pointer;
   transition: transform 0.15s, background-color 0.2s;
@@ -335,12 +335,12 @@
   border: 1.5px solid var(--line-ink);
   border-radius: var(--radius-md);
   padding: 16px;
-  background: rgba(255, 244, 223, 0.64);
+  background: rgba(255, 255, 255, 0.64);
   box-shadow: var(--card-shadow);
 }
 
 .law-folder.selected .law-folder-body {
-  outline: 2px solid rgba(169, 64, 47, 0.3);
+  outline: 2px solid rgba(194, 37, 92, 0.3);
 }
 
 .law-folder-header,
@@ -407,7 +407,7 @@
 .law-case-panel {
   border: 1.5px solid var(--line-ink);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.5);
+  background: rgba(255, 255, 255, 0.5);
   box-shadow: var(--card-shadow);
 }
 
@@ -440,15 +440,15 @@
   gap: 8px;
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.38);
+  background: rgba(255, 255, 255, 0.38);
   padding: 12px;
 }
 
 .law-ai-guidance {
-  border: 1.5px solid rgba(47, 93, 136, 0.28);
+  border: 1.5px solid rgba(23, 105, 170, 0.28);
   border-left: 4px solid var(--accent-blue);
   border-radius: var(--radius-md);
-  background: rgba(47, 93, 136, 0.08);
+  background: rgba(23, 105, 170, 0.08);
   padding: 12px;
 }
 
@@ -523,12 +523,12 @@
   place-items: center;
   border: 1.5px solid var(--line-ink);
   border-radius: 50%;
-  background: rgba(216, 180, 92, 0.22);
+  background: rgba(255, 210, 63, 0.22);
 }
 
 .law-task-row.complete span {
-  background: rgba(76, 122, 60, 0.16);
-  border-color: rgba(76, 122, 60, 0.56);
+  background: rgba(15, 122, 85, 0.16);
+  border-color: rgba(15, 122, 85, 0.56);
   color: var(--accent-green);
 }
 
@@ -564,7 +564,7 @@
 .law-dossier-card {
   border: 1.5px solid var(--line-ink);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.54);
+  background: rgba(255, 255, 255, 0.54);
   box-shadow: var(--card-shadow);
 }
 

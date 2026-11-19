@@ -28,7 +28,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-weight: 700;
   font-size: 18px;
   color: var(--ink);
@@ -55,7 +55,7 @@
 .btn-pill {
   border-radius: 999px;
   font-weight: 600;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 14px;
   padding: 10px 20px;
   cursor: pointer;
@@ -213,9 +213,9 @@
   width: min(90vw, 400px);
   height: 460px;
   z-index: 5;
-  background: linear-gradient(155deg, #d8b45c 0%, #a9402f 62%, #7e3027 100%);
+  background: linear-gradient(155deg, #ffd23f 0%, #c2255c 62%, #8f1a44 100%);
   border: 4px solid var(--ink);
-  box-shadow: 0 30px 60px -12px rgba(37, 35, 31, 0.4);
+  box-shadow: 0 30px 60px -12px rgba(31, 31, 31, 0.4);
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -260,7 +260,7 @@
 .card-hint {
   position: absolute;
   top: 16px;
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-size: 14px;
   color: var(--ink-soft);
 }

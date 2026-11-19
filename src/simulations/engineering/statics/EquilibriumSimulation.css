@@ -8,11 +8,11 @@
   min-height: 0;
   background: var(--paper-texture);
   color: var(--ink);
-  font-family: 'Outfit', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: clamp(15px, 3.8vw, 17px);
-  --bg: rgba(255, 244, 223, 0.72);
-  --surface: rgba(255, 244, 223, 0.58);
-  --surface2: rgba(234, 214, 167, 0.48);
+  --bg: rgba(255, 255, 255, 0.72);
+  --surface: rgba(255, 255, 255, 0.58);
+  --surface2: rgba(236, 236, 231, 0.48);
   --text: var(--ink);
   --muted: var(--ink-soft);
   --accent: var(--accent-blue);
@@ -43,7 +43,7 @@
   border: 1.5px solid var(--line-ink);
   box-shadow: var(--card-shadow);
   background:
-    linear-gradient(rgba(255, 244, 223, 0.72), rgba(255, 244, 223, 0.72)),
+    linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
     var(--paper-texture);
 }
 .eq-wrapper .hud {
@@ -59,7 +59,7 @@
 }
 .eq-wrapper .chip {
   pointer-events: none;
-  background: rgba(255, 244, 223, 0.86);
+  background: rgba(255, 255, 255, 0.86);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   padding: 0.25rem 0.65rem;
@@ -85,7 +85,7 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 0.75rem 1rem calc(0.85rem + env(safe-area-inset-bottom, 0px));
-  background: rgba(255, 244, 223, 0.58);
+  background: rgba(255, 255, 255, 0.58);
   border-top: 1.5px solid var(--line-soft);
   border-radius: var(--radius) var(--radius) 0 0;
   box-shadow: var(--card-shadow);
@@ -118,7 +118,7 @@
 }
 .eq-wrapper .btn-primary { background: var(--ink); color: var(--paper-light); }
 .eq-wrapper .btn-ghost { background: var(--surface2); color: var(--text); }
-.eq-wrapper .btn-danger { background: rgba(169, 64, 47, 0.1); color: var(--danger); border: 1px solid rgba(169, 64, 47, 0.35); }
+.eq-wrapper .btn-danger { background: rgba(194, 37, 92, 0.1); color: var(--danger); border: 1px solid rgba(194, 37, 92, 0.35); }
 .eq-wrapper .grow { flex: 1 1 120px; }
 .eq-wrapper .presets { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.45rem; }
 @media (min-width: 480px) { .eq-wrapper .presets { grid-template-columns: repeat(2, 1fr); } }

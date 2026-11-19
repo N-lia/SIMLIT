@@ -233,7 +233,7 @@ function drawArrow(ctx, from, to, color, label, width = 3) {
   ctx.fill()
 
   if (label) {
-    ctx.font = `${width >= 4 ? 700 : 600} ${Math.max(11, Math.min(14, width * 4))}px Outfit, sans-serif`
+    ctx.font = `${width >= 4 ? 700 : 600} ${Math.max(11, Math.min(14, width * 4))}px Inter, sans-serif`
     ctx.textAlign = 'center'
     ctx.fillText(label, (from.x + to.x) / 2, (from.y + to.y) / 2 - 8)
   }
@@ -269,7 +269,7 @@ function clearSimulation(canvas) {
   if (!ctx) return
   const { width, height } = resizeCanvas(canvas)
   ctx.clearRect(0, 0, width, height)
-  ctx.fillStyle = 'rgba(255, 244, 223, 0.72)'
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.72)'
   ctx.fillRect(0, 0, width, height)
 }
 
@@ -281,7 +281,7 @@ function drawSimulation(canvas, parsed) {
   const padding = Math.max(34, Math.min(58, width * 0.08))
 
   ctx.clearRect(0, 0, width, height)
-  ctx.fillStyle = 'rgba(255, 244, 223, 0.72)'
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.72)'
   ctx.fillRect(0, 0, width, height)
 
   const maxComponent = Math.max(
@@ -293,7 +293,7 @@ function drawSimulation(canvas, parsed) {
   const scale = Math.max(12, Math.min((width / 2 - padding) / maxComponent, (height / 2 - padding) / maxComponent))
   const origin = { x: width / 2, y: height / 2 }
 
-  ctx.strokeStyle = 'rgba(37, 35, 31, 0.12)'
+  ctx.strokeStyle = 'rgba(31, 31, 31, 0.12)'
   ctx.lineWidth = 1
   for (let x = origin.x % scale; x < width; x += scale) {
     ctx.beginPath()
@@ -308,7 +308,7 @@ function drawSimulation(canvas, parsed) {
     ctx.stroke()
   }
 
-  ctx.strokeStyle = 'rgba(37, 35, 31, 0.42)'
+  ctx.strokeStyle = 'rgba(31, 31, 31, 0.42)'
   ctx.lineWidth = 1.5
   ctx.beginPath()
   ctx.moveTo(0, origin.y)
@@ -323,7 +323,7 @@ function drawSimulation(canvas, parsed) {
   })
 
   let tail = { x: 0, y: 0 }
-  const colors = ['#2f5d88', '#4c7a3c', '#a9402f', '#9a6e00', '#6d4d8b']
+  const colors = ['#1769aa', '#0f7a55', '#c2255c', '#9a6e00', '#6d4d8b']
 
   parsed.vectors.forEach((vector, index) => {
     const head = { x: tail.x + vector.x, y: tail.y + vector.y }
@@ -332,11 +332,11 @@ function drawSimulation(canvas, parsed) {
   })
 
   ctx.setLineDash([6, 6])
-  drawArrow(ctx, origin, toPoint(parsed.result), '#25231f', 'result', width < 420 ? 3.2 : 4)
+  drawArrow(ctx, origin, toPoint(parsed.result), '#1f1f1f', 'result', width < 420 ? 3.2 : 4)
   ctx.setLineDash([])
 
-  ctx.fillStyle = '#25231f'
-  ctx.font = `700 ${width < 420 ? 10 : 12}px Outfit, sans-serif`
+  ctx.fillStyle = '#1f1f1f'
+  ctx.font = `700 ${width < 420 ? 10 : 12}px Inter, sans-serif`
   ctx.textAlign = 'left'
   ctx.fillText(`scale: 1 unit = ${round(scale, 1)} px`, 14, height - 16)
 }

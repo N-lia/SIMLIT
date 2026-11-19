@@ -1,7 +1,7 @@
 .cpu-scheduler-container {
   padding: 1.5rem;
   color: var(--ink);
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
 }
 
 .cpu-app {
@@ -75,7 +75,7 @@
   width: 100%;
   background: var(--paper);
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(37, 35, 31, 0.1);
+  border: 1px solid rgba(31, 31, 31, 0.1);
 }
 
 .cpu-queue-list {
@@ -144,7 +144,7 @@
   color: var(--ink);
   cursor: pointer;
   transition: 0.1s;
-  box-shadow: 2px 2px 0 rgba(37, 35, 31, 0.1);
+  box-shadow: 2px 2px 0 rgba(31, 31, 31, 0.1);
 }
 
 .cpu-btn-group button:active {

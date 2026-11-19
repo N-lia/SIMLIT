@@ -177,13 +177,13 @@ export default function CpuSchedulerSimulation() {
         const x = 20 + entry.start * scale;
         const w = (entry.end - entry.start) * scale;
         if (w < 1) continue;
-        ctx.fillStyle = entry.name === "idle" ? "#dcc18a" : (entry.name === "ctx_switch" ? "#a9402f" : "#2f5d88");
+        ctx.fillStyle = entry.name === "idle" ? "#dcdcd6" : (entry.name === "ctx_switch" ? "#c2255c" : "#1769aa");
         ctx.fillRect(x, y, w, 42);
-        ctx.fillStyle = entry.name === "idle" ? "#25231f" : "white";
-        ctx.font = "bold 12px 'Patrick Hand'";
+        ctx.fillStyle = entry.name === "idle" ? "#1f1f1f" : "white";
+        ctx.font = "bold 12px Inter";
         ctx.fillText(entry.name, x + 4, y + 26);
-        ctx.fillStyle = "#5f564b";
-        ctx.font = "12px 'Patrick Hand'";
+        ctx.fillStyle = "#4a4a45";
+        ctx.font = "12px Inter";
         ctx.fillText(entry.start, x, y + 70);
         ctx.fillText(entry.end, x + w - 15, y + 70);
       }
@@ -202,7 +202,7 @@ export default function CpuSchedulerSimulation() {
       if (processesWithHistory.length === 0) return;
       const maxWait = Math.max(...processesWithHistory.flatMap(p => p.waitHistory.map(w => w.wait)), 1);
       const scaleY = (height - 30) / maxWait;
-      const colors = ["#d8b45c", "#a9402f", "#4c7a3c", "#2f5d88", "#24496b"];
+      const colors = ["#ffd23f", "#c2255c", "#0f7a55", "#1769aa", "#11507f"];
       processesWithHistory.forEach((p, idx) => {
         ctx.beginPath();
         ctx.strokeStyle = colors[idx % colors.length];
@@ -216,10 +216,10 @@ export default function CpuSchedulerSimulation() {
         }
         ctx.stroke();
         ctx.fillStyle = colors[idx % colors.length];
-        ctx.font = "12px 'Patrick Hand'";
+        ctx.font = "12px Inter";
         ctx.fillText(p.name, 5, 20 + idx * 16);
       });
-      ctx.fillStyle = "#5f564b";
+      ctx.fillStyle = "#4a4a45";
       ctx.fillText("Time →", canvas.width-40, height-5);
       ctx.fillText("Waiting time ↑", 10, 20);
     }

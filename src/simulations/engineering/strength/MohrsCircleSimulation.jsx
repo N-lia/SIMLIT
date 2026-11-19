@@ -277,7 +277,7 @@ export default function MohrsCircleSimulation() {
             msgDiv.innerHTML = " <strong>Failure mode demonstration:</strong> Wrong sign convention (e.g., assuming compression as positive) would flip the circle's quadrant. Here σₓ = -50 MPa (compression), large negative shear. Mohr's circle still gives correct principal stresses: always use tension positive!";
             msgDiv.style.background = "#fee2e2";
             setTimeout(() => {
-                msgDiv.style.background = "#fff7e5";
+                msgDiv.style.background = "#ffffff";
                 msgDiv.innerHTML = " <strong>Key insight:</strong> Rotating the element changes the apparent stresses, but principal stresses (where τ=0) are invariant — they are the extremes on Mohr’s circle.";
             }, 5000);
         }

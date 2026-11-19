@@ -6,16 +6,16 @@ const W = 760, H = 420, G = 9.8
 
 function drawPendulum(ctx, theta, L, trail) {
   ctx.clearRect(0, 0, W, H)
-  ctx.fillStyle = '#fff4df'
+  ctx.fillStyle = '#ffffff'
   ctx.fillRect(0, 0, W, H)
 
   const bg = ctx.createRadialGradient(W / 2, 0, 0, W / 2, 0, H * 1.15)
-  bg.addColorStop(0, 'rgba(47,93,136,0.12)')
-  bg.addColorStop(1, 'rgba(255,244,223,0)')
+  bg.addColorStop(0, 'rgba(23, 105, 170,0.12)')
+  bg.addColorStop(1, 'rgba(255, 255, 255,0)')
   ctx.fillStyle = bg
   ctx.fillRect(0, 0, W, H)
 
-  ctx.strokeStyle = 'rgba(37, 35, 31, 0.08)'
+  ctx.strokeStyle = 'rgba(31, 31, 31, 0.08)'
   ctx.lineWidth = 1
   for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke() }
   for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke() }
@@ -30,38 +30,38 @@ function drawPendulum(ctx, theta, L, trail) {
   trail.forEach((t, i) => {
     const tx = px + Math.sin(t) * L * scale
     const ty = py + Math.cos(t) * L * scale
-    ctx.strokeStyle = `rgba(47,93,136,${(i / trail.length) * 0.34})`
+    ctx.strokeStyle = `rgba(23, 105, 170,${(i / trail.length) * 0.34})`
     if (i === 0) { ctx.beginPath(); ctx.moveTo(tx, ty) }
     else ctx.lineTo(tx, ty)
   })
   if (trail.length > 1) ctx.stroke()
 
   // Rod
-  ctx.strokeStyle = 'rgba(37,35,31,0.5)'
+  ctx.strokeStyle = 'rgba(31, 31, 31,0.5)'
   ctx.lineWidth = 2.5
   ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(bx, by); ctx.stroke()
 
   // Pivot
-  ctx.fillStyle = '#25231f'
+  ctx.fillStyle = '#1f1f1f'
   ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI*2); ctx.fill()
 
   // Ceiling bracket
-  ctx.strokeStyle = 'rgba(37,35,31,0.24)'
+  ctx.strokeStyle = 'rgba(31, 31, 31,0.24)'
   ctx.lineWidth = 3
   ctx.beginPath(); ctx.moveTo(px-24, py-4); ctx.lineTo(px+24, py-4); ctx.stroke()
 
   // Bob glow
   const grd = ctx.createRadialGradient(bx, by, 0, bx, by, 20)
-  grd.addColorStop(0, 'rgba(76,122,60,0.32)')
-  grd.addColorStop(1, 'rgba(76,122,60,0)')
+  grd.addColorStop(0, 'rgba(15, 122, 85,0.32)')
+  grd.addColorStop(1, 'rgba(15, 122, 85,0)')
   ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(bx, by, 20, 0, Math.PI*2); ctx.fill()
 
   // Bob
   const bobGrad = ctx.createRadialGradient(bx-4, by-4, 1, bx, by, 14)
-  bobGrad.addColorStop(0, '#6d914b')
-  bobGrad.addColorStop(1, '#2f5d88')
+  bobGrad.addColorStop(0, '#2f9a72')
+  bobGrad.addColorStop(1, '#1769aa')
   ctx.fillStyle = bobGrad; ctx.beginPath(); ctx.arc(bx, by, 12, 0, Math.PI*2); ctx.fill()
-  ctx.fillStyle = 'rgba(255,244,223,0.55)'; ctx.beginPath(); ctx.arc(bx-4, by-4, 3, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = 'rgba(255, 255, 255,0.55)'; ctx.beginPath(); ctx.arc(bx-4, by-4, 3, 0, Math.PI*2); ctx.fill()
 }
 
 export function mountPendulumSimulation(container) {

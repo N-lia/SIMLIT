@@ -3,7 +3,7 @@ import { iconSvg } from '../utils/icons.js'
 import './SimulationSelectPage.css'
 
 export function mountSimulationSelectPage({ subfieldId, onBack, onSelect, onViewCards, onOpenNotes, onOpenProfile, pageClass = '' }) {
-  const fieldData = FIELD_TOPICS[subfieldId] || { label: 'Topics', color: '#f5ede0', topics: [] }
+  const fieldData = FIELD_TOPICS[subfieldId] || { label: 'Topics', color: '#f3f3f0', topics: [] }
   const { label, topics } = fieldData
 
   const root = document.createElement('div')

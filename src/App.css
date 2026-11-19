@@ -28,7 +28,7 @@
   padding: 24px 24px 32px;
   animation: slideIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
   background:
-    linear-gradient(rgba(255, 244, 223, 0.38), rgba(244, 234, 214, 0.38)),
+    linear-gradient(rgba(255, 255, 255, 0.38), rgba(247, 247, 244, 0.38)),
     var(--paper-texture);
 }
 
@@ -42,12 +42,14 @@
   .page:not(.sim-page) {
     width: min(calc(100% - 48px), 1220px);
     min-height: auto;
-    margin: 24px auto;
-    padding: clamp(24px, 3vw, 44px);
-    border: 1.5px solid var(--line-ink);
-    border-radius: 8px;
-    box-shadow: 8px 10px 0 rgba(37, 35, 31, 0.1);
-    overflow: hidden auto;
+    margin: 0 auto;
+    padding: clamp(24px, 3vw, 44px) 0;
+    background: transparent;
+  }
+
+  .app-root.has-app-nav {
+    flex-direction: column;
+    justify-content: flex-start;
   }
 
   .app-root.page-simulation {
@@ -120,7 +122,7 @@
 
 /* Back / Icon Button */
 .icon-btn {
-  background: rgba(255, 244, 223, 0.35);
+  background: rgba(255, 255, 255, 0.35);
   border: 1.5px solid var(--line-soft);
   color: var(--text-primary);
   cursor: pointer;
@@ -135,7 +137,7 @@
 }
 
 .icon-btn:hover {
-  background-color: rgba(216, 180, 92, 0.18);
+  background-color: rgba(255, 210, 63, 0.18);
   border-color: var(--line-ink);
 }
 
@@ -171,5 +173,5 @@
   background: var(--accent-red);
   width: 24px;
   border-radius: 4px;
-  box-shadow: 0 2px 0 rgba(37, 35, 31, 0.16);
+  box-shadow: 0 2px 0 rgba(31, 31, 31, 0.16);
 }

@@ -25,12 +25,12 @@ export default function FBDSimulation() {
     const showNet = $("showNet");
 
     const PRESETS = [
-      { name: "Weight", label: "W", mag: 4, angle: 270, color: "#a9402f" },
-      { name: "Normal", label: "N", mag: 3.5, angle: 90, color: "#4c7a3c" },
+      { name: "Weight", label: "W", mag: 4, angle: 270, color: "#c2255c" },
+      { name: "Normal", label: "N", mag: 3.5, angle: 90, color: "#0f7a55" },
       { name: "Friction", label: "f", mag: 1.5, angle: 180, color: "#8a6500" },
-      { name: "Applied", label: "F", mag: 2.5, angle: 0, color: "#2f5d88" },
-      { name: "Tension", label: "T", mag: 3, angle: 45, color: "#24496b" },
-      { name: "Drag", label: "D", mag: 1.2, angle: 180, color: "#5f564b" },
+      { name: "Applied", label: "F", mag: 2.5, angle: 0, color: "#1769aa" },
+      { name: "Tension", label: "T", mag: 3, angle: 45, color: "#11507f" },
+      { name: "Drag", label: "D", mag: 1.2, angle: 180, color: "#4a4a45" },
     ];
 
     let forces = [];
@@ -83,7 +83,7 @@ export default function FBDSimulation() {
         label: partial.label || "F",
         magnitude: partial.magnitude ?? 3,
         angleDeg: partial.angleDeg ?? 0,
-        color: partial.color || "#2f5d88",
+        color: partial.color || "#1769aa",
       };
       forces.push(f);
       selectForce(f.id);
@@ -246,7 +246,7 @@ export default function FBDSimulation() {
 
     function drawGrid(c, w, h) {
       ctx.save();
-      ctx.strokeStyle = "rgba(37, 35, 31, 0.12)";
+      ctx.strokeStyle = "rgba(31, 31, 31, 0.12)";
       ctx.lineWidth = 1;
       const step = 32;
       for (let gx = (c.x % step); gx < w; gx += step) {
@@ -279,8 +279,8 @@ export default function FBDSimulation() {
       const { rw, rh, rr, s } = bodySizePx();
       const x = c.x - rw / 2, y = c.y - rh / 2;
       ctx.save();
-      ctx.fillStyle = "#ead6a7";
-      ctx.strokeStyle = "#2f5d88";
+      ctx.fillStyle = "#ececE7";
+      ctx.strokeStyle = "#1769aa";
       ctx.lineWidth = Math.max(1.5, Math.min(2.8, 1.6 + 0.2 * s));
       ctx.beginPath();
       ctx.moveTo(x + rr, y); ctx.lineTo(x + rw - rr, y);
@@ -289,7 +289,7 @@ export default function FBDSimulation() {
       ctx.quadraticCurveTo(x, y + rh, x, y + rh - rr); ctx.lineTo(x, y + rr);
       ctx.quadraticCurveTo(x, y, x + rr, y); ctx.closePath();
       ctx.fill(); ctx.stroke();
-      ctx.fillStyle = "#25231f";
+      ctx.fillStyle = "#1f1f1f";
       const fs = Math.round(Math.min(22, Math.max(11, 13 * Math.sqrt(s))));
       ctx.font = "600 " + fs + "px system-ui,sans-serif";
       ctx.textAlign = "center"; ctx.textBaseline = "middle";
@@ -321,7 +321,7 @@ export default function FBDSimulation() {
         drawArrow(c.x, c.y, tip.x, tip.y, f.color, lw);
         if (showComponents.checked) drawComponentTicks(c, tip, f.color);
         ctx.save();
-        ctx.fillStyle = "#25231f"; ctx.font = "600 13px system-ui,sans-serif";
+        ctx.fillStyle = "#1f1f1f"; ctx.font = "600 13px system-ui,sans-serif";
         const midx = (c.x + tip.x) / 2, midy = (c.y + tip.y) / 2;
         const ox = tip.x >= c.x ? 8 : -8, oy = tip.y >= c.y ? 14 : -10;
         ctx.textAlign = "center";
@@ -333,9 +333,9 @@ export default function FBDSimulation() {
         const n = netVector();
         if (n.mag > 2) {
           const tip = { x: c.x + n.sx, y: c.y + n.sy };
-          drawArrow(c.x, c.y, tip.x, tip.y, "#a9402f", 2.5, [6, 6]);
+          drawArrow(c.x, c.y, tip.x, tip.y, "#c2255c", 2.5, [6, 6]);
           ctx.save();
-          ctx.fillStyle = "#a9402f"; ctx.font = "600 12px system-ui,sans-serif";
+          ctx.fillStyle = "#c2255c"; ctx.font = "600 12px system-ui,sans-serif";
           ctx.textAlign = "center"; ctx.fillText("R", tip.x + 10, tip.y - 12);
           ctx.restore();
         }
@@ -463,7 +463,7 @@ export default function FBDSimulation() {
     labelInput.addEventListener("input", applyFormToSelection);
 
     $("addForce").addEventListener("click", () => {
-      addForce({ label: labelInput.value.trim() || "F", magnitude: parseFloat(magSlider.value) || 3, angleDeg: parseFloat(angSlider.value) || 0, color: "#2f5d88" });
+      addForce({ label: labelInput.value.trim() || "F", magnitude: parseFloat(magSlider.value) || 3, angleDeg: parseFloat(angSlider.value) || 0, color: "#1769aa" });
     });
 
     $("dupForce").addEventListener("click", () => {
@@ -571,7 +571,7 @@ export default function FBDSimulation() {
     resize();
     resetMotion();
     addForce({ label: "W", magnitude: 4, angleDeg: 270, color: "#ffb86c" });
-    addForce({ label: "N", magnitude: 3.5, angleDeg: 90, color: "#4c7a3c" });
+    addForce({ label: "N", magnitude: 3.5, angleDeg: 90, color: "#0f7a55" });
 
     const hintMma = $("hint-mma");
     if (hintMma) {

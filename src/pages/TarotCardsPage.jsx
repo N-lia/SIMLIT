@@ -14,7 +14,7 @@ export function mountTarotCardsPage({ subfieldId, onBack, pageClass = '' }) {
           <path d="M19 12H5"/><path d="M12 19L5 12L12 5"/>
         </svg>
       </button>
-      <div class="tarot-header-title">Arcana of ${fieldData.label}</div>
+      <div class="tarot-header-title">${fieldData.label} study cards</div>
       <div class="header-spacer"></div>
     </header>
     

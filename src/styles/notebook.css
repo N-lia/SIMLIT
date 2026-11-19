@@ -1,0 +1,136 @@
+/* =========================================
+   Field Notebook surfaces (Graphite & Highlighter)
+   Loaded after page styles so shared surfaces read as one system:
+   ink borders, hard ink shadows, highlighter fills with ink icons.
+   ========================================= */
+
+/* Cards you can press */
+.hub-tile,
+.sim-topic-card,
+.field-card,
+.engineering-card {
+  border: 1.5px solid var(--ink) !important;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  background: var(--paper-light);
+}
+
+.field-card { background: var(--card-color, var(--paper-light)); }
+
+.hub-tile:hover,
+.sim-topic-card:hover,
+.field-card:hover,
+.engineering-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.hub-tile:active,
+.sim-topic-card:active,
+.field-card:active,
+.engineering-card:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.hub-tile::before { display: none; }
+
+.hub-tile:focus-visible,
+.sim-topic-card:focus-visible,
+.field-card:focus-visible,
+.engineering-card:focus-visible {
+  outline: 2px solid var(--ink-blue);
+  outline-offset: 3px;
+}
+
+/* Highlighter icon chips */
+.hub-tile-icon,
+.topic-emoji-wrap {
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius-md);
+  color: var(--ink) !important;
+}
+
+.hub-tile-icon svg,
+.topic-emoji-wrap svg { color: var(--ink) !important; }
+
+.hub-tile--sims .hub-tile-icon { background: var(--subject); }
+.hub-tile--cards .hub-tile-icon { background: var(--hl-blue); }
+.hub-tile--ai .hub-tile-icon { background: var(--hl-green); }
+.hub-tile--notes .hub-tile-icon { background: var(--hl-pink); }
+.topic-emoji-wrap { background: var(--subject); }
+
+.hub-tile-content { padding-right: 8px; }
+.topic-desc { font-family: var(--body-font); }
+
+/* Hub header and stats read as one ink-ruled block */
+.hub-header {
+  background: var(--paper-light);
+  border: 1.5px solid var(--ink);
+  border-bottom-width: 1px;
+}
+
+.hub-stats-bar {
+  background: var(--paper-light);
+  border: 1.5px solid var(--ink);
+  border-top: 1px solid var(--line-soft);
+  box-shadow: var(--card-shadow);
+}
+
+.hub-avatar {
+  background: var(--subject) !important;
+  color: var(--ink) !important;
+  border: 1.5px solid var(--ink);
+  box-shadow: none !important;
+}
+
+.sim-field-badge,
+.hub-field-tag {
+  color: var(--ink);
+}
+
+.sim-field-badge {
+  background: var(--subject);
+  border: 1.5px solid var(--ink);
+}
+
+/* Primary buttons are solid ink */
+.btn-pill.dark,
+.btn-continue:not(.disabled) {
+  background: var(--ink);
+  color: var(--paper-light);
+}
+
+/* With the persistent nav on screen, page-level shortcuts are redundant */
+.has-app-nav #btn-back-profile,
+.has-app-nav #btn-my-notes-select,
+.has-app-nav #btn-profile-select,
+.has-app-nav .sim-select-page .progress-dots {
+  display: none;
+}
+
+/* Handwriting is for margin notes only */
+.hand-note {
+  font-family: var(--hand-font);
+  color: var(--note-ink);
+  font-size: 1.25em;
+  line-height: 1.1;
+}
+
+/* Simulation header */
+.sim-header {
+  background: var(--paper-light);
+  border-bottom: 2px solid var(--ink);
+}
+
+.sim-field-chip {
+  background: var(--subject);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+}
+
+#btn-my-notes-sim { white-space: nowrap; }
+
+@media (max-width: 767px) {
+  .sim-field-chip { display: none; }
+}

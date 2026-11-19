@@ -22,7 +22,7 @@
 .landing-brand {
   gap: 9px;
   color: var(--ink);
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-size: 1.65rem;
   font-weight: 800;
 }
@@ -42,7 +42,7 @@
   border: 1.5px solid var(--line-ink);
   border-radius: 7px 12px 8px 10px / 12px 8px 10px 7px;
   cursor: pointer;
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-weight: 800;
   transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
@@ -56,10 +56,10 @@
 
 .landing-nav-btn,
 .landing-secondary-btn {
-  background: rgba(255, 244, 223, 0.6);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--ink);
   padding: 10px 16px;
-  box-shadow: 3px 4px 0 rgba(37, 35, 31, 0.08);
+  box-shadow: 3px 4px 0 rgba(31, 31, 31, 0.08);
 }
 
 .landing-primary-btn {
@@ -69,7 +69,7 @@
   background: var(--ink);
   color: var(--paper-light);
   padding: 16px 20px;
-  box-shadow: 4px 5px 0 rgba(37, 35, 31, 0.16);
+  box-shadow: 4px 5px 0 rgba(31, 31, 31, 0.16);
 }
 
 .landing-secondary-btn {
@@ -97,7 +97,7 @@
   width: fit-content;
   margin-bottom: 16px;
   padding: 6px 12px;
-  background: rgba(216, 180, 92, 0.26);
+  background: rgba(255, 210, 63, 0.26);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   color: var(--accent-red);
@@ -110,7 +110,7 @@
 .landing-hero h1 {
   max-width: 16ch;
   color: var(--ink);
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-size: clamp(1.8rem, 3vw, 3rem);
   font-weight: 800;
   line-height: 0.98;
@@ -137,7 +137,7 @@
 
 .demo-window,
 .demo-card {
-  background: rgba(255, 244, 223, 0.72);
+  background: rgba(255, 255, 255, 0.72);
   border: 1.5px solid var(--line-ink);
   border-radius: 7px 12px 8px 10px / 12px 8px 10px 7px;
   box-shadow: var(--card-shadow);
@@ -178,8 +178,8 @@
   margin-top: 12px;
   overflow: hidden;
   background:
-    linear-gradient(rgba(37, 35, 31, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37, 35, 31, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(31, 31, 31, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 31, 31, 0.08) 1px, transparent 1px);
   background-size: 34px 34px;
   border-radius: 6px;
   padding: clamp(14px, 2.2vw, 22px);
@@ -194,8 +194,8 @@
   border: 1.5px solid var(--line-soft);
   border-radius: 8px;
   background:
-    radial-gradient(circle at 36% 42%, rgba(47, 93, 136, 0.13), transparent 24%),
-    rgba(255, 244, 223, 0.66);
+    radial-gradient(circle at 36% 42%, rgba(23, 105, 170, 0.13), transparent 24%),
+    rgba(255, 255, 255, 0.66);
   overflow: hidden;
 }
 
@@ -207,7 +207,7 @@
 .demo-orbit-path {
   position: absolute;
   inset: 14% 20% 10% 8%;
-  border: 2px dashed rgba(37, 35, 31, 0.22);
+  border: 2px dashed rgba(31, 31, 31, 0.22);
   border-radius: 50%;
   transform: rotate(-14deg);
 }
@@ -216,7 +216,7 @@
   position: absolute;
   border: 1.5px solid var(--line-ink);
   border-radius: 50%;
-  box-shadow: 3px 4px 0 rgba(37, 35, 31, 0.12);
+  box-shadow: 3px 4px 0 rgba(31, 31, 31, 0.12);
 }
 
 .demo-orbit-body-main {
@@ -244,7 +244,7 @@
   padding: 9px 11px;
   border: 1.5px solid var(--line-soft);
   border-radius: 7px;
-  background: rgba(255, 244, 223, 0.84);
+  background: rgba(255, 255, 255, 0.84);
   color: var(--ink);
 }
 
@@ -256,7 +256,7 @@
 }
 
 .demo-readout strong {
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-size: 1.3rem;
   line-height: 1;
 }
@@ -270,7 +270,7 @@
   display: block;
   height: 9px;
   border-radius: 999px;
-  background: rgba(37, 35, 31, 0.16);
+  background: rgba(31, 31, 31, 0.16);
 }
 
 .demo-note-strip span:nth-child(1) {
@@ -292,9 +292,9 @@
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
-  border: 1.5px solid rgba(76, 122, 60, 0.36);
+  border: 1.5px solid rgba(15, 122, 85, 0.36);
   border-radius: 8px;
-  background: rgba(76, 122, 60, 0.1);
+  background: rgba(15, 122, 85, 0.1);
   color: var(--ink);
   font-weight: 800;
   line-height: 1.2;
@@ -338,10 +338,10 @@
 }
 
 .landing-vision article {
-  background: rgba(255, 244, 223, 0.64);
+  background: rgba(255, 255, 255, 0.64);
   border: 1.5px solid var(--line-ink);
   border-radius: 6px 10px 7px 9px / 10px 6px 9px 7px;
-  box-shadow: 4px 5px 0 rgba(37, 35, 31, 0.08);
+  box-shadow: 4px 5px 0 rgba(31, 31, 31, 0.08);
   padding: 18px;
 }
 
@@ -354,7 +354,7 @@
 .landing-vision h2 {
   margin-top: 12px;
   color: var(--ink);
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-size: 1.65rem;
 }
 

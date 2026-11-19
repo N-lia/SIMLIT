@@ -11,6 +11,8 @@ import { mountSimulationPage } from './pages/SimulationPage.jsx'
 import { mountTarotCardsPage } from './pages/TarotCardsPage.jsx'
 import { mountMyNotesPage } from './pages/MyNotesPage.jsx'
 import { mountProfilePage } from './pages/ProfilePage.jsx'
+import { createAppNav } from './components/AppNav.js'
+import './styles/notebook.css'
 
 const PAGES = {
   landing:          'landing',
@@ -428,6 +430,22 @@ function startDemo() {
   }
 }
 
+const NAV_ACTIVE_BY_PAGE = {
+  [PAGES.profile]: 'home',
+  [PAGES.simulationSelect]: 'sims',
+  [PAGES.engineeringField]: 'sims',
+  [PAGES.tarotCards]: 'cards',
+  [PAGES.myNotes]: 'notes',
+}
+
+function handleNavSelect(id) {
+  if (id === 'home') resetTo(PAGES.profile)
+  else if (id === 'sims') handleGoSimulations()
+  else if (id === 'cards') handleGoStudyCards()
+  else if (id === 'notes') handleGoNotes()
+  else if (id === 'tutor') handleGoTutor()
+}
+
 function clearRoot() {
   if (!rootElement) return
   rootElement.innerHTML = ''
@@ -444,8 +462,13 @@ function renderCurrentPage() {
   clearRoot()
 
   const currentPage = getCurrentPage()
-  rootElement.className = `app-root page-${currentPage}`
+  const navActive = NAV_ACTIVE_BY_PAGE[currentPage]
+  const showNav = Boolean(navActive && appState.userProfile && !appState.isSwitchingField)
+  rootElement.className = `app-root page-${currentPage}${showNav ? ' has-app-nav' : ''}`
   rootElement.dataset.page = currentPage
+  const subject = appState.selectedField || appState.userProfile?.selectedField
+  if (subject) rootElement.dataset.subject = subject
+  else delete rootElement.dataset.subject
 
   const prevPage = getPreviousPage()
   const isGoingBack = prevPage
@@ -551,6 +574,14 @@ function renderCurrentPage() {
     return
   }
 
+  if (showNav) {
+    rootElement.appendChild(createAppNav({
+      active: navActive,
+      profile: appState.userProfile,
+      subject,
+      onNavigate: handleNavSelect,
+    }))
+  }
   rootElement.appendChild(pageRender.root)
   if (pageRender.cleanup) {
     cleanupCurrentPage = pageRender.cleanup
