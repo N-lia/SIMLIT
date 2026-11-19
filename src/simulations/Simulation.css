@@ -448,3 +448,16 @@
     white-space: normal;
   }
 }
+
+/* Variants used by the buoyancy and RC simulations */
+.focused-sim .mode-grid.three { grid-template-columns: repeat(3, 1fr); }
+.focused-readout-grid.two { grid-template-columns: 1fr 1fr; }
+/* Keep unit symbols (kΩ, µF, kg/m³) from being upper-cased by the label style. */
+.focused-sim .ctrl-val { text-transform: none; }
+.focused-sim .readout-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--t2);
+}
+.focused-sim .readout.wide { grid-column: 1 / -1; }

@@ -334,7 +334,7 @@ export const FIELD_TOPICS = {
       { id: 'bernoulli',   label: "Bernoulli's Principle", desc: 'Pressure-velocity in pipe flow',        difficulty: 'Intermediate', icon: 'waves', implemented: true },
       { id: 'pipeflow',    label: 'Pipe Flow & Losses',    desc: 'Darcy-Weisbach + Minor Losses',         difficulty: 'Advanced',     icon: 'barChart', implemented: true },
       { id: 'hydrostatic', label: 'Hydrostatic Pressure',  desc: 'P = P₀ + ρ·g·h | Submerged surfaces',   difficulty: 'Beginner',     icon: 'waves', implemented: true },
-      { id: 'buoyancy',    label: 'Buoyancy',              desc: 'Archimedes principle explorer',         difficulty: 'Beginner',     icon: 'anchor', implemented: false },
+      { id: 'buoyancy',    label: 'Buoyancy',              desc: 'Archimedes principle explorer',         difficulty: 'Beginner',     icon: 'anchor', implemented: true },
     ],
   },
   thermo: {
@@ -668,7 +668,7 @@ export const FIELD_TOPICS = {
     topics: [
       { id: 'ohm', label: "Ohm's Law", desc: 'V = IR interactive circuit explorer', difficulty: 'Beginner',     icon: 'bolt', implemented: true },
       { id: 'kirchhoff', label: "Kirchhoff's Laws", desc: 'Live nodal analysis and circuit solver', difficulty: 'Intermediate', icon: 'circuit', implemented: true },
-      { id: 'rc',  label: 'RC Circuit', desc: 'Capacitor charging time constant',   difficulty: 'Intermediate', icon: 'battery', implemented: false },
+      { id: 'rc',  label: 'RC Circuit', desc: 'Capacitor charging time constant',   difficulty: 'Intermediate', icon: 'battery', implemented: true },
       { id: 'motor', label: 'DC Motor Studio', desc: 'Back EMF, Commutation, Thermal & Generator Mode', difficulty: 'Advanced', icon: 'gauge', implemented: true },
     ],
   },

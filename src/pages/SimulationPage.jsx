@@ -16,6 +16,7 @@ const SIM_LOADERS = {
   bernoulli:      () => import('../simulations/engineering/fluid/BernoulliSimulation.jsx').then(m => m.mountBernoulliSimulation),
   pipeflow:       () => import('../simulations/engineering/fluid/PipeFlowSimulation.jsx').then(m => m.mountPipeFlowSimulation),
   hydrostatic:    () => import('../simulations/engineering/fluid/HydrostaticSimulation.jsx').then(m => m.mountHydrostaticSimulation),
+  buoyancy:       () => import('../simulations/engineering/fluid/BuoyancySimulation.jsx').then(m => m.mountBuoyancySimulation),
   gas:            () => import('../simulations/engineering/fluid/GasSimulation.jsx').then(m => m.mountGasSimulation),
   // Strength of Material (engineering/strength)
   beam:           () => import('../simulations/engineering/strength/BeamSimulation.jsx').then(m => m.mountBeamSimulation),
@@ -23,6 +24,7 @@ const SIM_LOADERS = {
   mohr:           () => import('../simulations/engineering/strength/MohrsCircleSimulation.jsx').then(m => m.mountMohrsCircleSimulation),
   // Circuit (engineering/circuit)
   ohm:            () => import('../simulations/engineering/circuit/OhmSimulation.jsx').then(m => m.mountOhmSimulation),
+  rc:             () => import('../simulations/engineering/circuit/RcCircuitSimulation.jsx').then(m => m.mountRcCircuitSimulation),
   motor:          () => import('../simulations/engineering/circuit/DcMotorSimulation.jsx').then(m => m.mountDcMotorSimulation),
   // Math (engineering/math)
   vectors:        () => import('../simulations/engineering/math/VectorAdditionSimulation.jsx').then(m => m.mountVectorAdditionSimulation),
