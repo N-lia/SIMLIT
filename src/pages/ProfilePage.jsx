@@ -1,6 +1,7 @@
 import { htmlToElement } from '../utils/dom.js'
 import { iconSvg } from '../utils/icons.js'
 import './ProfilePage.css'
+import { readDoc } from '../sync/localStore.js'
 
 export function mountProfilePage({
   onBack,
@@ -13,12 +14,7 @@ export function mountProfilePage({
   onGoTutor,
   pageClass = ''
 }) {
-  let profile
-  try {
-    profile = JSON.parse(localStorage.getItem('simlit_profile')) || {}
-  } catch {
-    profile = {}
-  }
+  const profile = readDoc('simlit_profile', {})
 
   const name = profile.name || 'Explorer'
   const university = profile.university || 'Independent Learner'

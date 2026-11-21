@@ -1,6 +1,7 @@
 import { render, useMemo, useState } from '../../utils/react-lite.js'
 import { healthCases } from './healthData.js'
 import './HealthCasesSimulation.css'
+import { readDoc, writeDoc } from '../../sync/localStore.js'
 
 const tabs = [
   { id: 'all', label: 'All patients' },
@@ -33,7 +34,7 @@ function priorityLabel(priority) {
 
 function readProgressMap() {
   try {
-    const saved = JSON.parse(localStorage.getItem(HEALTH_PROGRESS_KEY)) || {}
+    const saved = readDoc(HEALTH_PROGRESS_KEY, {})
     return Object.fromEntries(healthCases.map((patientCase) => [patientCase.id, saved[patientCase.id] ?? patientCase.progress]))
   } catch {
     return Object.fromEntries(healthCases.map((patientCase) => [patientCase.id, patientCase.progress]))
@@ -86,14 +87,14 @@ export default function HealthCasesSimulation() {
     const next = Math.min(100, current + 20)
     const nextProgress = { ...progressById, [selectedCase.id]: next }
     setProgressById(nextProgress)
-    localStorage.setItem(HEALTH_PROGRESS_KEY, JSON.stringify(nextProgress))
+    writeDoc(HEALTH_PROGRESS_KEY, nextProgress)
     setNotice(next >= 100 ? `${selectedCase.title} dossier completed.` : `${selectedCase.title} moved to ${next}%. Next: ${selectedCase.nextStep}`)
   }
 
   const resetCase = () => {
     const nextProgress = { ...progressById, [selectedCase.id]: selectedCase.progress }
     setProgressById(nextProgress)
-    localStorage.setItem(HEALTH_PROGRESS_KEY, JSON.stringify(nextProgress))
+    writeDoc(HEALTH_PROGRESS_KEY, nextProgress)
     setNotice(`${selectedCase.title} reset to the starting scenario.`)
   }
 

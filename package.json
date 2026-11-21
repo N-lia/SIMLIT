@@ -11,6 +11,7 @@
     "build": "vite build",
     "build:mobile-core": "vite build --base ./",
     "lint": "eslint .",
+    "test:sync": "node --test tests/sync/*.test.js",
     "preview": "vite preview",
     "mobile:sync": "npm run build:mobile-core && npx cap sync android",
     "mobile:open": "npx cap open android",

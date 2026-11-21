@@ -1,4 +1,5 @@
 import './HobbiesPage.css'
+import { readDoc } from '../sync/localStore.js'
 
 const HOBBIES = [
   { id: 'gaming', label: 'Video Games', icon: 'zap' },
@@ -15,10 +16,7 @@ export function mountHobbiesPage({ onBack, onComplete, isEditing = false, pageCl
   // Pre-load saved hobbies when in edit mode
   let savedHobbies = []
   if (isEditing) {
-    try {
-      const saved = JSON.parse(localStorage.getItem('simlit_profile')) || {}
-      savedHobbies = saved.hobbies || []
-    } catch { savedHobbies = [] }
+    savedHobbies = readDoc('simlit_profile', {}).hobbies || []
   }
 
   const root = document.createElement('div')

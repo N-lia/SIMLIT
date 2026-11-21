@@ -1,5 +1,6 @@
 import './BioDataPage.css'
 import { iconSvg } from '../utils/icons.js'
+import { readDoc } from '../sync/localStore.js'
 
 const initialFormData = { name: '', age: '', university: '' }
 
@@ -7,7 +8,7 @@ export function mountBioDataPage({ onBack, onComplete, isEditing = false, pageCl
   // Pre-load saved data for edit mode
   let saved = {}
   if (isEditing) {
-    try { saved = JSON.parse(localStorage.getItem('simlit_profile')) || {} } catch { saved = {} }
+    saved = readDoc('simlit_profile', {})
   }
 
   const root = document.createElement('div')

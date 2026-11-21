@@ -2,6 +2,7 @@ import { render, useMemo, useRef, useState } from '../../utils/react-lite.js'
 import { askOpposingCounsel } from '../../ai/llamaClient.js'
 import { courtroomSchedule, courtroomSteps, courtroomTools, lawCases } from './lawData.js'
 import './LawCourtroomSimulation.css'
+import { readDoc, writeDoc } from '../../sync/localStore.js'
 
 function Icon({ name }) {
   const paths = {
@@ -37,15 +38,11 @@ const LAW_PROGRESS_KEY = 'simlit_law_case_progress'
 const LAW_ATTEMPTS_KEY = 'simlit_law_courtroom_attempts'
 
 function readStoredMap(key) {
-  try {
-    return JSON.parse(localStorage.getItem(key)) || {}
-  } catch {
-    return {}
-  }
+  return readDoc(key, {})
 }
 
 function writeStoredMap(key, nextMap) {
-  localStorage.setItem(key, JSON.stringify(nextMap))
+  writeDoc(key, nextMap)
 }
 
 function recordCourtroomResult(caseId, scorePercent) {
