@@ -35,30 +35,30 @@ export default function EquilibriumSimulation() {
       {
         name: "Balanced horizontal",
         forces: [
-          { label: "F₁", magnitude: 4, angleDeg: 0, color: "#2f5d88" },
-          { label: "F₂", magnitude: 4, angleDeg: 180, color: "#a9402f" },
+          { label: "F₁", magnitude: 4, angleDeg: 0, color: "#1769aa" },
+          { label: "F₂", magnitude: 4, angleDeg: 180, color: "#c2255c" },
         ],
       },
       {
         name: "Weight & normal",
         forces: [
-          { label: "W", magnitude: 5, angleDeg: 270, color: "#a9402f" },
-          { label: "N", magnitude: 4.5, angleDeg: 90, color: "#4c7a3c" },
+          { label: "W", magnitude: 5, angleDeg: 270, color: "#c2255c" },
+          { label: "N", magnitude: 4.5, angleDeg: 90, color: "#0f7a55" },
         ],
       },
       {
         name: "Three at 120°",
         forces: [
-          { label: "A", magnitude: 3, angleDeg: 0, color: "#2f5d88" },
+          { label: "A", magnitude: 3, angleDeg: 0, color: "#1769aa" },
           { label: "B", magnitude: 3, angleDeg: 120, color: "#8a6500" },
-          { label: "C", magnitude: 3, angleDeg: 240, color: "#a9402f" },
+          { label: "C", magnitude: 3, angleDeg: 240, color: "#c2255c" },
         ],
       },
       {
         name: "L-shape (break it)",
         forces: [
-          { label: "F_x", magnitude: 4, angleDeg: 0, color: "#2f5d88" },
-          { label: "F_y", magnitude: 3, angleDeg: 270, color: "#4c7a3c" },
+          { label: "F_x", magnitude: 4, angleDeg: 0, color: "#1769aa" },
+          { label: "F_y", magnitude: 3, angleDeg: 270, color: "#0f7a55" },
         ],
       },
     ];
@@ -199,7 +199,7 @@ export default function EquilibriumSimulation() {
         label: partial.label || "F",
         magnitude: partial.magnitude ?? 2,
         angleDeg: partial.angleDeg ?? 0,
-        color: partial.color || "#2f5d88",
+        color: partial.color || "#1769aa",
       };
       forces.push(f);
       selectedId = f.id;
@@ -245,14 +245,14 @@ export default function EquilibriumSimulation() {
     function drawParticle(c) {
       const r = 11;
       ctx.save();
-      ctx.fillStyle = inEquilibrium() ? "#ead6a7" : "#fff4df";
-      ctx.strokeStyle = inEquilibrium() ? "#4c7a3c" : "#2f5d88";
+      ctx.fillStyle = inEquilibrium() ? "#ececE7" : "#ffffff";
+      ctx.strokeStyle = inEquilibrium() ? "#0f7a55" : "#1769aa";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
-      ctx.fillStyle = "#25231f";
+      ctx.fillStyle = "#1f1f1f";
       ctx.font = "600 11px system-ui,sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -267,7 +267,7 @@ export default function EquilibriumSimulation() {
       const eq = inEquilibrium();
 
       ctx.save();
-      ctx.strokeStyle = "rgba(37, 35, 31, 0.12)";
+      ctx.strokeStyle = "rgba(31, 31, 31, 0.12)";
       ctx.lineWidth = 1;
       const step = 28;
       for (let gx = 0; gx < w; gx += step) {
@@ -286,7 +286,7 @@ export default function EquilibriumSimulation() {
 
       if (eq) {
         ctx.save();
-        ctx.strokeStyle = "rgba(76, 122, 60, 0.25)";
+        ctx.strokeStyle = "rgba(15, 122, 85, 0.25)";
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(c.x, c.y, 36, 0, Math.PI * 2);
@@ -299,7 +299,7 @@ export default function EquilibriumSimulation() {
         const lw = f.id === selectedId ? 3 : 2;
         drawArrow(c.x, c.y, tip.x, tip.y, f.color, lw);
         ctx.save();
-        ctx.fillStyle = "#25231f";
+        ctx.fillStyle = "#1f1f1f";
         ctx.font = "600 12px system-ui,sans-serif";
         const midx = (c.x + tip.x) / 2, midy = (c.y + tip.y) / 2;
         const ox = tip.x >= c.x ? 7 : -7, oy = tip.y >= c.y ? 12 : -8;
@@ -311,9 +311,9 @@ export default function EquilibriumSimulation() {
       const n = netCanvas();
       if (!eq && forces.length && n.mag > 1.5) {
         const tip = { x: c.x + n.sx, y: c.y + n.sy };
-        drawArrow(c.x, c.y, tip.x, tip.y, "#a9402f", 2.2, [5, 5]);
+        drawArrow(c.x, c.y, tip.x, tip.y, "#c2255c", 2.2, [5, 5]);
         ctx.save();
-        ctx.fillStyle = "#a9402f";
+        ctx.fillStyle = "#c2255c";
         ctx.font = "600 11px system-ui,sans-serif";
         ctx.textAlign = "center";
         ctx.fillText("R", tip.x + 8, tip.y - 10);

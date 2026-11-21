@@ -4,17 +4,17 @@
 
 .double-pendulum-container {
   --bg:          var(--paper);
-  --bg2:         rgba(255, 244, 223, 0.68);
-  --bg3:         rgba(234, 214, 167, 0.42);
-  --panel:       rgba(255, 244, 223, 0.62);
+  --bg2:         rgba(255, 255, 255, 0.68);
+  --bg3:         rgba(236, 236, 231, 0.42);
+  --panel:       rgba(255, 255, 255, 0.62);
   --border:      var(--line-soft);
   --border2:     var(--line-ink);
   --phosphor:    var(--accent-green);
-  --phosphor-dim: rgba(76, 122, 60, 0.32);
-  --amber:       var(--accent-yellow);
-  --amber-dim:   rgba(216, 180, 92, 0.36);
+  --phosphor-dim: rgba(15, 122, 85, 0.32);
+  --amber:       var(--ink-yellow);
+  --amber-dim:   rgba(255, 210, 63, 0.36);
   --cyan:        var(--accent-blue);
-  --cyan-dim:    rgba(47, 93, 136, 0.28);
+  --cyan-dim:    rgba(23, 105, 170, 0.28);
   --red:         var(--accent-red);
   --t1:          var(--ink);
   --t2:          var(--ink-soft);
@@ -24,7 +24,7 @@
 
   background: var(--paper-texture);
   color: var(--t1);
-  font-family: 'Outfit', var(--sans);
+  font-family: 'Inter', var(--sans);
   font-size: 13px;
   -webkit-font-smoothing: antialiased;
   display: flex;
@@ -65,8 +65,8 @@
   font-family: var(--mono);
   font-size: 11px;
   color: var(--amber);
-  background: rgba(216, 180, 92, 0.16);
-  border: 0.5px solid rgba(216, 180, 92, 0.34);
+  background: rgba(255, 210, 63, 0.16);
+  border: 0.5px solid rgba(255, 210, 63, 0.34);
   border-radius: 4px;
   padding: 3px 10px;
   letter-spacing: .04em;
@@ -164,7 +164,7 @@
 }
 .double-pendulum-container input[type=range]::-webkit-slider-thumb:active {
   cursor: grabbing;
-  box-shadow: 0 0 0 4px rgba(76, 122, 60, 0.18);
+  box-shadow: 0 0 0 4px rgba(15, 122, 85, 0.18);
 }
 .double-pendulum-container input[type=range]::-moz-range-thumb {
   width: 12px; height: 12px;
@@ -226,10 +226,10 @@
   transition: all .13s;
   text-align: left;
 }
-.double-pendulum-container button:hover { background: rgba(216, 180, 92, 0.18); color: var(--t1); }
-.double-pendulum-container button.on { background: rgba(76, 122, 60, 0.12); color: var(--phosphor); border-color: rgba(76, 122, 60, 0.36); }
-.double-pendulum-container button.on-amber { background: rgba(216, 180, 92, 0.18); color: #8a6500; border-color: rgba(216, 180, 92, 0.4); }
-.double-pendulum-container button.on-cyan  { background: rgba(47, 93, 136, 0.12); color: var(--cyan); border-color: rgba(47, 93, 136, 0.36); }
+.double-pendulum-container button:hover { background: rgba(255, 210, 63, 0.18); color: var(--t1); }
+.double-pendulum-container button.on { background: rgba(15, 122, 85, 0.12); color: var(--phosphor); border-color: rgba(15, 122, 85, 0.36); }
+.double-pendulum-container button.on-amber { background: rgba(255, 210, 63, 0.18); color: #8a6500; border-color: rgba(255, 210, 63, 0.4); }
+.double-pendulum-container button.on-cyan  { background: rgba(23, 105, 170, 0.12); color: var(--cyan); border-color: rgba(23, 105, 170, 0.36); }
 .double-pendulum-container button.full { grid-column: span 2; }
 
 /* ── Status bar ── */
@@ -243,9 +243,9 @@
   color: var(--t2);
   line-height: 1.5;
 }
-.double-pendulum-container .status.chaos { color: var(--red); border-color: rgba(169,64,47,0.34); background: rgba(169,64,47,0.08); }
-.double-pendulum-container .status.onset { color: #8a6500; border-color: rgba(216,180,92,0.4); background: rgba(216,180,92,0.16); }
-.double-pendulum-container .status.ordered { color: var(--phosphor); border-color: rgba(76,122,60,0.36); background: rgba(76,122,60,0.1); }
+.double-pendulum-container .status.chaos { color: var(--red); border-color: rgba(194, 37, 92,0.34); background: rgba(194, 37, 92,0.08); }
+.double-pendulum-container .status.onset { color: #8a6500; border-color: rgba(255, 210, 63,0.4); background: rgba(255, 210, 63,0.16); }
+.double-pendulum-container .status.ordered { color: var(--phosphor); border-color: rgba(15, 122, 85,0.36); background: rgba(15, 122, 85,0.1); }
 
 /* ── Bottom row (Poincaré + energy) ── */
 .double-pendulum-container .bottom-row {
@@ -295,8 +295,8 @@
     to bottom,
     transparent 0px,
     transparent 2px,
-    rgba(37, 35, 31, 0.04) 2px,
-    rgba(37, 35, 31, 0.04) 4px
+    rgba(31, 31, 31, 0.04) 2px,
+    rgba(31, 31, 31, 0.04) 4px
   );
   pointer-events: none;
   border-radius: 10px;

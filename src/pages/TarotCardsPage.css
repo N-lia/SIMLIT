@@ -15,14 +15,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  background: rgba(255, 244, 223, 0.8);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   z-index: 100;
   border-bottom: 1.5px solid var(--line-soft);
 }
 
 .tarot-header-title {
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-size: 20px;
   font-weight: 700;
   color: var(--ink);
@@ -108,10 +108,10 @@
   height: 100%;
   backface-visibility: hidden;
   border-radius: 16px;
-  background: #fdfaf3;
+  background: #ffffff;
   background-image: var(--paper-texture);
   border: 2px solid var(--ink);
-  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25), inset 0 0 20px rgba(139, 92, 246, 0.05);
+  box-shadow: 5px 5px 0 var(--ink);
   padding: 14px;
   display: flex;
   flex-direction: column;
@@ -180,7 +180,7 @@
 .anatomy-organ-icon {
   width: 64px;
   height: 64px;
-  filter: drop-shadow(0 8px 10px rgba(57, 38, 24, 0.12));
+  filter: drop-shadow(0 8px 10px rgba(31, 31, 31, 0.12));
 }
 
 .tarot-art-placeholder svg {
@@ -190,7 +190,7 @@
 }
 
 .tarot-title {
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-size: 22px;
   font-weight: 800;
   color: var(--ink);
@@ -207,7 +207,7 @@
 }
 
 .tarot-concept {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 16px;
   font-weight: 800;
   color: var(--accent-red);
@@ -216,7 +216,7 @@
 }
 
 .tarot-desc {
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-size: 18px;
   line-height: 1.6;
   color: var(--text-primary);
@@ -231,7 +231,7 @@
 }
 
 .tarot-counter {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-weight: 700;
   font-size: 16px;
   color: var(--ink);

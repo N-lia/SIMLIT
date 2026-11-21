@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 24px 14px;
-  background: rgba(255, 244, 223, 0.82);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(12px);
   border-bottom: 1.5px solid var(--line-soft);
   position: sticky;
@@ -52,11 +52,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 20px;
   font-weight: 800;
   flex-shrink: 0;
-  box-shadow: 0 3px 10px rgba(169, 64, 47, 0.32);
+  box-shadow: 0 3px 10px rgba(194, 37, 92, 0.32);
 }
 
 .hub-user-text {
@@ -66,7 +66,7 @@
 }
 
 .hub-name {
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-size: 19px;
   font-weight: 800;
   color: var(--ink);
@@ -74,7 +74,7 @@
 }
 
 .hub-field-tag {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 12px;
   font-weight: 600;
   color: var(--ink-faint);
@@ -93,8 +93,8 @@
   padding: 8px 14px;
   border: 1.5px solid var(--line-soft);
   border-radius: 999px;
-  background: rgba(255, 244, 223, 0.5);
-  font-family: 'Outfit', sans-serif;
+  background: rgba(255, 255, 255, 0.5);
+  font-family: var(--body-font);
   font-size: 13px;
   font-weight: 600;
   color: var(--ink-soft);
@@ -158,7 +158,7 @@
 }
 
 .hub-stat-val {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 22px;
   font-weight: 800;
   color: var(--ink);
@@ -166,7 +166,7 @@
 }
 
 .hub-stat-lbl {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 11px;
   font-weight: 500;
   color: var(--ink-faint);
@@ -184,7 +184,7 @@
 
 /* ── Section Label ── */
 .hub-section-label {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 13px;
   font-weight: 600;
   color: var(--ink-faint);
@@ -211,7 +211,7 @@
   padding: 20px 20px;
   border-radius: 14px;
   border: 1.5px solid var(--line-soft);
-  background: rgba(255, 248, 234, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   text-align: left;
   position: relative;
@@ -219,7 +219,7 @@
   transition: transform 0.18s cubic-bezier(0.16,1,0.3,1),
               box-shadow 0.18s,
               border-color 0.18s;
-  box-shadow: 3px 4px 0 rgba(37, 35, 31, 0.07);
+  box-shadow: 3px 4px 0 rgba(31, 31, 31, 0.07);
 }
 
 .hub-tile::before {
@@ -233,7 +233,7 @@
 
 .hub-tile:hover {
   transform: translateY(-3px);
-  box-shadow: 4px 8px 0 rgba(37, 35, 31, 0.12);
+  box-shadow: 4px 8px 0 rgba(31, 31, 31, 0.12);
   border-color: var(--line-ink);
 }
 
@@ -243,7 +243,7 @@
 
 .hub-tile:active {
   transform: translateY(0px) scale(0.98);
-  box-shadow: 2px 3px 0 rgba(37, 35, 31, 0.08);
+  box-shadow: 2px 3px 0 rgba(31, 31, 31, 0.08);
 }
 
 .hub-tile:disabled {
@@ -254,37 +254,37 @@
 
 /* Simulations → warm orange/cream */
 .hub-tile--sims {
-  border-color: rgba(169, 64, 47, 0.2);
+  border-color: rgba(194, 37, 92, 0.2);
 }
 .hub-tile--sims::before {
-  background: linear-gradient(120deg, rgba(169,64,47,0.04), transparent);
+  background: linear-gradient(120deg, rgba(194, 37, 92,0.04), transparent);
 }
 .hub-tile--sims .hub-tile-icon {
-  background: rgba(169, 64, 47, 0.1);
+  background: rgba(194, 37, 92, 0.1);
   color: var(--accent-red);
 }
 
 /* Study Cards → blue */
 .hub-tile--cards {
-  border-color: rgba(47, 93, 136, 0.2);
+  border-color: rgba(23, 105, 170, 0.2);
 }
 .hub-tile--cards::before {
-  background: linear-gradient(120deg, rgba(47,93,136,0.05), transparent);
+  background: linear-gradient(120deg, rgba(23, 105, 170,0.05), transparent);
 }
 .hub-tile--cards .hub-tile-icon {
-  background: rgba(47, 93, 136, 0.1);
+  background: rgba(23, 105, 170, 0.1);
   color: var(--accent-blue);
 }
 
 /* AI Tutor → green */
 .hub-tile--ai {
-  border-color: rgba(76, 122, 60, 0.2);
+  border-color: rgba(15, 122, 85, 0.2);
 }
 .hub-tile--ai::before {
-  background: linear-gradient(120deg, rgba(76,122,60,0.05), transparent);
+  background: linear-gradient(120deg, rgba(15, 122, 85,0.05), transparent);
 }
 .hub-tile--ai .hub-tile-icon {
-  background: rgba(76, 122, 60, 0.1);
+  background: rgba(15, 122, 85, 0.1);
   color: var(--accent-green);
 }
 
@@ -328,7 +328,7 @@
 }
 
 .hub-tile-title {
-  font-family: var(--hand-font);
+  font-family: var(--display-font);
   font-size: 20px;
   font-weight: 800;
   color: var(--ink);
@@ -337,7 +337,7 @@
 }
 
 .hub-tile-desc {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 13.5px;
   color: var(--ink-soft);
   margin: 0;
@@ -366,14 +366,14 @@
   position: absolute;
   top: 12px;
   right: 14px;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: rgba(76, 122, 60, 0.12);
+  background: rgba(15, 122, 85, 0.12);
   color: var(--accent-green);
-  border: 1px solid rgba(76, 122, 60, 0.22);
+  border: 1px solid rgba(15, 122, 85, 0.22);
   padding: 3px 9px;
   border-radius: 999px;
 }
@@ -388,7 +388,7 @@
 }
 
 .hub-hobbies-label {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 12px;
   font-weight: 600;
   color: var(--ink-faint);
@@ -398,12 +398,12 @@
 }
 
 .hub-hobby-pill {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 12px;
   font-weight: 600;
   padding: 4px 12px;
   border-radius: 999px;
-  background: rgba(37, 35, 31, 0.06);
+  background: rgba(31, 31, 31, 0.06);
   color: var(--ink-soft);
   border: 1px solid var(--line-soft);
 }
@@ -499,10 +499,10 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  border: 1.5px solid rgba(169, 64, 47, 0.2);
+  border: 1.5px solid rgba(194, 37, 92, 0.2);
   border-radius: 999px;
   background: transparent;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--body-font);
   font-size: 13px;
   font-weight: 600;
   color: var(--ink-faint);
@@ -517,8 +517,8 @@
 }
 
 .hub-logout-btn:hover {
-  background: rgba(169, 64, 47, 0.06);
-  border-color: rgba(169, 64, 47, 0.4);
+  background: rgba(194, 37, 92, 0.06);
+  border-color: rgba(194, 37, 92, 0.4);
   color: var(--accent-red);
 }
 

@@ -196,7 +196,7 @@ export default function DoublePendulumSimulation() {
       const W = mainC.width, H = mainC.height;
       ctx.clearRect(0, 0, W, H);
 
-      ctx.strokeStyle = 'rgba(37,35,31,0.08)';
+      ctx.strokeStyle = 'rgba(31, 31, 31,0.08)';
       ctx.lineWidth = 0.5;
       for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
       for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
@@ -206,9 +206,9 @@ export default function DoublePendulumSimulation() {
       const scale = Math.min(W, H) * 0.22;
 
       ctx.beginPath(); ctx.arc(ox, oy, 4, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(47,93,136,0.18)'; ctx.fill();
+      ctx.fillStyle = 'rgba(23, 105, 170,0.18)'; ctx.fill();
       ctx.beginPath(); ctx.arc(ox, oy, 2, 0, Math.PI*2);
-      ctx.fillStyle = '#25231f'; ctx.fill();
+      ctx.fillStyle = '#1f1f1f'; ctx.fill();
 
       if(s.states.length === 0) return;
       const mainState = s.states[0];
@@ -225,7 +225,7 @@ export default function DoublePendulumSimulation() {
             if (j === 0) ctx.moveTo(trail[j].x, trail[j].y);
             else ctx.lineTo(trail[j].x, trail[j].y);
           }
-          ctx.strokeStyle = t.showFan ? fanColor(i, 0.45) : 'rgba(76,122,60,0.48)';
+          ctx.strokeStyle = t.showFan ? fanColor(i, 0.45) : 'rgba(15, 122, 85,0.48)';
           ctx.lineWidth   = t.showFan ? (i === 0 ? 1.2 : 0.6) : 1.2;
           ctx.stroke();
         }
@@ -244,28 +244,28 @@ export default function DoublePendulumSimulation() {
       }
 
       ctx.lineWidth   = 1.5;
-      ctx.strokeStyle = 'rgba(37,35,31,0.5)';
+      ctx.strokeStyle = 'rgba(31, 31, 31,0.5)';
       ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(mp.x1, mp.y1); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(mp.x1, mp.y1); ctx.lineTo(mp.x2, mp.y2); ctx.stroke();
 
       const r1 = Math.max(6, Math.min(16, p.m1 * 7));
       const grad1 = ctx.createRadialGradient(mp.x1-r1*0.3, mp.y1-r1*0.3, 1, mp.x1, mp.y1, r1);
-      grad1.addColorStop(0, '#fff4df');
-      grad1.addColorStop(1, 'rgba(47,93,136,0.72)');
+      grad1.addColorStop(0, '#ffffff');
+      grad1.addColorStop(1, 'rgba(23, 105, 170,0.72)');
       ctx.beginPath(); ctx.arc(mp.x1, mp.y1, r1, 0, Math.PI*2);
       ctx.fillStyle = grad1; ctx.fill();
-      ctx.strokeStyle = 'rgba(47,93,136,0.45)'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.strokeStyle = 'rgba(23, 105, 170,0.45)'; ctx.lineWidth = 1; ctx.stroke();
 
       const r2 = Math.max(6, Math.min(16, p.m2 * 7));
       const grad2 = ctx.createRadialGradient(mp.x2-r2*0.3, mp.y2-r2*0.3, 1, mp.x2, mp.y2, r2);
-      grad2.addColorStop(0, '#fff4df');
-      grad2.addColorStop(1, 'rgba(76,122,60,0.72)');
+      grad2.addColorStop(0, '#ffffff');
+      grad2.addColorStop(1, 'rgba(15, 122, 85,0.72)');
       ctx.beginPath(); ctx.arc(mp.x2, mp.y2, r2, 0, Math.PI*2);
       ctx.fillStyle = grad2; ctx.fill();
-      ctx.strokeStyle = 'rgba(76,122,60,0.48)'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.strokeStyle = 'rgba(15, 122, 85,0.48)'; ctx.lineWidth = 1; ctx.stroke();
 
       ctx.beginPath(); ctx.arc(mp.x2, mp.y2, r2+5, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(76,122,60,0.08)'; ctx.fill();
+      ctx.fillStyle = 'rgba(15, 122, 85,0.08)'; ctx.fill();
 
       if (t.showFan && s.states.length > 1) {
         const last = s.states[N_FAN-1];
@@ -276,7 +276,7 @@ export default function DoublePendulumSimulation() {
           ctx.beginPath();
           ctx.moveTo(mp.x2, mp.y2);
           ctx.lineTo(lp.x2, lp.y2);
-          ctx.strokeStyle = `rgba(169,64,47,${Math.min(0.8, sep/80)})`;
+          ctx.strokeStyle = `rgba(194, 37, 92,${Math.min(0.8, sep/80)})`;
           ctx.lineWidth = 1; ctx.setLineDash([3,4]); ctx.stroke(); ctx.setLineDash([]);
         }
       }
@@ -298,7 +298,7 @@ export default function DoublePendulumSimulation() {
       const pad = { l: 30, r: 10, t: 10, b: 24 };
       const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
 
-      ctx.strokeStyle = 'rgba(37,35,31,0.08)';
+      ctx.strokeStyle = 'rgba(31, 31, 31,0.08)';
       ctx.lineWidth = 0.5;
       for (let i = 0; i <= 4; i++) {
         const y = pad.t + (i / 4) * ph;
@@ -335,7 +335,7 @@ export default function DoublePendulumSimulation() {
         const px = pad.l + ((th2 - minTh) / thSpan) * pw;
         const py = pad.t + ph - ((om2 - minOm) / omSpan) * ph;
         ctx.beginPath(); ctx.arc(px, py, 1.8, 0, Math.PI*2);
-        ctx.fillStyle = chaos ? 'rgba(169,64,47,0.8)' : 'rgba(216,180,92,0.78)';
+        ctx.fillStyle = chaos ? 'rgba(194, 37, 92,0.8)' : 'rgba(255, 210, 63,0.78)';
         ctx.fill();
       }
 
@@ -356,7 +356,7 @@ export default function DoublePendulumSimulation() {
       const pad = { l: 30, r: 10, t: 10, b: 24 };
       const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
 
-      ctx.strokeStyle = 'rgba(37,35,31,0.08)';
+      ctx.strokeStyle = 'rgba(31, 31, 31,0.08)';
       ctx.lineWidth = 0.5;
       for (let i = 0; i <= 4; i++) {
         const y = pad.t + (i/4)*ph;
@@ -379,18 +379,18 @@ export default function DoublePendulumSimulation() {
         ctx.strokeStyle = color; ctx.lineWidth = 1.4; ctx.stroke();
       };
 
-      plotLine(s.energyHistory.map(e => e.ke), 'rgba(47,93,136,0.75)');
-      plotLine(s.energyHistory.map(e => e.pe), 'rgba(76,122,60,0.65)');
+      plotLine(s.energyHistory.map(e => e.ke), 'rgba(23, 105, 170,0.75)');
+      plotLine(s.energyHistory.map(e => e.pe), 'rgba(15, 122, 85,0.65)');
       plotLine(s.energyHistory.map(e => e.e),  'rgba(138,101,0,0.9)');
 
       ctx.font = '9px IBM Plex Mono, monospace';
-      ctx.fillStyle = 'rgba(47,93,136,0.85)';   ctx.fillText('KE', pad.l+4, pad.t+12);
-      ctx.fillStyle = 'rgba(76,122,60,0.85)';  ctx.fillText('PE', pad.l+28, pad.t+12);
+      ctx.fillStyle = 'rgba(23, 105, 170,0.85)';   ctx.fillText('KE', pad.l+4, pad.t+12);
+      ctx.fillStyle = 'rgba(15, 122, 85,0.85)';  ctx.fillText('PE', pad.l+28, pad.t+12);
       ctx.fillStyle = 'rgba(138,101,0,0.9)';  ctx.fillText('E',  pad.l+52, pad.t+12);
 
       const refY = pad.t + ph - ((s.E0 - minE) / span) * ph;
       ctx.beginPath(); ctx.moveTo(pad.l, refY); ctx.lineTo(pad.l+pw, refY);
-      ctx.strokeStyle = 'rgba(37,35,31,0.14)'; ctx.lineWidth = 0.8;
+      ctx.strokeStyle = 'rgba(31, 31, 31,0.14)'; ctx.lineWidth = 0.8;
       ctx.setLineDash([4,6]); ctx.stroke(); ctx.setLineDash([]);
     };
 

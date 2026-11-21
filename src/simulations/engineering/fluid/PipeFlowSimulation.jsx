@@ -469,7 +469,7 @@ export default function PipeFlowSimulation() {
                 warningDiv.style.borderLeftColor = "#dc2626";
             } else if (hyd.V > 6.5) {
                 warningDiv.innerHTML = " Very high velocity & head loss! Pipe too narrow  pressure drops sharply. Increase diameter.";
-                warningDiv.style.background = "#fff3e3";
+                warningDiv.style.background = "#ffffff";
                 warningDiv.style.borderLeftColor = "#f97316";
             } else {
                 warningDiv.innerHTML = hyd.warningMsg;

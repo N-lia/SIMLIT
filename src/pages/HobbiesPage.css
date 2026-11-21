@@ -22,8 +22,8 @@
     padding: 12px 20px;
     border-radius: 999px;
     border: 1.5px solid var(--line-soft);
-    background: #fdfaf3;
-    font-family: 'Outfit', sans-serif;
+    background: #ffffff;
+    font-family: var(--body-font);
     font-size: 15px;
     font-weight: 600;
     color: var(--ink-faint);

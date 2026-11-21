@@ -26,7 +26,7 @@
   align-items: center;
   padding: 18px clamp(18px, 3vw, 32px);
   border-bottom: 1.5px solid var(--line-soft);
-  background: rgba(255, 244, 223, 0.34);
+  background: rgba(255, 255, 255, 0.34);
 }
 
 .court-icon-btn,
@@ -35,7 +35,7 @@
   height: 42px;
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-sm);
-  background: rgba(255, 244, 223, 0.5);
+  background: rgba(255, 255, 255, 0.5);
   color: var(--ink);
   display: grid;
   place-items: center;
@@ -56,7 +56,7 @@
   place-items: center;
   border: 1.5px solid var(--line-ink);
   border-radius: var(--radius-sm);
-  background: rgba(255, 244, 223, 0.58);
+  background: rgba(255, 255, 255, 0.58);
 }
 
 .court-logo-text {
@@ -124,7 +124,7 @@
   border-radius: var(--radius-md);
   box-shadow: var(--card-shadow);
   padding: 14px;
-  background: rgba(255, 244, 223, 0.5);
+  background: rgba(255, 255, 255, 0.5);
   display: grid;
   gap: 8px;
 }
@@ -182,7 +182,7 @@
 .court-tool-detail {
   border: 1.5px solid var(--line-ink);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.5);
+  background: rgba(255, 255, 255, 0.5);
   box-shadow: var(--card-shadow);
   padding: 18px;
 }
@@ -219,7 +219,7 @@
 .court-timeline-item {
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.52);
+  background: rgba(255, 255, 255, 0.52);
   color: var(--ink);
   display: grid;
   grid-template-columns: 16px 78px minmax(0, 1fr);
@@ -236,8 +236,8 @@
 }
 
 .court-timeline-item.active {
-  border-color: rgba(169, 64, 47, 0.45);
-  background: rgba(216, 180, 92, 0.16);
+  border-color: rgba(194, 37, 92, 0.45);
+  background: rgba(255, 210, 63, 0.16);
 }
 
 .court-timeline-dot,
@@ -308,7 +308,7 @@
 .court-case-item {
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.56);
+  background: rgba(255, 255, 255, 0.56);
   color: var(--ink);
   padding: 12px;
   cursor: pointer;
@@ -325,7 +325,7 @@
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-md);
   background:
-    linear-gradient(rgba(255, 244, 223, 0.48), rgba(255, 244, 223, 0.48)),
+    linear-gradient(rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.48)),
     var(--paper-texture);
 }
 
@@ -339,13 +339,13 @@
 
 .court-chat-message.student {
   justify-self: end;
-  background: rgba(47, 93, 136, 0.1);
-  border-color: rgba(47, 93, 136, 0.32);
+  background: rgba(23, 105, 170, 0.1);
+  border-color: rgba(23, 105, 170, 0.32);
 }
 
 .court-chat-message.opponent {
   justify-self: start;
-  background: rgba(255, 244, 223, 0.7);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .court-chat-composer {
@@ -362,7 +362,7 @@
   resize: vertical;
   border: 1.5px solid var(--line-ink);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.62);
+  background: rgba(255, 255, 255, 0.62);
   color: var(--ink);
   padding: 12px;
   font: inherit;
@@ -392,8 +392,8 @@
 }
 
 .court-options button.correct {
-  border-color: rgba(76, 122, 60, 0.55);
-  background: rgba(76, 122, 60, 0.12);
+  border-color: rgba(15, 122, 85, 0.55);
+  background: rgba(15, 122, 85, 0.12);
 }
 
 .court-options button.chosen {
@@ -405,7 +405,7 @@
 .court-debrief-item {
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.42);
+  background: rgba(255, 255, 255, 0.42);
   padding: 12px;
 }
 
@@ -459,11 +459,11 @@
 }
 
 .court-debrief-item.correct {
-  border-color: rgba(76, 122, 60, 0.45);
+  border-color: rgba(15, 122, 85, 0.45);
 }
 
 .court-debrief-item.review {
-  border-color: rgba(169, 64, 47, 0.4);
+  border-color: rgba(194, 37, 92, 0.4);
 }
 
 .court-step-actions {
@@ -532,8 +532,8 @@
 }
 
 .court-case-item.active {
-  border-color: rgba(169, 64, 47, 0.45);
-  background: rgba(216, 180, 92, 0.16);
+  border-color: rgba(194, 37, 92, 0.45);
+  background: rgba(255, 210, 63, 0.16);
 }
 
 .court-case-info {
@@ -557,8 +557,8 @@
 }
 
 .court-tool-btn.active {
-  border-color: rgba(169, 64, 47, 0.45);
-  background: rgba(169, 64, 47, 0.08);
+  border-color: rgba(194, 37, 92, 0.45);
+  background: rgba(194, 37, 92, 0.08);
   color: var(--accent-red);
 }
 

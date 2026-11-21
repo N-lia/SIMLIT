@@ -29,7 +29,7 @@
   min-height: 100%;
   padding: 22px 16px;
   border-right: 1.5px solid var(--line-soft);
-  background: rgba(255, 244, 223, 0.34);
+  background: rgba(255, 255, 255, 0.34);
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -49,7 +49,7 @@
   border-radius: var(--radius-sm);
   display: grid;
   place-items: center;
-  background: rgba(255, 244, 223, 0.62);
+  background: rgba(255, 255, 255, 0.62);
 }
 
 .health-logo h2 {
@@ -72,7 +72,7 @@
 .health-dossier-main {
   border: 1.5px solid var(--line-ink);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.52);
+  background: rgba(255, 255, 255, 0.52);
   box-shadow: var(--card-shadow);
 }
 
@@ -110,8 +110,8 @@
 
 .health-nav-item:hover,
 .health-nav-item.active {
-  background: rgba(47, 93, 136, 0.1);
-  border-color: rgba(47, 93, 136, 0.28);
+  background: rgba(23, 105, 170, 0.1);
+  border-color: rgba(23, 105, 170, 0.28);
   color: var(--accent-blue);
 }
 
@@ -151,7 +151,7 @@
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-md);
   padding: 10px 12px;
-  background: rgba(255, 244, 223, 0.42);
+  background: rgba(255, 255, 255, 0.42);
 }
 
 .health-header-stats strong {
@@ -183,7 +183,7 @@
   padding: 0 12px;
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.58);
+  background: rgba(255, 255, 255, 0.58);
 }
 
 .health-search input,
@@ -209,7 +209,7 @@
   border: 1.5px solid var(--line-ink);
   border-radius: var(--radius-sm);
   padding: 10px 13px;
-  background: rgba(255, 244, 223, 0.42);
+  background: rgba(255, 255, 255, 0.42);
   color: var(--ink);
   cursor: pointer;
 }
@@ -250,7 +250,7 @@
 }
 
 .health-dossier.selected .health-dossier-main {
-  outline: 2px solid rgba(47, 93, 136, 0.32);
+  outline: 2px solid rgba(23, 105, 170, 0.32);
 }
 
 .health-dossier-main strong {
@@ -286,12 +286,12 @@
 .health-priority.critical,
 .health-priority.high {
   color: var(--accent-red);
-  background: rgba(169, 64, 47, 0.1);
+  background: rgba(194, 37, 92, 0.1);
 }
 
 .health-priority.moderate {
   color: #8a6500;
-  background: rgba(216, 180, 92, 0.18);
+  background: rgba(255, 210, 63, 0.18);
 }
 
 .health-progress-bar {
@@ -300,7 +300,7 @@
   border: 1.5px solid var(--line-ink);
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(255, 244, 223, 0.54);
+  background: rgba(255, 255, 255, 0.54);
 }
 
 .health-progress-bar span {
@@ -336,7 +336,7 @@
   gap: 8px;
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-md);
-  background: rgba(255, 244, 223, 0.38);
+  background: rgba(255, 255, 255, 0.38);
   padding: 12px;
 }
 
@@ -369,7 +369,7 @@
   border: 1.5px solid var(--line-soft);
   border-radius: var(--radius-sm);
   padding: 9px;
-  background: rgba(255, 244, 223, 0.38);
+  background: rgba(255, 255, 255, 0.38);
 }
 
 .health-vitals span {
@@ -418,12 +418,12 @@
   place-items: center;
   border: 1.5px solid var(--line-ink);
   border-radius: 50%;
-  background: rgba(47, 93, 136, 0.12);
+  background: rgba(23, 105, 170, 0.12);
 }
 
 .health-task-row.complete span {
-  background: rgba(76, 122, 60, 0.16);
-  border-color: rgba(76, 122, 60, 0.56);
+  background: rgba(15, 122, 85, 0.16);
+  border-color: rgba(15, 122, 85, 0.56);
   color: var(--accent-green);
 }
 

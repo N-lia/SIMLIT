@@ -1,0 +1,150 @@
+/* Persistent navigation · Field Notebook */
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background: var(--paper-light);
+  border-bottom: 2px solid var(--ink);
+}
+
+.app-nav-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  height: 56px;
+  padding: 0 clamp(16px, 3vw, 32px);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.app-nav-logo {
+  font-family: var(--display-font);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+.app-nav-subject {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--subject);
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  padding: 3px 8px;
+}
+
+.app-nav-links {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  margin-left: 12px;
+  height: 100%;
+}
+
+.app-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+}
+
+.app-nav-link:hover { color: var(--ink); }
+
+.app-nav-link.is-active {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.app-nav-link.is-active::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -2px;
+  height: 5px;
+  background: var(--subject);
+  border: 1.5px solid var(--ink);
+  border-bottom: 0;
+}
+
+.app-nav-link:focus-visible,
+.app-nav-logo:focus-visible,
+.app-nav-avatar:focus-visible {
+  outline: 2px solid var(--ink-blue);
+  outline-offset: 2px;
+}
+
+.app-nav-label-short { display: none; }
+
+.app-nav-avatar {
+  margin-left: auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--subject);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Phone: bottom tab bar */
+@media (max-width: 767px) {
+  .app-nav {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 0;
+    border-top: 2px solid var(--ink);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .app-nav-inner { height: 62px; padding: 0 4px; gap: 0; }
+  .app-nav-logo,
+  .app-nav-subject,
+  .app-nav-avatar,
+  .app-nav-label-long { display: none; }
+
+  .app-nav-links { margin: 0; width: 100%; justify-content: space-around; }
+
+  .app-nav-link {
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding: 0;
+    font-size: 11px;
+  }
+
+  .app-nav-label-short { display: inline; }
+  .app-nav-icon { width: 20px; height: 20px; }
+
+  .app-nav-link.is-active::after {
+    top: -2px;
+    bottom: auto;
+    left: 22%;
+    right: 22%;
+    border-bottom: 1.5px solid var(--ink);
+    border-top: 0;
+  }
+
+  .app-root.has-app-nav .page { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+}

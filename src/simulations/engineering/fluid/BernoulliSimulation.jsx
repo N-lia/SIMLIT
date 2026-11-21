@@ -126,18 +126,18 @@ export default function BernoulliSimulation() {
       if (!ctx) return;
       ctx.clearRect(0, 0, width, height);
       const colors = {
-        ink: '#25231f',
-        inkSoft: '#5f564b',
-        paperLight: '#fff4df',
-        line: 'rgba(37, 35, 31, 0.5)',
-        blue: '#2f5d88',
-        green: '#4c7a3c',
-        red: '#a9402f',
+        ink: '#1f1f1f',
+        inkSoft: '#4a4a45',
+        paperLight: '#ffffff',
+        line: 'rgba(31, 31, 31, 0.5)',
+        blue: '#1769aa',
+        green: '#0f7a55',
+        red: '#c2255c',
         amber: '#8a6500',
-        yellow: '#d8b45c'
+        yellow: '#ffd23f'
       };
 
-      ctx.font = "12px 'Outfit', 'Segoe UI', system-ui";
+      ctx.font = "12px 'Inter', 'Segoe UI', system-ui";
       ctx.lineWidth = 1.8;
       
       const { velocities, pressures_kPa, pressureEnergy, kineticEnergy, potentialEnergy, diameters, elevations, vExit, isReal } = data;
@@ -174,7 +174,7 @@ export default function BernoulliSimulation() {
         ctx.lineTo(pipeBottomPoints[i].x, pipeBottomPoints[i].y);
       }
       ctx.closePath();
-      ctx.fillStyle = "rgba(47, 93, 136, 0.13)";
+      ctx.fillStyle = "rgba(23, 105, 170, 0.13)";
       ctx.fill();
       ctx.strokeStyle = colors.blue;
       ctx.lineWidth = 2;
@@ -197,7 +197,7 @@ export default function BernoulliSimulation() {
         ctx.fillStyle = colors.blue;
         ctx.fill();
         ctx.fillStyle = colors.paperLight;
-        ctx.font = "bold 12px 'Outfit', 'Segoe UI'";
+        ctx.font = "bold 12px 'Inter', 'Segoe UI'";
         ctx.fillText(["A","B","C"][i], xPos[i]-5, centerY[i]-8);
       }
       
@@ -253,7 +253,7 @@ export default function BernoulliSimulation() {
         ctx.lineWidth = 2;
         ctx.stroke();
         ctx.fillStyle = colors.ink;
-        ctx.font = "bold 10px 'Outfit', 'Segoe UI'";
+        ctx.font = "bold 10px 'Inter', 'Segoe UI'";
         ctx.fillText(`${Math.round(P_kPa)} kPa`, xg+10, yg+22);
         ctx.fillStyle = colors.blue;
         ctx.font = "italic 9px";
@@ -277,7 +277,7 @@ export default function BernoulliSimulation() {
         let k_h = kE * scaleEnergy;
         let po_h = potE * scaleEnergy;
         // background
-        ctx.fillStyle = "rgba(255, 244, 223, 0.68)";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.68)";
         ctx.fillRect(xBar, barTopY, barWidth, 130);
         // pressure energy
         ctx.fillStyle = colors.blue;
@@ -291,7 +291,7 @@ export default function BernoulliSimulation() {
         ctx.strokeStyle = colors.line;
         ctx.strokeRect(xBar, barTopY, barWidth, 130);
         ctx.fillStyle = colors.ink;
-        ctx.font = "bold 13px 'Outfit', 'Segoe UI'";
+        ctx.font = "bold 13px 'Inter', 'Segoe UI'";
         ctx.fillText(`Section ${sections[i]}`, xBar+8, barTopY-6);
         ctx.font = "9px monospace";
         ctx.fillStyle = colors.inkSoft;
@@ -344,7 +344,7 @@ export default function BernoulliSimulation() {
       }
       
       // dynamic annotations
-      ctx.font = "500 10px 'Outfit', 'Segoe UI'";
+      ctx.font = "500 10px 'Inter', 'Segoe UI'";
       ctx.fillStyle = colors.blue;
       if(velocities[1] > velocities[0] && pressures_kPa[1] < pressures_kPa[0]) {
         ctx.fillText(" Higher velocity → LOWER pressure !", xPos[1]-65, centerY[1]-halfHeights[1]-18);

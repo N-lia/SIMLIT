@@ -4,7 +4,7 @@ import '../../Simulation.css'
 
 const W = 760, H = 420
 const BOX = { x: 90, y: 52, w: W - 180, h: H - 126 }
-const COLORS = ['#a9402f', '#c55a3a', '#d8b45c', '#4c7a3c', '#2f5d88', '#24496b', '#8a6500']
+const COLORS = ['#c2255c', '#d94a7a', '#ffd23f', '#0f7a55', '#1769aa', '#11507f', '#8a6500']
 const R = 8.314
 
 function initParticles(n, speed) {
@@ -34,24 +34,24 @@ function stepParticles(particles, speed) {
 
 function drawFrame(ctx, particles, temp) {
   ctx.clearRect(0, 0, W, H)
-  ctx.fillStyle = '#fff4df'
+  ctx.fillStyle = '#ffffff'
   ctx.fillRect(0, 0, W, H)
 
-  ctx.strokeStyle = 'rgba(37, 35, 31, 0.08)'
+  ctx.strokeStyle = 'rgba(31, 31, 31, 0.08)'
   ctx.lineWidth = 1
   for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke() }
   for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke() }
 
   // Container
-  ctx.fillStyle = 'rgba(47, 93, 136, 0.08)'
+  ctx.fillStyle = 'rgba(23, 105, 170, 0.08)'
   ctx.fillRect(BOX.x, BOX.y, BOX.w, BOX.h)
-  ctx.strokeStyle = 'rgba(37, 35, 31, 0.58)'
+  ctx.strokeStyle = 'rgba(31, 31, 31, 0.58)'
   ctx.lineWidth = 2.5
   ctx.strokeRect(BOX.x, BOX.y, BOX.w, BOX.h)
 
   // Temperature heat tint
   const heat = Math.min((temp - 100) / 900, 1)
-  ctx.fillStyle = `rgba(169,64,47,${heat * 0.12})`
+  ctx.fillStyle = `rgba(194, 37, 92,${heat * 0.12})`
   ctx.fillRect(BOX.x, BOX.y, BOX.w, BOX.h)
 
   // Particles
@@ -64,7 +64,7 @@ function drawFrame(ctx, particles, temp) {
   }
 
   // Labels
-  ctx.font = '600 14px Outfit, sans-serif'; ctx.fillStyle = 'rgba(37,35,31,0.58)'
+  ctx.font = '600 14px Inter, sans-serif'; ctx.fillStyle = 'rgba(31, 31, 31,0.58)'
   ctx.textAlign = 'center'; ctx.fillText(`T = ${temp} K`, BOX.x + BOX.w/2, H - 8)
 }
 

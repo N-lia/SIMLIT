@@ -1,5 +1,5 @@
 .bernoulli-wrapper {
-    font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--paper-texture);
     padding: 20px;
     min-height: 100%;
@@ -18,7 +18,7 @@
 .bernoulli-wrapper .sim-card {
     max-width: 1400px;
     width: 100%;
-    background: rgba(255, 244, 223, 0.7);
+    background: rgba(255, 255, 255, 0.7);
     border: 1.5px solid var(--line-soft);
     border-radius: var(--radius-xl);
     box-shadow: var(--card-shadow);
@@ -41,7 +41,7 @@
 .bernoulli-wrapper h1 small {
     font-size: 0.8rem;
     font-weight: normal;
-    background: rgba(47, 93, 136, 0.14);
+    background: rgba(23, 105, 170, 0.14);
     color: var(--accent-blue);
     padding: 4px 12px;
     border-radius: 40px;
@@ -64,7 +64,7 @@
 .bernoulli-wrapper .controls {
     flex: 1.2;
     min-width: 260px;
-    background: rgba(255, 244, 223, 0.58);
+    background: rgba(255, 255, 255, 0.58);
     border-radius: var(--radius-lg);
     padding: 1rem 1.2rem;
     box-shadow: var(--card-shadow);
@@ -78,7 +78,7 @@
 
 .bernoulli-wrapper .control-group {
     margin-bottom: 1.2rem;
-    border-bottom: 1px dashed rgba(37, 35, 31, 0.18);
+    border-bottom: 1px dashed rgba(31, 31, 31, 0.18);
     padding-bottom: 0.8rem;
 }
 
@@ -107,7 +107,7 @@
 .bernoulli-wrapper input[type="range"] {
     width: 100%;
     cursor: pointer;
-    background: rgba(37, 35, 31, 0.16);
+    background: rgba(31, 31, 31, 0.16);
     height: 4px;
     border-radius: 5px;
     -webkit-appearance: none;
@@ -141,7 +141,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    background: rgba(255, 244, 223, 0.5);
+    background: rgba(255, 255, 255, 0.5);
     padding: 8px 12px;
     border-radius: 40px;
     margin-top: 8px;
@@ -168,7 +168,7 @@
 
 .bernoulli-wrapper .canvas-container {
     background:
-        linear-gradient(rgba(255, 244, 223, 0.55), rgba(255, 244, 223, 0.55)),
+        linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)),
         var(--paper-texture);
     border: 1.5px solid var(--line-soft);
     border-radius: var(--radius-xl);
@@ -181,9 +181,9 @@
     width: 100%;
     height: auto;
     background:
-        radial-gradient(circle at 18% 22%, rgba(216, 180, 92, 0.13) 0 2px, transparent 2.5px),
-        linear-gradient(180deg, rgba(255, 244, 223, 0.78), rgba(234, 214, 167, 0.48));
-    border: 1px solid rgba(37, 35, 31, 0.14);
+        radial-gradient(circle at 18% 22%, rgba(255, 210, 63, 0.13) 0 2px, transparent 2.5px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(236, 236, 231, 0.48));
+    border: 1px solid rgba(31, 31, 31, 0.14);
     border-radius: var(--radius-lg);
     margin-bottom: 8px;
 }
@@ -207,7 +207,7 @@
 
 .bernoulli-wrapper .outlet-speed {
     background: var(--ink);
-    color: var(--accent-yellow);
+    color: var(--ink-yellow);
     padding: 5px 12px;
     border-radius: 26px;
     font-weight: bold;
@@ -216,7 +216,7 @@
 }
 
 .bernoulli-wrapper .misconception {
-    background: rgba(216, 180, 92, 0.18);
+    background: rgba(255, 210, 63, 0.18);
     border-left: 6px solid var(--accent-yellow);
     padding: 10px 15px;
     border-radius: 12px;
@@ -226,8 +226,8 @@
 }
 
 .bernoulli-wrapper .mode-option {
-    background: rgba(216, 180, 92, 0.16);
-    border: 1px solid rgba(37, 35, 31, 0.14);
+    background: rgba(255, 210, 63, 0.16);
+    border: 1px solid rgba(31, 31, 31, 0.14);
     border-radius: 30px;
     padding: 2px 12px;
 }
